@@ -1,0 +1,1131 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"save",
+				"saveResults"
+			],
+			[
+				"getA",
+				"getAndDisplayMultiCarrierFitResults"
+			],
+			[
+				"T",
+				"TForm1"
+			],
+			[
+				"new",
+				"newUpBound"
+			],
+			[
+				"low",
+				"lowBound"
+			],
+			[
+				"up",
+				"upBound"
+			],
+			[
+				"ng",
+				"nGxyIn"
+			],
+			[
+				"n",
+				"nMagSpectr"
+			],
+			[
+				"Mu",
+				"runMultiCarrierFit"
+			],
+			[
+				"ho",
+				"holeConcentration"
+			],
+			[
+				"ele",
+				"electronConcentration"
+			],
+			[
+				"El",
+				"electronMobility"
+			],
+			[
+				"ca",
+				"calculateMeanValue"
+			],
+			[
+				"h",
+				"heavyHoleConcentration"
+			],
+			[
+				"li",
+				"lightHoleConcentration"
+			],
+			[
+				"Con",
+				"electronConcentration"
+			],
+			[
+				"cal",
+				"calculateDispersion"
+			],
+			[
+				"pu",
+				"push_back"
+			],
+			[
+				"for",
+				"for\tFor Loop"
+			],
+			[
+				"my",
+				"mysend"
+			],
+			[
+				"in",
+				"increaseKey"
+			],
+			[
+				"o",
+				"otherwise"
+			],
+			[
+				"I",
+				"I0"
+			],
+			[
+				"v",
+				"vPC"
+			],
+			[
+				"ri",
+				"rightPointHoleConductivity"
+			],
+			[
+				"rit",
+				"rightPointElectronConductivity"
+			],
+			[
+				"A",
+				"AttenuationFRes"
+			],
+			[
+				"fp",
+				"fpRes"
+			],
+			[
+				"ad",
+				"additionalData"
+			],
+			[
+				"re",
+				"results"
+			],
+			[
+				"st",
+				"strs"
+			],
+			[
+				"t",
+				"true"
+			],
+			[
+				"resul",
+				"resultHoleConductivity"
+			],
+			[
+				"P",
+				"PeaksCriteria"
+			],
+			[
+				"s",
+				"struct\tstruct"
+			],
+			[
+				"pro",
+				"processResults"
+			],
+			[
+				"po",
+				"polinomPowMagnetoresistance"
+			],
+			[
+				"Fi",
+				"filterLength"
+			],
+			[
+				"B",
+				"BandwidthFrequency"
+			],
+			[
+				"Ba",
+				"BandWidthFHall"
+			],
+			[
+				"Ge",
+				"getFilterParamsHall"
+			],
+			[
+				"get",
+				"getFilterParamsResistance"
+			],
+			[
+				"MD",
+				"MFDData"
+			],
+			[
+				"ta",
+				"targetFunction"
+			],
+			[
+				"tar",
+				"targetFuncValue"
+			],
+			[
+				"Pow",
+				"PowPolinomRes"
+			],
+			[
+				"pw",
+				"powPolinomR"
+			],
+			[
+				"pow",
+				"PowPolinomHall"
+			],
+			[
+				"M",
+				"MFDData"
+			],
+			[
+				"num",
+				"numberOfStoredBestResults"
+			],
+			[
+				"nub",
+				"numberOfParameters"
+			],
+			[
+				"fo",
+				"forv\tVector For Loop"
+			],
+			[
+				"de",
+				"deque"
+			],
+			[
+				"c",
+				"counter"
+			],
+			[
+				"i",
+				"insertSort"
+			],
+			[
+				"a",
+				"adjuster"
+			],
+			[
+				"L",
+				"length"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"e",
+				"extract"
+			],
+			[
+				"he",
+				"helper"
+			],
+			[
+				"l",
+				"lookup"
+			],
+			[
+				"al",
+				"alfabet"
+			],
+			[
+				"d",
+				"decrypt"
+			],
+			[
+				"r",
+				"replace"
+			],
+			[
+				"F",
+				"False"
+			],
+			[
+				"p",
+				"pokes1"
+			],
+			[
+				"is",
+				"isVulnerable"
+			],
+			[
+				"ty",
+				"type2"
+			],
+			[
+				"na",
+				"name1"
+			],
+			[
+				"Int",
+				"Int"
+			],
+			[
+				"S",
+				"String"
+			],
+			[
+				"E",
+				"Electric"
+			],
+			[
+				"fi",
+				"findTree"
+			],
+			[
+				"ma",
+				"maxList"
+			],
+			[
+				"x",
+				"x"
+			],
+			[
+				"the",
+				"theDate"
+			],
+			[
+				"th",
+				"theDirection"
+			],
+			[
+				"authorCo",
+				"authorComments"
+			],
+			[
+				"test",
+				"testdata"
+			],
+			[
+				"m",
+				"make"
+			],
+			[
+				"ux",
+				"uxs"
+			],
+			[
+				"f",
+				"for\tFor Loop"
+			],
+			[
+				"bv",
+				"bv"
+			],
+			[
+				"if",
+				"ife\tConditional if..else"
+			],
+			[
+				"FID",
+				"FID2"
+			],
+			[
+				"FI",
+				"FID2"
+			],
+			[
+				"gi",
+				"nGxxIn"
+			],
+			[
+				"k",
+				"koefSxx"
+			],
+			[
+				"oG",
+				"outGxy"
+			],
+			[
+				"max",
+				"max_elem"
+			],
+			[
+				"Che",
+				"Checked"
+			],
+			[
+				"ti",
+				"timeToString"
+			],
+			[
+				"myTo",
+				"myToZ"
+			],
+			[
+				"Z",
+				"Zero"
+			],
+			[
+				"ch",
+				"changeh"
+			],
+			[
+				"even",
+				"evenOnly"
+			],
+			[
+				"em",
+				"enumFromThenTo"
+			],
+			[
+				"to",
+				"toInteger"
+			],
+			[
+				"ext",
+				"extrapolateData"
+			],
+			[
+				"ex",
+				"extrapolateData"
+			],
+			[
+				"Mag",
+				"MagneticFieldDependence"
+			],
+			[
+				"perms",
+				"perms4"
+			],
+			[
+				"perm",
+				"perms4"
+			],
+			[
+				"reM",
+				"resultMobility"
+			],
+			[
+				"cons",
+				"constructPeakCriteria"
+			],
+			[
+				"d2e",
+				"d2e"
+			],
+			[
+				"ser",
+				"searchPeakRigthBorder"
+			],
+			[
+				"mo",
+				"mobilitySpectrum"
+			],
+			[
+				"pevl",
+				"peakVelocity2L"
+			],
+			[
+				"pe",
+				"peakVelocityL"
+			],
+			[
+				"g",
+				"groupElems"
+			],
+			[
+				"su",
+				"sum3"
+			],
+			[
+				"N",
+				"Names"
+			],
+			[
+				"do",
+				"doesEnrageMork"
+			],
+			[
+				"go",
+				"doesEnrageGork"
+			],
+			[
+				"K",
+				"KnownToGork"
+			],
+			[
+				"str",
+				"string"
+			],
+			[
+				"ru",
+				"resultMobility"
+			],
+			[
+				"resu",
+				"resultMobility"
+			],
+			[
+				"j",
+				"j"
+			],
+			[
+				"d2",
+				"d2h"
+			],
+			[
+				"TS",
+				"TStringList"
+			],
+			[
+				"y",
+				"ys"
+			],
+			[
+				"ei",
+				"eigenValues"
+			],
+			[
+				"eiV",
+				"eigenVectors"
+			],
+			[
+				"Fil",
+				"Files"
+			],
+			[
+				"Add",
+				"Add"
+			],
+			[
+				"Re",
+				"repeatQuantity"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/C/Users/Jonathan/Desktop/120402_Optotekhnika_Individualnaya_programma.plx",
+			"settings":
+			{
+				"buffer_size": 485828,
+				"encoding": "UTF-16 LE with BOM",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 242.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"hex",
+				"Hex Viewer: Toggle Hex View"
+			],
+			[
+				"he",
+				"Hex Viewer: Toggle Hex View"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"package in",
+				"Package Control: Install Package"
+			],
+			[
+				"add",
+				"Project: Add Folder"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/Jonathan/Desktop/MCTParamsExplorer"
+	],
+	"file_history":
+	[
+		"/C/Users/Jonathan/Desktop/120402_Optotekhnika_Individualnaya_programma.plx",
+		"/C/Users/Jonathan/Desktop/MCTParamsExplorer/MagneticFieldDependence.h",
+		"/C/Users/Jonathan/Desktop/MCTParamsExplorer/MagneticFieldDependence.cpp",
+		"/C/Users/Jonathan/Desktop/MCTParamsExplorer/multizoneFit.cpp",
+		"/C/Users/Jonathan/Desktop/MCTParamsExplorer/Unit1.h",
+		"/C/Users/Jonathan/Desktop/MCTParamsExplorer/Unit1.cpp",
+		"/C/Users/Jonathan/Desktop/MCTParamsExplorer/commonFunctions.h",
+		"/C/Users/Jonathan/Desktop/MCTParamsExplorer/smartCalculation.h",
+		"/C/Users/Jonathan/Desktop/MCTParamsExplorer/smartCalculation.cpp",
+		"/C/Users/Jonathan/Desktop/Нормальный шум/Адаптивный фильтр/adfiltres16.txt",
+		"/C/Users/Jonathan/Desktop/MCTParamsExplorer/UsedTypes.h",
+		"/C/Users/Jonathan/Desktop/MCTParamsExplorer/mobilityspectrum.cpp",
+		"/C/Users/Jonathan/Desktop/MCTParamsExplorer/multizoneFit.h",
+		"/C/Users/Jonathan/Desktop/MCTParamsExplorer/mobilityspectrum.h",
+		"/C/Users/Jonathan/Desktop/Нормальный шум/Адаптивный фильтр/adfiltres15.txt",
+		"/C/Users/Jonathan/Desktop/Вдруг гляну.txt",
+		"/E/Дела/Институт СГГА/Аспирантура/Шойдин/Версия от 04 декабря 2016/DifEffEnVidPortrGauss.m",
+		"/H/Нормальный шум/Адаптивный фильтр/adfiltres14.txt",
+		"/E/Дела/Информационная безопасность/Материалы/Скачать ещё надо бы.txt",
+		"/E/Дела/Институт СГГА/Аспирантура/Шойдин/Версия от 16 декабря 2016/readMe.txt",
+		"/E/Дела/Институт СГГА/Аспирантура/Шойдин/Версия от 07 декабря 2016/readMe.txt",
+		"/E/Дела/Институт СГГА/Аспирантура/Шойдин/Версия от 05 декабря 2016/readMe.txt",
+		"/G/Downloads/test/TEST#3/Что удалось узнать.txt",
+		"/G/Downloads/test/TEST#3/script1.js",
+		"/G/temp/7zO9C20.tmp/readMe.txt",
+		"/E/Дела/Институт СГГА/Аспирантура/Шойдин/Версия от 24 ноября 2016/readMe.txt",
+		"/H/Нормальный шум/Адаптивный фильтр/adfiltres7.txt",
+		"/H/Нормальный шум/Адаптивный фильтр/adfiltres.txt",
+		"/H/Нормальный шум/Адаптивный фильтр/adfiltres4.txt",
+		"/H/Нормальный шум/Адаптивный фильтр/adfiltres5.txt",
+		"/H/Нормальный шум/Адаптивный фильтр/adfiltres6.txt",
+		"/H/Нормальный шум/Адаптивный фильтр/adfiltres8.txt",
+		"/H/Нормальный шум/Адаптивный фильтр/adfiltres9.txt",
+		"/H/Нормальный шум/Адаптивный фильтр/adfiltres10.txt",
+		"/H/Нормальный шум/Адаптивный фильтр/adfiltres11.txt",
+		"/H/Нормальный шум/Адаптивный фильтр/adfiltres12.txt",
+		"/H/Нормальный шум/Адаптивный фильтр/adfiltres13.txt",
+		"/E/Дела/Работа/Махина Катя/Новый текстовый документ.txt",
+		"/I/ida_pro_6.8/install_pass.txt",
+		"/E/Дела/Работа/Махина Катя/for ida6.8 ЧТХ Гена/ARS.asm",
+		"/E/Дела/Работа/Махина Катя/for ida6.8 ЧТХ Гена/R7P.asm",
+		"/E/Дела/Работа/Махина Катя/Copy of ЧТХ Гена/ARS.asm",
+		"/H/Нормальный шум/1T_77_params_.txt",
+		"/H/Нормальный шум/Адаптивный фильтр/adfiltres3.txt",
+		"/H/Нормальный шум/Адаптивный фильтр/adfiltres2.txt",
+		"/H/Нормальный шум/Адаптивный фильтр/adfiltres",
+		"/E/Дела/Институт физики полупроводников/Lcard/MCTParamsExplorer/FilterParams.h",
+		"/E/Дела/Информационная безопасность/ructfe 2016/howto.txt",
+		"/E/Дела/Информационная безопасность/Наша команда.txt",
+		"/E/Дела/Работа/Махина Катя/ЧТХ Гена/ARS.asm",
+		"/G/rsa_private.key",
+		"/G/Downloads/crypt.txt",
+		"/G/recvuntil.py",
+		"/G/somesc.py",
+		"/G/revfev.py",
+		"/G/_userfullProgramms/john179j5/run/pa.txt",
+		"/E/Дела/Это сумасшествие/fact.cpp",
+		"/E/Дела/Информационная безопасность/MCTF 2016/чатик.txt",
+		"/G/ppc300.py",
+		"/G/ppc100.py",
+		"/E/Дела/Информационная безопасность/QCTF 2016/Новый текстовый документ.txt",
+		"/E/Дела/Информационная безопасность/Juniors CTF 2016/Reverse Fever.py",
+		"/E/Дела/Информационная безопасность/hackyouctf 2016/ppc100.py",
+		"/E/Дела/Информационная безопасность/hackyouctf 2016/ppc300.py",
+		"/G/Downloads/stan_files/sdcard/Android/obb/.nomedia",
+		"/G/Downloads/stan_files/sdcard/backups/system/.confd",
+		"/G/Downloads/stan_files/sdcard/dianxin/notify/.cache/846b/network/journal",
+		"/G/Downloads/stan_files/sdcard/dianxin/notify/.cache/846b/network/e127f6f92d629b67733e313409c9b7e7.0",
+		"/E/Дела/Работа/Upwork/exam.txt",
+		"/G/Downloads/ThroughTime/in.txt",
+		"/G/text.txt",
+		"/G/b64.py",
+		"/G/Downloads/stan_files/sdcard/.userReturn",
+		"/G/Schoolppc100.py",
+		"/E/Дела/Информационная безопасность/MCTF 2016/Solutions/Writeups from Orgs/rev/rev_500/TaskDescription.txt",
+		"/G/Downloads/image_with_flag_defect.jpg.hamming",
+		"/G/Downloads/RE_452b491806583cc1e3e8df45b7ce9083d1f09a52/try1.py",
+		"/G/Downloads/RE_452b491806583cc1e3e8df45b7ce9083d1f09a52/try2.py",
+		"/G/Downloads/RE_452b491806583cc1e3e8df45b7ce9083d1f09a52/task_RE.pyc_dis",
+		"/G/Downloads/car.asm",
+		"/G/Downloads/Google/Chrome Cleanup Tool/chrome_cleanup_tool.log",
+		"/G/Downloads/site (1)/9.encoded",
+		"/G/Downloads/site (1)/index.encoded",
+		"/G/Downloads/task_for_dipper.xls",
+		"/E/Дополнения/Установочные/Взлом/IDA/FIRST-plugin-ida-master/README.rst",
+		"/D/masm32/bin/assmbl.bat",
+		"/D/python35/Scripts/first-plugin-ida-script.py",
+		"/C/Users/Jonathan/AppData/Roaming/Skype/My Skype Received Files/php1.php",
+		"/C/Users/Jonathan/AppData/Roaming/Skype/My Skype Received Files/Test.java",
+		"/E/Дела/Работа/Тетя таня. Итальянский.txt",
+		"/E/Дела/Институт СГГА/Студенчество/3 семестр/СЗИ и ВТ и ПР/Ещё стопка прог/CekKorn.m",
+		"/E/Дела/Работа/Грицкевич очередное задание/readMe.txt",
+		"/G/Downloads/ChisK.m",
+		"/E/Дела/Институт СГГА/Студенчество/3 семестр/СЗИ и ВТ и ПР/Ещё стопка прог/Chisl.m",
+		"/E/Дела/Институт СГГА/Студенчество/3 семестр/СЗИ и ВТ и ПР/Ещё стопка прог/Korn.m",
+		"/E/Дела/Институт СГГА/Студенчество/3 семестр/СЗИ и ВТ и ПР/Ещё стопка прог/Vika/ChisK.m",
+		"/E/Дела/Институт СГГА/Студенчество/3 семестр/СЗИ и ВТ и ПР/Ещё стопка прог/Alina/TrapS.m",
+		"/E/Дела/Институт СГГА/Аспирантура/Шойдин/Версия от 23 ноября 2016/readMe.txt",
+		"/C/Users/Jonathan/AppData/Roaming/Skype/My Skype Received Files/c1.c",
+		"/E/Дела/Информационная безопасность/ructfe 2016/config",
+		"/C/Program Files/OpenVPN/doc/INSTALL-win32.txt",
+		"/E/Дела/Работа/Upwork/helpWithHaskell.hs",
+		"/E/Дела/Работа/Upwork/helpWithHaskell2submit.hs",
+		"/E/Дела/Работа/Upwork/helpWithHaskell3.hs",
+		"/G/Downloads/RE_452b491806583cc1e3e8df45b7ce9083d1f09a52/serialized",
+		"/E/Дела/Работа/Upwork/haskellExamP2.hs",
+		"/E/Дела/Информационная безопасность/hackyouctf 2016/hackyou.ctf.su (hack you spb)/Stegano/Omnomnom, nonmono/Ответ.txt",
+		"/E/Дела/Информационная безопасность/hackyouctf 2016/hackyou.ctf.su (hack you spb)/Reverse/Serious Business/ReadMe.txt",
+		"/G/Downloads/rev100_4e4ccaa (1).cpp",
+		"/E/Дела/Работа/Махина Катя/ЧТХ Гена/SMBL.ARS",
+		"/C/Program Files/OpenVPN/config/README.txt",
+		"/G/Downloads/qr_codi_blyat_33.txt",
+		"/E/Дела/Информационная безопасность/SchoolCTF2016/info",
+		"/G/Downloads/task_c7c33ed0aff287ad9c146a65078177f6f5731adb (1)/lists.c",
+		"/G/Downloads/task_c7c33ed0aff287ad9c146a65078177f6f5731adb (1)/goodguys.h",
+		"/G/Downloads/task_c7c33ed0aff287ad9c146a65078177f6f5731adb (1)/faultline.h",
+		"/G/Downloads/task_c7c33ed0aff287ad9c146a65078177f6f5731adb (1)/e88.h",
+		"/G/Downloads/task_c7c33ed0aff287ad9c146a65078177f6f5731adb (1)/capes.h",
+		"/G/Downloads/task_c7c33ed0aff287ad9c146a65078177f6f5731adb (1)/abb.h",
+		"/C/Python27/Lib/pickle.py",
+		"/G/Downloads/RE_452b491806583cc1e3e8df45b7ce9083d1f09a52/strange.txt",
+		"/G/Downloads/RE_452b491806583cc1e3e8df45b7ce9083d1f09a52/data.pkl",
+		"/G/Downloads/RE_452b491806583cc1e3e8df45b7ce9083d1f09a52/test.exe",
+		"/G/Downloads/xor_672479b7c88231427986810fa861d5ae99791daa.c",
+		"/G/Downloads/LesterHill_47664d4116c6a77c8b454fee657663f167afb903/create_picture.py",
+		"/G/Downloads/LesterHill_47664d4116c6a77c8b454fee657663f167afb903/encryption.py",
+		"/G/EmptySpaces_8577786656ae4b091511e9caf4fe44e747726e5f.txt",
+		"/G/Downloads/licensekey_00defe1c12027e109e324f073624fc6a609ae35f/classes.dex"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"smar",
+			"sra",
+			"lusbapi",
+			"InDataSpectr",
+			"не хватает",
+			"уйти",
+			"любви",
+			"мразь",
+			"ммм",
+			";",
+			"5.",
+			"5.8560",
+			"electronMobility",
+			"electronMo",
+			"rightPointMoility",
+			"electronMobility",
+			"targetFunc",
+			"Mobility",
+			"targ",
+			"fp",
+			"\"",
+			"href=\"",
+			"href=\"/site[a-bA-z0-9.://]+\"",
+			"href=\"[a-bA-z0-9.://]+\"",
+			" ",
+			"h, ",
+			" ",
+			"\\n",
+			"db",
+			"+",
+			"                                                                            ",
+			"load",
+			" ",
+			"2",
+			"0",
+			"1",
+			"N",
+			" ",
+			" ",
+			"[N]+",
+			"?",
+			"!",
+			".",
+			"[a-zA-Z0-9—,‘’]+",
+			"[a-zA-Z]+",
+			"p0",
+			"q",
+			"x",
+			"k",
+			"s",
+			"m",
+			"t",
+			"   ",
+			"\\r\\n",
+			" ",
+			"\\n",
+			",",
+			"\\n",
+			" ",
+			"000[0-9abdcef]{4}",
+			"\\n",
+			" ",
+			"000[0-9abcdef]{4}",
+			"\\n",
+			" ",
+			"000[0-9abcdef]{4}",
+			"\\n",
+			" ",
+			"000[0-9abcdef]{4}",
+			"calculatePeaksWeigth",
+			"mobilitySpectrum::mobilitySpectrum",
+			"mobility",
+			"getFilterP",
+			"getPeak",
+			"getPeaks",
+			"crite",
+			"calculatePeakWeigth",
+			"save",
+			"fit",
+			"fitres",
+			"mobilitySpectrumDerivative",
+			"deriva",
+			"mobilitySpectrum",
+			"setFilterPa",
+			"getFilterPar",
+			"TMatrix",
+			"\\t",
+			"1",
+			"0",
+			"\\n\\n",
+			"(0.00 secs, 0 bytes)",
+			"it :: Integral a => a",
+			"Prelude> ",
+			", ",
+			",",
+			"\\n\\n",
+			"inc",
+			"--[A-Za-z0-9 -]+",
+			"then",
+			" Екатерина\nЕкатерина",
+			" Александр\nАлександр",
+			" ххх:\nххх:",
+			"Екатерина",
+			"0",
+			"10",
+			"(\\/\\w+)\\s*(.*)",
+			"(\\\\/\\\\w+)\\\\s*(.*)",
+			"iteration",
+			"Restricted area! Keep off!",
+			" ",
+			"\\t",
+			"\\t\\t",
+			"  ",
+			"9",
+			"8",
+			"6",
+			"5",
+			"4",
+			"2",
+			"3",
+			"7",
+			"\\t",
+			"1",
+			"Екатерина",
+			"Arc",
+			"Экз",
+			"Компетенции",
+			"Дисц"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			";\\n",
+			"",
+			" ",
+			"",
+			" ",
+			"",
+			"0",
+			"1",
+			"2",
+			"",
+			"0",
+			"1",
+			"N",
+			"I",
+			"O",
+			"A",
+			"T",
+			"E",
+			"M",
+			"E",
+			"\\n",
+			"   ",
+			"\\n",
+			" ",
+			"",
+			" ",
+			"True",
+			"False",
+			"\\n",
+			"",
+			",",
+			"', '",
+			"\\n",
+			"",
+			"xxx:",
+			"Александр:",
+			"ххх:",
+			"lowB",
+			"upB",
+			"",
+			", ",
+			"\\n",
+			"",
+			" ",
+			"9, ",
+			"8, ",
+			"6, ",
+			"5, ",
+			"4, ",
+			"2, ",
+			"3, ",
+			"7, ",
+			"",
+			"1, ",
+			"Некто",
+			"D",
+			"8",
+			"B",
+			"C",
+			"E",
+			"9",
+			"7",
+			"A",
+			"F",
+			"0",
+			"2",
+			"1",
+			"6",
+			"5",
+			"3",
+			"4",
+			"*",
+			"-",
+			"*",
+			", ",
+			"",
+			"\\n",
+			"",
+			"\\n",
+			"",
+			", ",
+			"255",
+			"00",
+			", ",
+			"255",
+			"X",
+			" ",
+			"X",
+			" ",
+			"_",
+			" ",
+			"_",
+			"*",
+			" ",
+			"",
+			"\\n",
+			"",
+			"\\n",
+			"",
+			"\\n",
+			"",
+			"0",
+			"1",
+			"2",
+			"",
+			"Э",
+			"Ф",
+			"П",
+			"Ц",
+			"Р",
+			"Ш",
+			"Х",
+			"Щ",
+			"Б",
+			"Ы",
+			"Г",
+			"Я",
+			"Ь",
+			"Ч",
+			"С",
+			"А",
+			"К",
+			"Ж",
+			"З",
+			"Й",
+			"Н",
+			"Т",
+			"Л"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/C/Users/Jonathan/Desktop/120402_Optotekhnika_Individualnaya_programma.plx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 485828,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/XML/XML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 945.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 36.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 118.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.hex_viewer_inspector":
+	{
+		"height": 142.0
+	},
+	"pinned_build_system": "",
+	"project": "MCTParamsExplorer.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 238.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
