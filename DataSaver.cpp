@@ -46,7 +46,9 @@ void DataSaver::getSampleDescription(std::string &Temperature, std::string &Curr
 void DataSaver::SaveSampleDescription(std::string FileName)
 {
 	std::string NewFileName;
-    NewFileName=FileName.substr(0,FileName.length()-3)+"Description"+defaultExtension;
+	// Нам пока не нужны уникальные имена. Нам нужны фиксированные.
+    //NewFileName=FileName.substr(0,FileName.length()-3)+"Description"+defaultExtension;
+    NewFileName=FileName.substr(0,FileName.length()-3)+defaultExtension;
 	TStringList * tsl=new TStringList();
 
     tsl->push_back("SampleInventoryNumber\t"+SampleInventoryNumber);
@@ -56,9 +58,9 @@ void DataSaver::SaveSampleDescription(std::string FileName)
     tsl->push_back("SampleWidth\t"+SampleWidth);
     tsl->push_back("SampleThickness\t"+SampleThickness);
 
-	FileName+=defaultExtension;
-    SaveToFile(tsl,NewFileName);
+	//FileName+=defaultExtension;
 
+    SaveToFile(tsl,NewFileName);
 
 	delete tsl;
 }

@@ -35,6 +35,7 @@ int main(int argc, char *argv[])
             sampleThickness;
 
     MyDataType eHeavyHoleConcentration;
+    MyDataType electronMobility;
 
     std::ofstream fout("out.txt");
 
@@ -60,14 +61,15 @@ int main(int argc, char *argv[])
         }
     else
     {
-        Temperature = stoi(argv[1]);
-        coef = stoi(argv[2]);
-        current = stold(argv[3]);
-        sampleLength = stold(argv[4]);
-        sampleWidth = stold(argv[5]);
-        sampleThickness = stold(argv[6]);
-        eHeavyHoleConcentration = stold(argv[7]);
-        eMolarCompositionCadmium = stold(argv[8]);
+        Temperature = stoi(argv[1]); // Температура
+        coef = stoi(argv[2]); // Коэффициент шума
+        current = stold(argv[3]); // Величина силы тока
+        sampleLength = stold(argv[4]); // Длина образца
+        sampleWidth = stold(argv[5]); // Ширина образца
+        sampleThickness = stold(argv[6]); // Толщина образца
+        eHeavyHoleConcentration = stold(argv[7]); // Концентрация тяжелых дырок
+        eMolarCompositionCadmium = stold(argv[8]); // Молярный состав кадмия
+        electronMobility = stold(argv[9]); // Подвижность электронов
     }
 
 
@@ -92,6 +94,7 @@ int main(int argc, char *argv[])
                                     sampleThickness,CBRatio,
                                     current,NumberOfCarrierTypes);
     p->CopyTheorToSignals();
+
     p->addNoiseToSignals(coef);
     /*
     Предупреждение Initializing Params Type with const int - не актуально,
@@ -128,7 +131,7 @@ int main(int argc, char *argv[])
 
     // filter & extrapolation
     p->filterData();
-    cout << "after filter\n";
+    //cout << "after filter\n";
     p->extrapolateData(FILTERED_DATA,PowPolinomRes,PowPolinomHall);
 
 
@@ -138,7 +141,7 @@ int main(int argc, char *argv[])
     //p->setParamsType(ResCurveIndex->ItemIndex);
 
     DataKind dataflag=(coef==0?CURRENT_DATA:FILTERED_DATA);
-    cout << "CalculateTenzor\n";
+    //cout << "CalculateTenzor\n";
     p->calculateTenzor(dataflag);
 
     // save Tenzor
@@ -149,8 +152,9 @@ int main(int argc, char *argv[])
     tenzorSaver->SaveData(CURRENT_DATA,p->getAveragedB(),
     p->getSxy(), p->getSxx(), ALL_POINTS,fileName);
 
-    tenzorSaver->SaveData(CURRENT_DATA,p->getAveragedB(),
-    p->getSxy(), p->getSxx(), POINTS_11,fileName);
+    // 11 точек пока не нужны.
+    //tenzorSaver->SaveData(CURRENT_DATA,p->getAveragedB(),
+    //p->getSxy(), p->getSxx(), POINTS_11,fileName);
 
     delete tenzorSaver;
 
@@ -158,7 +162,7 @@ int main(int argc, char *argv[])
 
     // get Mobility Spectrum
 
-    cout << "calculateMobilitySpectrum\n";
+    //cout << "calculateMobilitySpectrum\n";
     p->calculateMobilitySpectrum();
 
     TSignal ex(p->getMobility()->begin(),p->getMobility()->end());
@@ -180,6 +184,10 @@ int main(int argc, char *argv[])
 
 
     fout << current << "\t" << CBRatio << "\t" << sampleThickness << "\n";
+
+    
+
+
     //for (auto i =0; i< )
 
     /*if(p->getElectronConcentration()->size()>=1)
@@ -213,6 +221,72 @@ int main(int argc, char *argv[])
 
         */
     //}
+
+/*   
+# v1
+#   _______________________________________________________       ______________________
+#   |T I CBRatio Thickness B1 .. Bn Us1 .. Usn Uy1 .. Uyn|  ---> |n1 mu1 n2 mu2 n3 mu3|
+#   _______________________________________________________       ______________________ 
+*/
+    cout <<"\t" << Temperature <<"\t"  << current <<"\t"  << CBRatio <<"\t"  << sampleThickness <<"\t";
+    TSignal const * B = p->getB();    
+    TSignal const * Hall = p->getHallEffect();
+    TSignal const * MagnetoRes = p->getMagnetoResistance();
+    for(auto i = 0;i< B.size();i++)
+    {
+        cout << B[i] << "\t"
+    }
+    for(auto i = 0;i< Hall.size();i++)
+    {
+        cout << Hall[i] << "\t"
+    }
+    for(auto i = 0;i< MagnetoRes.size();i++)
+    {
+        cout << MagnetoRes[i] << "\t"
+    }
+    cout << "\n";
+    for (auto i = 0; i < 3; ++i)
+    {
+        cout << p->getTheorMobility(0) << "\t" << p->getTheorConcentration(0) << "\t";
+    }
+
+/*
+# v2
+#  ___________________________________         ___________________________
+#  |Критерий1 Критерий2 ... КритерийN|  --->   |Относительная погрешность|
+#
+*/
+
+/*
+# v3
+#                               ______________________
+#  |Спектр подвижности|   --->  |n1 mu1 n2 mu2 n3 mu3|
+#                               ______________________
+*/
+
+    for (auto i = 0; i < ex.size(); ++i)
+    {
+        cout << ex[i] << "\t";
+    }
+    for (auto i = 0; i < eY.size(); ++i)
+    {
+        cout << eY[i] << "\t";
+    }
+    for (auto i = 0; i < hx.size(); ++i)
+    {
+        cout << hx[i] << "\t";
+    }
+    for (auto i = 0; i < hY.size(); ++i)
+    {
+        cout << hY[i] << "\t";
+    }
+
+    cout << "\n";
+    for (auto i = 0; i < 3; ++i)
+    {
+        cout << p->getTheorMobility(0) << "\t" << p->getTheorConcentration(0) << "\t";
+    }
+
     return 0;
 }
 

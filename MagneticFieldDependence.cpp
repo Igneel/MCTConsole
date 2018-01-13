@@ -74,6 +74,18 @@ void MagneticFieldDependence::GaussianNoiseGenerator(int coef)
 }
 
 
+long double MagneticFieldDependence::getTheorMobility(int n)
+{
+    return theoreticalDependences->getMobility(n);
+}
+
+long double MagneticFieldDependence::getTheorConcentration(int n)
+{
+    return theoreticalDependences->getConcentration(n);
+}
+
+
+
 void MagneticFieldDependence::calculateDependencesFromFilm(size_t NumberOfPoints, MyDataType h,
                                                            MyDataType eMolarCompositionCadmium,
                                                            int eTemperature,MyDataType eHeavyHoleConcentration,
@@ -162,37 +174,12 @@ void MagneticFieldDependence::CopyTheorToNoisySignals()
 MagneticFieldDependence::MagneticFieldDependence(MyDataType current, MyDataType temperature, std::string SampleInventoryNumber,
     MyDataType length, MyDataType width, MyDataType Thickness)
 {
-    filterParamsHall=new FilterParams(); // по идее нужно бы и инциализировать их тут, дабы не было проблем в случае чего:).
-    filterParamsResistance=new FilterParams();
-    saver =new DataSaver(to_string(temperature),to_string(current),SampleInventoryNumber, to_string(length), to_string(width), to_string(Thickness));
-    MobilitySpectrumObj=0;
-    paramsType=DIRECT;
-    leftBound.resize(3);
-    leftBound[DIRECT]=0;
-    leftBound[REVERSE]=-2;
-    leftBound[COMBINE]=-2;
-    rightBound.resize(3);
-    rightBound[DIRECT]=2;
-    rightBound[REVERSE]=0;
-    rightBound[COMBINE]=2;
-
-    PowPolinomRes=2;
-    PowPolinomHall=2;
-    mzr.push_back(1.472331E-03);
-    mzr.push_back(4.206659E-04); // обычно использую для холла и магнитосопротивления, диапазон значений 2.5В
-    mzr.push_back(1.942127E-04); // обычно использую для магнитного поля. диапазон значений 0,625В
-    mzr.push_back(1.601563E-04);
+    MagneticFieldDependence(to_string(current),to_string(temperature),SampleInventoryNumber,to_string(length), to_string(width), to_string(Thickness));
 }
-
-
-
 
 MagneticFieldDependence::MagneticFieldDependence(std::string current, std::string temperature, std::string SampleInventoryNumber,
     std::string length, std::string width, std::string Thickness)
-
 {
-    
-
     filterParamsHall=new FilterParams(); // по идее нужно бы и инциализировать их тут, дабы не было проблем в случае чего:).
     filterParamsResistance=new FilterParams();
     saver =new DataSaver(temperature,current,SampleInventoryNumber, length, width, Thickness);
@@ -208,12 +195,12 @@ MagneticFieldDependence::MagneticFieldDependence(std::string current, std::strin
     rightBound[COMBINE]=2;
 
     PowPolinomRes=2;
-    PowPolinomHall=2;
+    PowPolinomHall=1;
 
-    mzr.push_back(1.312418E-03);
-    mzr.push_back(3.749766E-04);
-    mzr.push_back(1.406162E-04);
-    mzr.push_back(8.199488E-05);
+    mzr.push_back(1.472331E-03);
+    mzr.push_back(4.206659E-04); // обычно использую для холла и магнитосопротивления, диапазон значений 2.5В
+    mzr.push_back(1.942127E-04); // обычно использую для магнитного поля. диапазон значений 0,625В
+    mzr.push_back(1.601563E-04);
 
 }
 
@@ -243,8 +230,13 @@ MagneticFieldDependence::~MagneticFieldDependence()
         MobilitySpectrumObj=0;
     }
 
-}
+    if(theoreticalDependences)
+    {
+        delete theoreticalDependences;
+        theoreticalDependences = 0;
+    }
 
+}
 
 void MagneticFieldDependence::loadDataHelper(TSignal &temp, string AnsiS, const std::string delimiter)
 {

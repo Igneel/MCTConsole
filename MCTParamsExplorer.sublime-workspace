@@ -4,16 +4,32 @@
 		"selected_items":
 		[
 			[
+				"Mag",
+				"MagnetoRes"
+			],
+			[
+				"TS",
+				"TSignal"
+			],
+			[
+				"cb",
+				"CBRatio"
+			],
+			[
+				"T",
+				"Temperature"
+			],
+			[
+				"g",
+				"gen_v1_data"
+			],
+			[
 				"save",
 				"saveResults"
 			],
 			[
 				"getA",
 				"getAndDisplayMultiCarrierFitResults"
-			],
-			[
-				"T",
-				"TForm1"
 			],
 			[
 				"new",
@@ -404,10 +420,6 @@
 				"extrapolateData"
 			],
 			[
-				"Mag",
-				"MagneticFieldDependence"
-			],
-			[
 				"perms",
 				"perms4"
 			],
@@ -442,10 +454,6 @@
 			[
 				"pe",
 				"peakVelocityL"
-			],
-			[
-				"g",
-				"groupElems"
 			],
 			[
 				"su",
@@ -488,10 +496,6 @@
 				"d2h"
 			],
 			[
-				"TS",
-				"TStringList"
-			],
-			[
 				"y",
 				"ys"
 			],
@@ -510,24 +514,11 @@
 			[
 				"Add",
 				"Add"
-			],
-			[
-				"Re",
-				"repeatQuantity"
 			]
 		]
 	},
 	"buffers":
 	[
-		{
-			"file": "/C/Users/Jonathan/Desktop/120402_Optotekhnika_Individualnaya_programma.plx",
-			"settings":
-			{
-				"buffer_size": 485828,
-				"encoding": "UTF-16 LE with BOM",
-				"line_ending": "Windows"
-			}
-		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -581,10 +572,23 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/Jonathan/Desktop/MCTParamsExplorer"
+		"/C/Users/atrifanov/Documents/немного аспирантуры/MCTConsole-master",
+		"/C/Users/atrifanov/Documents/немного аспирантуры/MCTConsole-master/ErrorEst"
 	],
 	"file_history":
 	[
+		"/C/Users/atrifanov/Documents/немного аспирантуры/MCTKeras-master/prepare_data.py",
+		"/C/Users/atrifanov/Documents/немного аспирантуры/MCTKeras-master/MCTnetworkKeras.py",
+		"/C/Users/atrifanov/Documents/немного аспирантуры/MCTConsole-master/main.cpp",
+		"/C/Users/atrifanov/Documents/немного аспирантуры/MCTConsole-master/ErrorEst/clMagneticFieldDependences.cpp",
+		"/C/Users/atrifanov/Documents/немного аспирантуры/MCTConsole-master/MagneticFieldDependence.cpp",
+		"/C/Users/atrifanov/Documents/немного аспирантуры/MCTConsole-master/MagneticFieldDependence.h",
+		"/C/Users/atrifanov/Documents/немного аспирантуры/MCTConsole-master/DataSaver.h",
+		"/C/Users/atrifanov/Documents/немного аспирантуры/MCTConsole-master/DataSaver.cpp",
+		"/C/Users/atrifanov/Documents/немного аспирантуры/MCTConsole-master/mobilityspectrumBoost.cpp",
+		"/C/Users/atrifanov/Documents/немного аспирантуры/MCTConsole-master/mobilityspectrumBoost.h",
+		"/C/Users/atrifanov/Documents/немного аспирантуры/MCTConsole-master/mobilityspectrum.h",
+		"/C/Users/atrifanov/Documents/немного аспирантуры/MCTConsole-master/commonFunctions.cpp",
 		"/C/Users/Jonathan/Desktop/120402_Optotekhnika_Individualnaya_programma.plx",
 		"/C/Users/Jonathan/Desktop/MCTParamsExplorer/MagneticFieldDependence.h",
 		"/C/Users/Jonathan/Desktop/MCTParamsExplorer/MagneticFieldDependence.cpp",
@@ -700,27 +704,15 @@
 		"/E/Дела/Информационная безопасность/SchoolCTF2016/info",
 		"/G/Downloads/task_c7c33ed0aff287ad9c146a65078177f6f5731adb (1)/lists.c",
 		"/G/Downloads/task_c7c33ed0aff287ad9c146a65078177f6f5731adb (1)/goodguys.h",
-		"/G/Downloads/task_c7c33ed0aff287ad9c146a65078177f6f5731adb (1)/faultline.h",
-		"/G/Downloads/task_c7c33ed0aff287ad9c146a65078177f6f5731adb (1)/e88.h",
-		"/G/Downloads/task_c7c33ed0aff287ad9c146a65078177f6f5731adb (1)/capes.h",
-		"/G/Downloads/task_c7c33ed0aff287ad9c146a65078177f6f5731adb (1)/abb.h",
-		"/C/Python27/Lib/pickle.py",
-		"/G/Downloads/RE_452b491806583cc1e3e8df45b7ce9083d1f09a52/strange.txt",
-		"/G/Downloads/RE_452b491806583cc1e3e8df45b7ce9083d1f09a52/data.pkl",
-		"/G/Downloads/RE_452b491806583cc1e3e8df45b7ce9083d1f09a52/test.exe",
-		"/G/Downloads/xor_672479b7c88231427986810fa861d5ae99791daa.c",
-		"/G/Downloads/LesterHill_47664d4116c6a77c8b454fee657663f167afb903/create_picture.py",
-		"/G/Downloads/LesterHill_47664d4116c6a77c8b454fee657663f167afb903/encryption.py",
-		"/G/EmptySpaces_8577786656ae4b091511e9caf4fe44e747726e5f.txt",
-		"/G/Downloads/licensekey_00defe1c12027e109e324f073624fc6a609ae35f/classes.dex"
+		"/G/Downloads/task_c7c33ed0aff287ad9c146a65078177f6f5731adb (1)/faultline.h"
 	],
 	"find":
 	{
-		"height": 34.0
+		"height": 55.0
 	},
 	"find_in_files":
 	{
-		"height": 90.0,
+		"height": 104.0,
 		"where_history":
 		[
 			""
@@ -731,6 +723,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"long double",
 			"smar",
 			"sra",
 			"lusbapi",
@@ -857,8 +850,7 @@
 			"Екатерина",
 			"Arc",
 			"Экз",
-			"Компетенции",
-			"Дисц"
+			"Компетенции"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -866,6 +858,7 @@
 		"regex": true,
 		"replace_history":
 		[
+			"myFloat",
 			";\\n",
 			"",
 			" ",
@@ -992,8 +985,7 @@
 			"З",
 			"Й",
 			"Н",
-			"Т",
-			"Л"
+			"Т"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -1004,43 +996,14 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "/C/Users/Jonathan/Desktop/120402_Optotekhnika_Individualnaya_programma.plx",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 485828,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/XML/XML.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 945.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 23.0
+		"height": 38.0
 	},
 	"input":
 	{
@@ -1085,7 +1048,7 @@
 	"project": "MCTParamsExplorer.sublime-project",
 	"replace":
 	{
-		"height": 42.0
+		"height": 99.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1123,7 +1086,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 238.0,
+	"side_bar_width": 390.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

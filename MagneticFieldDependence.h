@@ -132,6 +132,8 @@ TSignal * getPointerSxy(DataKind dataKind);
     void calculateDependencesFromFilm(size_t NumberOfPoints, MyDataType h, MyDataType eMolarCompositionCadmium, int eTemperature, MyDataType eHeavyHoleConcentration, MyDataType eAFactor, MyDataType eKFactor, MyDataType eSampleThickness, MyDataType eCBRatio, MyDataType eCurrentIntensity, size_t NumberOfCarrierTypes);
     void addNoiseToSignals(int coef);
     
+    long double getTheorMobility(int n);
+    long double getTheorConcentration(int n);
 
     //-----Автоматический генератор данных-----------------------------
 

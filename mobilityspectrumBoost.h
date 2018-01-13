@@ -1,28 +1,37 @@
-#ifndef MOBILITYSPECTRUMH
-#define MOBILITYSPECTRUMH
+#ifndef MOBILITYSPECTRUMBOOSTH
+#define MOBILITYSPECTRUMBOOSTH
 
 #include "commonFunctions.h"
+#include <boost/multiprecision/gmp.hpp>
 
 using namespace std;
+using namespace boost::multiprecision;
+
+typedef mpf_float_1000 myFloat;
+
+typedef mpz_int myInt;
+
+
 
 class mobilitySpectrum
 {
 private:
     int PointPerInt;
 
-    typedef vector <long double> Data_spektr ;
+    typedef vector <myFloat> Data_spektr ;
 
-    typedef vector <long double> ImageDat;
-    typedef vector <vector <long double> > mat ;
-    typedef vector <long double> Dat1 ;
-    typedef vector <vector <long double> > Dat2 ;
-    typedef vector <vector <long double> > Dat3 ;
+    typedef vector <myFloat> ImageDat;
+    typedef vector <vector <myFloat> > mat ;
+    typedef vector <myFloat> Dat1 ;
+    typedef vector <vector <myFloat> > Dat2 ;
+    typedef vector <vector <myFloat> > Dat3 ;
 
     enum PeakType { MostSignificant, Significant, Slowdown};
 
-    typedef vector< pair<long double, long double> > TLineSeries;
+    typedef vector< pair<myFloat, myFloat> > TLineSeries;
 
-    int NumberOfPoints,Power_spektr,GridPoints;
+    int NumberOfPoints;
+    myInt Power_spektr,GridPoints;
 
     Data_spektr MagField_spektr,GxxExp,GxyExp;
 
@@ -39,7 +48,7 @@ private:
     bool bulua;
     int  MSRight,MSLeft;
 
-    long double W,F_s,A1,An,B1,Bn, Ves1, Ves2,Mu_max, Min_Spectr,Coef1,Coef2,Mu_min;
+    myFloat W,F_s,A1,An,B1,Bn, Ves1, Ves2,Mu_max, Min_Spectr,Coef1,Coef2,Mu_min;
 
     TLineSeries electronMobilitySpectrum, holeMobilitySpectrum;
 
@@ -58,59 +67,61 @@ private:
     void  InitArray();
     void  InitArray2();
 
-    void  GetCoef(const Data_spektr &A,const Data_spektr &X, const long double b,
-        long double &p0, long double &p1, long double &p2);
-    void  GetLnLimits(int &Xmin, int &Xmax );
+    void  GetCoef(const Data_spektr &A,const Data_spektr &X, const myFloat b,
+        myFloat &p0, myFloat &p1, myFloat &p2);
+    void  GetLnLimits(myInt &Xmin, myInt &Xmax );
 
-    void SetLength (vector<vector<long double> > &v,const size_t size1,const size_t size2);
+    void SetLength (vector<vector<myFloat> > &v,const size_t size1,const size_t size2);
 
-    void  gram(const int N,const int m,const int l, Data_spektr & x, Data_spektr & f, mat & a);
-    void  gauss(const int N, mat & a, Data_spektr & x);
+    void  gram(const myInt N,const myInt m,const myInt l, Data_spektr & x, Data_spektr & f, mat & a);
+    void  gauss(const myInt N, mat & a, Data_spektr & x);
 
-    void  fi(const int n,const int m,const int l, Data_spektr & c, Data_spektr & x,
-        const long double x1, long double &s);
+    void  fi(const myInt n,const myInt m,const myInt l, Data_spektr & c, Data_spektr & x,
+        const myFloat x1, myFloat &s);
 
-    void  BAS(const int n,const int m,const int L,const long double x1, Data_spektr & x, Data_spektr & t);
+    void  BAS(const myInt n,const myInt m,const myInt L,const myFloat x1, Data_spektr & x, Data_spektr & t);
 
     void  AddExpPoints(TLineSeries &ExpXX, TLineSeries &ExpXY);
 
-    void  CS(Data_spektr& X,Data_spektr& F,Data_spektr& C,const long double p1,const long double pn);
-    long double Sp(Data_spektr & X,Data_spektr &F, Data_spektr & C,const long double x1);
+    void  CS(Data_spektr& X,Data_spektr& F,Data_spektr& C,const myFloat p1,const myFloat pn);
+    myFloat Sp(Data_spektr & X,Data_spektr &F, Data_spektr & C,const myFloat x1);
     void  MakeInterpolate(TLineSeries &Gxx, TLineSeries &Gxy,
         TLineSeries &ExpXX, TLineSeries &ExpXY);
 
     void  MakeMNK(const bool a, TLineSeries &Gxx, TLineSeries &Gxy, TLineSeries &ExpXX, TLineSeries &ExpXY);
     void  MakeLagranj();
-    void  Tred2(const int n, Dat1 & d, Dat1 & e,
+    void  Tred2(const myInt n, Dat1 & d, Dat1 & e,
                      Dat2 & a, Dat2 & z, bool & fail);
-    void  Imtql2(const int n,const long double macheps, Dat1 & d, Dat1 & e,
+    void  Imtql2(const myInt n,const myFloat macheps, Dat1 & d, Dat1 & e,
                      Dat2 & z, bool & fail);
-    long double GetElem(const int j1, const int k1, const int i1);
+    myFloat GetElem(const int j1, const int k1, const int i1);
     void  MakeMatrC();
     void  MakeMatrA();
-    void  InverseMatrC(Dat2 & Ci,Dat2 & C,long double & Su,const int NP);
-    long double S_s(const long double Mi);
+    void  InverseMatrC(Dat2 & Ci,Dat2 & C,myFloat & Su,const myInt NP);
+    myFloat S_s(const myFloat Mi);
 
-    std::vector<long double> eigenValues;
-    std::vector< std::vector<long double> > eigenVectors;
+    std::vector<myFloat> eigenValues;
+    std::vector< std::vector<myFloat> > eigenVectors;
 
 
-    size_t searchPeakRigthBorder(std::vector<long double> dh,std::vector<long double> d2h, size_t index);
-    size_t searchPeakLeftBorder(std::vector<long double> dh,std::vector<long double> d2h, size_t index);
-    void constructPeakCriteria(PeaksCriteria & peaksCriteria, TStringList * tsl, const std::vector<long double> & resMob, const std::vector<long double> & resCond, int index, int i, int j);
+    size_t searchPeakRigthBorder(std::vector<myFloat> dh,std::vector<myFloat> d2h, size_t index);
+    size_t searchPeakLeftBorder(std::vector<myFloat> dh,std::vector<myFloat> d2h, size_t index);
+    void constructPeakCriteria(PeaksCriteria & peaksCriteria, TStringList * tsl, const std::vector<myFloat> & resMob, const std::vector<myFloat> & resCond, int index, int i, int j);
 
    void calculatePeakWeigth(PeaksCriteria & peaksCriteria,TStringList * tsl, 
   TSignal & resultMobility, TSignal & resultConductivity,
-  std::vector<long double> & d, std::vector<long double> & d2, size_t extremumIndex);
-    std::vector<long double> de;
-    std::vector<long double> dh;
-    std::vector<long double> d2e;
-    std::vector<long double> d2h;
+  std::vector<myFloat> & d, std::vector<myFloat> & d2, size_t extremumIndex);
+    std::vector<myFloat> de;
+    std::vector<myFloat> dh;
+    std::vector<myFloat> d2e;
+    std::vector<myFloat> d2h;
 
     std::vector <PeaksCriteria> vPC;
     AdditionalData additionalData;
 
 public:
+
+    // Тут часть функций видимо стоит заменить на возвращающие long double
 
     std::vector <PeaksCriteria> getPeaksCriteria();
     AdditionalData getAdditionalData();
@@ -126,11 +137,8 @@ public:
     void  MobilitySpectrumFunc(TLineSeries &LineSeries1, TLineSeries &Series5);
 
     long double getResultEY(const int i);
-
     long double getResultEX(const int i);
-
     long double getResultHY(const int i);
-
     long double getResultHX(const int i);
 
     std::vector<long double> getEigenValues();
