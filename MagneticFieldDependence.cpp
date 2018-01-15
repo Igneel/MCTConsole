@@ -174,7 +174,28 @@ void MagneticFieldDependence::CopyTheorToNoisySignals()
 MagneticFieldDependence::MagneticFieldDependence(MyDataType current, MyDataType temperature, std::string SampleInventoryNumber,
     MyDataType length, MyDataType width, MyDataType Thickness)
 {
-    MagneticFieldDependence(to_string(current),to_string(temperature),SampleInventoryNumber,to_string(length), to_string(width), to_string(Thickness));
+
+    filterParamsHall=new FilterParams(); // по идее нужно бы и инциализировать их тут, дабы не было проблем в случае чего:).
+    filterParamsResistance=new FilterParams();
+    saver =new DataSaver(to_string(temperature),to_string(current),SampleInventoryNumber, to_string(length), to_string(width), to_string(Thickness));
+    MobilitySpectrumObj=0;
+    paramsType=DIRECT;
+    leftBound.resize(3);
+    leftBound[DIRECT]=0;
+    leftBound[REVERSE]=-2;
+    leftBound[COMBINE]=-2;
+    rightBound.resize(3);
+    rightBound[DIRECT]=2;
+    rightBound[REVERSE]=0;
+    rightBound[COMBINE]=2;
+
+    PowPolinomRes=2;
+    PowPolinomHall=1;
+
+    mzr.push_back(1.472331E-03);
+    mzr.push_back(4.206659E-04); // обычно использую для холла и магнитосопротивления, диапазон значений 2.5В
+    mzr.push_back(1.942127E-04); // обычно использую для магнитного поля. диапазон значений 0,625В
+    mzr.push_back(1.601563E-04);
 }
 
 MagneticFieldDependence::MagneticFieldDependence(std::string current, std::string temperature, std::string SampleInventoryNumber,
@@ -673,9 +694,9 @@ void MagneticFieldDependence::filterData()
     DataKind dataKind;
     dataKind=CURRENT_DATA;
 
-    cout << B.size() << endl;
-    cout << BHall.size() << endl;
-    cout << MagnetoResistance.size() << endl;
+    //cout << B.size() << endl;
+    // << BHall.size() << endl;
+    //cout << MagnetoResistance.size() << endl;
     if(B.size()>0)
     {
     if( B[0]<-1.0 && B.back() >1.0) // Если это комбинированный сигнал
@@ -710,7 +731,7 @@ void MagneticFieldDependence::filterData()
     GetEqualNumberOfPoints(AveragedB,AveragedBHall,AveragedBMagnetoResistance,
     AveragedHallEffect,AveragedMagnetoResistance);
 	}
-    cout << "Helper!\n";
+    //cout << "Helper!\n";
     filterDataHelper((*filterParamsHall),HALL_EFFECT,dataKind);
 
     filterDataHelper((*filterParamsResistance),MAGNETORESISTANCE,dataKind);
@@ -756,13 +777,13 @@ void MagneticFieldDependence::filterDataHelper(FilterParams &fP,
     case HALL_EFFECT:
         inB= getPointerBHall(dataKind);
         inSignal = getPointerHall(dataKind);
-        cout << "signal Hall size " << inSignal->size() << endl;
+        //cout << "signal Hall size " << inSignal->size() << endl;
         break;
 
     case MAGNETORESISTANCE:
         inB= getPointerBResistance(dataKind);
         inSignal = getPointerMagnetoResistance(dataKind);
-        cout << "signal MR size " << inSignal->size() << endl;
+        //cout << "signal MR size " << inSignal->size() << endl;
         break;
 
     default:

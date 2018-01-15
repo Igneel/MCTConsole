@@ -28,16 +28,16 @@ void clMagneticFieldDependences::MemoryAllocation()
 const long double clMagneticFieldDependences::THEALMOSTZERO=0.00000000001;
 const long double clMagneticFieldDependences::electronCharge=1.60217646E-19;
 
-clMagneticFieldDependences::clMagneticFieldDependences(int size,long double shag,
+clMagneticFieldDependences::clMagneticFieldDependences(int size, long double shag,
 long double molarCompositionCadmium,
-long double Temperature,long double heavyHoleConcentrerion,
-long double AFactor,long double KFactor,
-long double thickness,long double cbRatio,
-long double currentIntensity,long double numberOfCarrierTypes)
+long double Temperature, long double heavyHoleConcentrerion,
+long double AFactor, long double KFactor,
+long double thickness, long double cbRatio,
+long double currentIntensity, long double numberOfCarrierTypes)
 :NumberOfPoints(size)
 {
 	// инициализация пленки.
-	carrierParams = new film(molarCompositionCadmium,Temperature,heavyHoleConcentrerion,
+    carrierParams = new film(molarCompositionCadmium,Temperature,heavyHoleConcentrerion,
 	AFactor,KFactor,thickness,cbRatio,currentIntensity,numberOfCarrierTypes);
 
 	h=shag;

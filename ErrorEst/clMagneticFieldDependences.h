@@ -15,7 +15,7 @@ class clMagneticFieldDependences {
     //static const enum ModifyType {SHUM_ADDING, FILTERING, EXTRAPOLATE};
     
 	clMagneticFieldDependences(int size,long double shag,long double molarCompositionCadmium,
-	long double Temperature,long double heavyHoleConcentrerion,long double AFactor,long double KFactor,
+    long double Temperature,long double heavyHoleConcentrerion, long double AFactor,long double KFactor,
 	long double thickness,long double cbRatio,long double currentIntensity,long double numberOfCarrierTypes);
 
 	clMagneticFieldDependences(int size,long double shag,film * cp);

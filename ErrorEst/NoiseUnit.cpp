@@ -126,6 +126,7 @@ void QuantumShumAdding(std::vector<long double> const &x,std::vector<long double
 	 }
 
 	SignalQuantifier(qx,mzr,l);
+    out.resize(l);
 	for(int i=0;i<l;i++)
     {
 		out[i]=qx[i]+y[i];

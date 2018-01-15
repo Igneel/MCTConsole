@@ -18,7 +18,7 @@ long double numberOfCarrierTypes):NumberOfCarrierTypes(numberOfCarrierTypes)
 	KFactor=kFactor;
 	Thickness=thickness;
 	CBRatio=cbRatio;
-	CurrentIntensity=currentIntensity;
+    CurrentIntensity=currentIntensity;
 
 	calcutatingCarrierParams();
 }

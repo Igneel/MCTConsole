@@ -1309,7 +1309,7 @@ size_t mobilitySpectrum::searchSignificantPeak(TSignal &y, size_t startPosition,
       4. После пика - отрицательна.
       5. Три-четыре точки, там где находится пик - скачки производных, что логично, т.к. там должны быть точки разрыва.
     */
-    cout << "start search\n"<< startPosition<< " " << dsize << endl;
+    //cout << "start search\n"<< startPosition<< " " << dsize << endl;
     for (size_t i = startPosition; i < dsize-1; ++i)
     {
         /*
@@ -1321,7 +1321,14 @@ size_t mobilitySpectrum::searchSignificantPeak(TSignal &y, size_t startPosition,
         // ищем точку, с которой рост первой производной прекращается
         while (i<dsize-1 && (dY[i]>0)) ++i;
 
-        --i;
+        if(i<=startPosition)
+        {
+            return 0;
+        }
+            else
+        {
+            --i;
+        }
         // Теперь проверим остальные условия - вторая производная отрицательна
         // Вероятно стоит расширить диапазон поиска до +-10 значений
         if (d2Y[i]<0 )

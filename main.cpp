@@ -8,8 +8,8 @@ int main(int argc, char *argv[])
 
     /*
      * если kNoise=0 - отдавать чистые данные и шум даже не считать.
-     * ./main T kNoise current sampleLength sampleWidth sampleThickness eHeavyHoleConcentration molarCadmiunValue
-     * ./main 77 1 10e-3 30e-3 10e-3 1e-5 1e22 0.21
+     * ./main T kNoise current sampleLength sampleWidth sampleThickness eHeavyHoleConcentration molarCadmiunValue AFactor KFactor
+     * ./main 77 1 10e-3 30e-3 10e-3 1e-5 1e22 0.21 5 1.3
      *
      *
 
@@ -35,7 +35,9 @@ int main(int argc, char *argv[])
             sampleThickness;
 
     MyDataType eHeavyHoleConcentration;
-    MyDataType electronMobility;
+
+    MyDataType eAFactor = 5; //(5-8)
+    MyDataType eKFactor = 1.3; //(1.3-1.5)
 
     std::ofstream fout("out.txt");
 
@@ -56,7 +58,8 @@ int main(int argc, char *argv[])
         fin >> sampleLength >> sampleWidth >> sampleThickness;
         fin >> eHeavyHoleConcentration;
         fin >> eMolarCompositionCadmium;
-
+        fin >> eAFactor;
+        fin >> eKFactor;
 
         }
     else
@@ -69,7 +72,8 @@ int main(int argc, char *argv[])
         sampleThickness = stold(argv[6]); // Толщина образца
         eHeavyHoleConcentration = stold(argv[7]); // Концентрация тяжелых дырок
         eMolarCompositionCadmium = stold(argv[8]); // Молярный состав кадмия
-        electronMobility = stold(argv[9]); // Подвижность электронов
+        eAFactor = stold(argv[9]); // Влияет на подвижность электронов
+        eKFactor = stold(argv[10]); // Влияет на подвижность электронов
     }
 
 
@@ -79,8 +83,7 @@ int main(int argc, char *argv[])
     size_t NumberOfPoints = 2 / shagB + 1;
 
 
-    MyDataType eAFactor = 5; //(5-8)
-    MyDataType eKFactor = 1.3; //(1.3-1.5)
+
 
     MyDataType CBRatio = sampleLength / sampleWidth;
 
@@ -232,22 +235,22 @@ int main(int argc, char *argv[])
     TSignal const * B = p->getB();    
     TSignal const * Hall = p->getHallEffect();
     TSignal const * MagnetoRes = p->getMagnetoResistance();
-    for(auto i = 0;i< B.size();i++)
+    for(auto i = 0;i< B->size();i++)
     {
-        cout << B[i] << "\t"
+        cout << (*B)[i] << "\t";
     }
-    for(auto i = 0;i< Hall.size();i++)
+    for(auto i = 0;i< Hall->size();i++)
     {
-        cout << Hall[i] << "\t"
+        cout << (*Hall)[i] << "\t";
     }
-    for(auto i = 0;i< MagnetoRes.size();i++)
+    for(auto i = 0;i< MagnetoRes->size();i++)
     {
-        cout << MagnetoRes[i] << "\t"
+        cout << (*MagnetoRes)[i] << "\t";
     }
     cout << "\n";
     for (auto i = 0; i < 3; ++i)
     {
-        cout << p->getTheorMobility(0) << "\t" << p->getTheorConcentration(0) << "\t";
+        cout << p->getTheorMobility(i) << "\t" << p->getTheorConcentration(i) << "\t";
     }
 
 /*
@@ -263,7 +266,7 @@ int main(int argc, char *argv[])
 #  |Спектр подвижности|   --->  |n1 mu1 n2 mu2 n3 mu3|
 #                               ______________________
 */
-
+/*
     for (auto i = 0; i < ex.size(); ++i)
     {
         cout << ex[i] << "\t";
@@ -286,7 +289,7 @@ int main(int argc, char *argv[])
     {
         cout << p->getTheorMobility(0) << "\t" << p->getTheorConcentration(0) << "\t";
     }
-
+*/
     return 0;
 }
 
