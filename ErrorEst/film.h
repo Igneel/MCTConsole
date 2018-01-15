@@ -7,11 +7,11 @@ class film {
 
 	public:
 
-	film(long double molarCompositionCadmium,
-	long double Temperature,long double heavyHoleConcentration,
-	long double AFactor,long double KFactor,
-	long double thickness,long double cbRatio,
-	long double currentIntensity,long double numberOfCarrierTypes);
+    film(long double molarCompositionCadmium,
+    long double Temperature, long double heavyHoleConcentration,
+    long double AFactor, long double KFactor,
+    long double thickness, long double cbRatio,
+    long double currentIntensity, long double numberOfCarrierTypes);
 
 	~film();
 

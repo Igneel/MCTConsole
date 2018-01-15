@@ -19,14 +19,14 @@ void BoxMull(std::vector<long double> &z,int l)
 	{
 		do
 		{
-            x=(-ibound+rand()%(2*ibound))/dbound;
-            y=(-ibound+rand()%(2*ibound))/dbound;
+            x=(rand()%(2*ibound)-ibound)/dbound;
+            y=(rand()%(2*ibound)-ibound)/dbound;
 			// шум в пределах от -1 до 1
 			s=x*x+y*y;
 		}while (s>1.0 || s<=0.0);
-		z[i]=x*sqrt(-2.0*log(s)/s);
+        z[i]=(fmod((x*sqrt(-2.0*log(s)/s)),2*ibound)-ibound)/dbound;
 		if((i+1)<l)
-			z[i+1]=y*sqrt(-2.0*log(s)/s);
+            z[i+1]=(fmod(y*sqrt(-2.0*log(s)/s),2*ibound)-ibound)/dbound;
 	}
 }
 
@@ -68,7 +68,7 @@ y.resize(l);
 BoxMull(y,l);
 for(int i=0;i<l;i++)
 {
-	out[i]=x[i]+y[i]/koeff;
+    out[i]=x[i]+y[i]*koeff;
 }
 	// амплитуда шума определяется как 1/koef
 	ret.push_back(Mo(y,l)); // математическое ожидание
@@ -126,6 +126,7 @@ void QuantumShumAdding(std::vector<long double> const &x,std::vector<long double
 	 }
 
 	SignalQuantifier(qx,mzr,l);
+    out.resize(l);
 	for(int i=0;i<l;i++)
     {
 		out[i]=qx[i]+y[i];

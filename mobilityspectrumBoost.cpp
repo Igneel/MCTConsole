@@ -4,6 +4,38 @@
 
 using namespace std;
 
+
+//-------------------------------------------------------------------
+std::vector<myFloat> calculateSecondDerivative(std::vector<myFloat> & y, myFloat h)
+{
+  TSignal d2Y(y.size()-2);
+
+      for(size_t i =0;i<y.size()-2;i++)
+      {
+        //d2Y[i]=1.0/(fabs(dY[i+1]-dY[i]))*(2.0*dY[i+1]-dY[i+2]/2.0-3.0/2.0*dY[i]);
+        // формула f(x-h)-2f(x)+f(x+h)/h^2
+        d2Y[i]=(y[i]-2*y[i+1]+y[i+2])/h/h;
+        //d2Y[i]=(dY[i+2]-dY[i])/2.0/h;
+      }
+  return d2Y;
+}
+
+//-------------------------------------------------------------------
+std::vector<myFloat> calculateFirstDerivative(std::vector<myFloat> & y, myFloat h)
+{
+  TSignal dY(y.size()-2);
+  // Посчитаем производную методом конечных разностей
+  // формула df/dx=(f(x+h)-f(x-h))/2/h;
+  for(size_t i =0;i<y.size()-2;i++)
+      {
+        //dY[i]=1.0/(fabs(y[i+1]-y[i]))*(2.0*y[i+1]-y[i+2]/2.0-3.0/2.0*y[i]);
+        dY[i]=(y[i+2]-y[i])/2.0/h;
+      }
+  return dY;
+}
+
+
+
 void mobilitySpectrum::SetLength (vector < vector <myFloat> > & v, const size_t size1, const size_t size2)
 {
    v.resize(size1);
@@ -87,20 +119,20 @@ void  mobilitySpectrum::AddExpPoints(TLineSeries& ExpXX, TLineSeries& ExpXY)
 
 }
 
-void  mobilitySpectrum::GetLnLimits(int& Xmin, int& Xmax )
+void  mobilitySpectrum::GetLnLimits(myInt& Xmin, myInt& Xmax )
 {
     myFloat f;
    if ( MagField_spektr[0]>0 )
     {
-     f = log10l(MagField_spektr[0]);
+     f = log10(MagField_spektr[0]);
      Xmin = static_cast<int>(f);
     }
      else Xmin=-3;
 
-    f = log10l(MagField_spektr[NumberOfPoints]);
+    f = log10(MagField_spektr[NumberOfPoints]);
     Xmax = static_cast<int>(f);
     myFloat temp2;
-    myFloat temp=modfl(f,&temp2);
+    myFloat temp=modf(f,&temp2);
     if ( temp>0.001 )
         Xmax = Xmax+1;
 
@@ -166,7 +198,8 @@ void  mobilitySpectrum::MakeInterpolate(TLineSeries &Gxx,TLineSeries& Gxy,
     Data_spektr temp_l,temp_t,AGxx,AGxy,AField;
     myFloat sf,lm,p,p1;
     int i,j;
-    int Lmin,Lmax,k;
+    int k;
+    myInt Lmin,Lmax;
 temp_l.resize(MaxPoints);
 temp_t.resize(MaxPoints);
 AGxx.resize(MaxPoints);
@@ -204,14 +237,14 @@ AField.resize(MaxPoints);
    Gxy.clear();
 
    GetLnLimits(Lmin,Lmax);
-   SizeData=(Lmax-Lmin+1)*PointPerInt+1;
+   SizeData=static_cast<long int>((Lmax-Lmin+1)*PointPerInt+1);
    // SizeData:=(Lmax-Lmin+1)*sizeof(ImageDat);
    // Надо будет проверить и посмотреть кто прав.
    InitArray();
    k = 0;
    for (i = 0;i<= (Lmax-Lmin); ++i )
     {
-     lm = exp((Lmin+i)*logl(10));
+     lm = exp((static_cast<int>(Lmin)+i)*log(10));
      sf = lm;
      for (j = 1 ; j<= PointPerInt-1 ; ++j )
       {
@@ -236,7 +269,8 @@ void  mobilitySpectrum::MakeMNK( bool a,TLineSeries& Gxx, TLineSeries& Gxy, TLin
 {
     mat tmp_m;
         Data_spektr coef_t,coef_l;
-        int Kind,k,Lmin,Lmax;
+        int Kind,k;
+        myInt Lmin,Lmax;
         myFloat lm,sf;
   SetLength(tmp_m,MaxPoints,MaxPoints);
 
@@ -249,14 +283,14 @@ void  mobilitySpectrum::MakeMNK( bool a,TLineSeries& Gxx, TLineSeries& Gxy, TLin
    // эти вызовы заполняют матрицу tmp_m
    // которая кстати уже не пустая О_о
 
-   gram(NumberOfPoints,Power_spektr,Kind,MagField_spektr,GxxExp,tmp_m);
+   gram(NumberOfPoints,static_cast<int>(Power_spektr),Kind,MagField_spektr,GxxExp,tmp_m);
    // Гаусс - судя по всему решает матрицу методом Гаусса, сохраняет всё в coef-l
 
-   gauss(Power_spektr,tmp_m,coef_l);
+   gauss(static_cast<int>(Power_spektr),tmp_m,coef_l);
 
-   gram(NumberOfPoints,Power_spektr,Kind,MagField_spektr,GxyExp,tmp_m);
+   gram(NumberOfPoints,static_cast<int>(Power_spektr),Kind,MagField_spektr,GxyExp,tmp_m);
 
-   gauss(Power_spektr,tmp_m,coef_t);
+   gauss(static_cast<int>(Power_spektr),tmp_m,coef_t);
 
    Gxx.clear(); // чистим графики компонент
    Gxy.clear();
@@ -266,21 +300,21 @@ void  mobilitySpectrum::MakeMNK( bool a,TLineSeries& Gxx, TLineSeries& Gxy, TLin
      {
       AddExpPoints(ExpXX,ExpXY); // добавляет точки на график, экспериментальные
       GetLnLimits(Lmin,Lmax); // получает пределы, логарифмические
-      SizeData=(Lmax-Lmin+1)*PointPerInt+1; // считаем размер данных
+      SizeData=static_cast<long>((Lmax-Lmin+1)*PointPerInt+1); // считаем размер данных
       InitArray();  // выделяем его---------------------------------------------------------------
 
       k = 0;
       for (int i= 0 ; i<= (Lmax-Lmin); ++i )
        {
-       lm = exp((Lmin+i)*logl(10));
+       lm = exp((static_cast<int>(Lmin)+i)*logl(10));
        sf = lm;
        for (int j = 1 ; j<= PointPerInt-1; ++j )
         {
         IntMagField[k]=sf;
 
         // а тут происходит самое страшное - считаются два основных графика
-        fi(NumberOfPoints,Power_spektr,Kind,coef_l,MagField_spektr,sf,IntGxx[k]);
-        fi(NumberOfPoints,Power_spektr,Kind,coef_t,MagField_spektr,sf,IntGxy[k]);
+        fi(NumberOfPoints,static_cast<int>(Power_spektr),Kind,coef_l,MagField_spektr,sf,IntGxx[k]);
+        fi(NumberOfPoints,static_cast<int>(Power_spektr),Kind,coef_t,MagField_spektr,sf,IntGxy[k]);
         // и судя по всему ось х - действительно подвижность
         // а ось у - это величины компонент тензора проводимости
         // но они как-то модифицированы
@@ -303,8 +337,8 @@ void  mobilitySpectrum::MakeMNK( bool a,TLineSeries& Gxx, TLineSeries& Gxy, TLin
        sf=0;
      for (int i= 0 ;i <= NumberOfPoints; ++i )
       {
-        fi(NumberOfPoints,Power_spektr,Kind,coef_l,MagField_spektr,sf,GxxExp[i]);
-        fi(NumberOfPoints,Power_spektr,Kind,coef_t,MagField_spektr,sf,GxyExp[i]);
+        fi(NumberOfPoints,static_cast<int>(Power_spektr),Kind,coef_l,MagField_spektr,sf,GxxExp[i]);
+        fi(NumberOfPoints,static_cast<int>(Power_spektr),Kind,coef_t,MagField_spektr,sf,GxyExp[i]);
       }
     }
 
@@ -831,12 +865,12 @@ myFloat a,bb;
      else
      for (im = 2 ; im<= NumberOfPoints; ++im )
       if ( (im)%2==1 )
-       Mv[im]=exp((im-1)*logl(fabs(Mi)));
+       Mv[im]=exp((im-1)*log(fabs(Mi)));
       else
        if ( Mi<0 )
-           Mv[im]=exp((im-1)*logl(fabs(Mi)));
+           Mv[im]=exp((im-1)*log(fabs(Mi)));
        else
-           Mv[im]=-exp((im-1)*logl(fabs(Mi)));
+           Mv[im]=-exp((im-1)*log(fabs(Mi)));
 /*(*     { compute ¦Vm¦¤}
      vm = 0;
      for is = 1 ; <= NPoint )
@@ -924,7 +958,7 @@ void  mobilitySpectrum::MobilitySpectrumFunc(TLineSeries& LineSeries1, TLineSeri
     Series5.clear();
    Lmin = MSLeft;
    Lmax = MSRight;
-   SizeData=(Lmax-Lmin+1)*PointPerInt+1; // возможно тут придется домножать на размер элемента
+   SizeData=static_cast<int>((Lmax-Lmin+1)*PointPerInt+1); // возможно тут придется домножать на размер элемента
    // впрочем нет - там же сейчас другая функция.
    InitArray2();
    k = 0;
@@ -1013,24 +1047,24 @@ with chtSpectr )
 /////////////////////// КОНЕЦ "ХОЛЛ. ПОДВИЖНОСТЬ"///////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
-myFloat mobilitySpectrum::getResultEY(const int i)
+long double mobilitySpectrum::getResultEY(const int i)
 {
-  return electronMobilitySpectrum.operator [](i).second; // YValue[i];
+  return static_cast<long double>(electronMobilitySpectrum.operator [](i).second); // YValue[i];
 }
 
-myFloat  mobilitySpectrum::getResultEX(const int i)
+long double  mobilitySpectrum::getResultEX(const int i)
 {
-  return electronMobilitySpectrum.operator [](i).first;
+  return static_cast<long double>(electronMobilitySpectrum.operator [](i).first);
 }
 
-myFloat mobilitySpectrum::getResultHY(const int i)
+long double mobilitySpectrum::getResultHY(const int i)
 {
-  return holeMobilitySpectrum.operator [](i).second;
+  return static_cast<long double>(holeMobilitySpectrum.operator [](i).second);
 }
 
-myFloat mobilitySpectrum::getResultHX(const int i)
+long double mobilitySpectrum::getResultHX(const int i)
 {
-  return holeMobilitySpectrum.operator [](i).first;
+  return static_cast<long double>(holeMobilitySpectrum.operator [](i).first);
 }
 
 
@@ -1112,9 +1146,9 @@ mobilitySpectrum::mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx
     MobilitySpectrumFunc(electronMobilitySpectrum,holeMobilitySpectrum);
     for (size_t i = 0; i < electronMobilitySpectrum.size(); ++i)
     {
-      resultElectronConductivity.push_back(electronMobilitySpectrum.operator [](i).second);
-      resultHoleConductivity.push_back(holeMobilitySpectrum.operator [](i).second);
-      resultMobility.push_back(electronMobilitySpectrum.operator [](i).first);
+      resultElectronConductivity.push_back(static_cast<long double>(electronMobilitySpectrum.operator [](i).second));
+      resultHoleConductivity.push_back(static_cast<long double>(holeMobilitySpectrum.operator [](i).second));
+      resultMobility.push_back(static_cast<long double>(electronMobilitySpectrum.operator [](i).first));
     }
     if(resultMobility.size()!=0)
     {
@@ -1198,9 +1232,9 @@ mobilitySpectrum::mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx
 }
 //-----------------------------------------------------------------------
 
-myFloat mobilitySpectrum::calcConcentrationFromGp(myFloat G_p, myFloat Mu)
+long double mobilitySpectrum::calcConcentrationFromGp(long double G_p, long double Mu)
 {
-    myFloat electronCharge=1.60217656535E-19;// Кл
+    const long double electronCharge=1.60217656535E-19;// Кл
     return G_p/(Mu*electronCharge);
 }
 
@@ -1223,8 +1257,9 @@ void mobilitySpectrum::getExtremums(TSignal & holeConcentration, TSignal & holeM
   }
 }
 
-size_t mobilitySpectrum::searchSignalSlowdown(TSignal &y, size_t startPosition, myFloat h)
+size_t mobilitySpectrum::searchSignalSlowdown(TSignal &y, size_t startPosition, long double inh)
 {
+    myFloat h = static_cast<myFloat>(inh);
   size_t size=y.size();
     /*
     Функция должна реагировать на замедление изменения сигнала.
@@ -1282,7 +1317,7 @@ size_t mobilitySpectrum::searchSignalSlowdown(TSignal &y, size_t startPosition, 
 
 }
 
-size_t mobilitySpectrum::searchSignificantPeak(TSignal &y, size_t startPosition, myFloat h)
+size_t mobilitySpectrum::searchSignificantPeak(TSignal &y, size_t startPosition, long double h)
 {
     size_t size=y.size();
     if(startPosition>=size)
@@ -1295,9 +1330,9 @@ size_t mobilitySpectrum::searchSignificantPeak(TSignal &y, size_t startPosition,
         cout << *i << endl;
     }*/
 
-    std::vector<myFloat> dY=calculateFirstDerivative(y,h);
+    std::vector<long double> dY=calculateFirstDerivative(y,h);
 
-    std::vector<myFloat> d2Y=calculateSecondDerivative(y,h);
+    std::vector<long double> d2Y=calculateSecondDerivative(y,h);
 
     /*
       Поиск пиков. Считаем производные первого и второго порядков.
@@ -1401,17 +1436,20 @@ void mobilitySpectrum::constructPeakCriteria(PeaksCriteria & peaksCriteria, TStr
     peakVelocity2L = peakVelocityL/(resultMobility[index-t]-resultMobility[index-t+1]);
   }
 
-  peaksCriteria.peakHeigh=peakHeigh;
-  peaksCriteria.peakWidth=peakWidth;
+  peaksCriteria.peakHeigh=static_cast<long double>(peakHeigh);
+  peaksCriteria.peakWidth=static_cast<long double>(peakWidth);
   peaksCriteria.peakWidthOrd=j-i;
-  peaksCriteria.peakVelocityR=peakVelocityR;
-  peaksCriteria.peakVelocity2R=peakVelocity2R;
-  peaksCriteria.symmetri=symmetri;// симметричность пиков
-  peaksCriteria.peakVelocityL=peakVelocityL; // модуль скорости изменения слева от пика
-  peaksCriteria.peakVelocity2L=peakVelocity2L; // скорость изменения слева от пика
+  peaksCriteria.peakVelocityR=static_cast<long double>(peakVelocityR);
+  peaksCriteria.peakVelocity2R=static_cast<long double>(peakVelocity2R);
+  peaksCriteria.symmetri=static_cast<long double>(symmetri);// симметричность пиков
+  peaksCriteria.peakVelocityL=static_cast<long double>(peakVelocityL); // модуль скорости изменения слева от пика
+  peaksCriteria.peakVelocity2L=static_cast<long double>(peakVelocity2L); // скорость изменения слева от пика
 
-  tsl->push_back(to_string(peakHeigh)+"\t"+to_string(peakWidth)+"\t"+to_string(j-i)+"\t"+to_string(peakVelocityR)+"\t"+to_string(peakVelocity2R));
-  tsl->push_back(to_string(symmetri)+"\t"+to_string(peakVelocityL)+"\t"+to_string(peakVelocity2L)); // симметричность пиков и скорость изменения слева от него
+  tsl->push_back(to_string(static_cast<long double>(peakHeigh))+"\t"+to_string(static_cast<long double>(peakWidth))+
+                 "\t"+to_string(j-i)+"\t"+to_string(static_cast<long double>(peakVelocityR))+"\t"+
+                 to_string(static_cast<long double>(peakVelocity2R)));
+  tsl->push_back(to_string(static_cast<long double>(symmetri))+"\t"+
+                 to_string(static_cast<long double>(peakVelocityL))+"\t"+to_string(static_cast<long double>(peakVelocity2L))); // симметричность пиков и скорость изменения слева от него
 
 }
 
@@ -1426,26 +1464,27 @@ void mobilitySpectrum::calculatePeakWeigth(PeaksCriteria & peaksCriteria,TString
   size_t j=searchPeakRigthBorder(d,d2,index);
   constructPeakCriteria(peaksCriteria,tsl, resultMobility, resultConductivity,index,i,j);
 
-  peaksCriteria.peakLeftBorderFirstDerivative=d[i+1];
-  peaksCriteria.peakFirstDerivative=d[index];
-  peaksCriteria.peakRightBorderFirstDerivative=d[j-1];
-  peaksCriteria.peakLeftMiddleFirstDerivative=d[(i+index)/2];
-  peaksCriteria.peakRightMiddleFirstDerivative=d[(j+index)/2];
+  peaksCriteria.peakLeftBorderFirstDerivative=static_cast<long double>(d[i+1]);
+  peaksCriteria.peakFirstDerivative=static_cast<long double>(d[index]);
+  peaksCriteria.peakRightBorderFirstDerivative=static_cast<long double>(d[j-1]);
+  peaksCriteria.peakLeftMiddleFirstDerivative=static_cast<long double>(d[(i+index)/2]);
+  peaksCriteria.peakRightMiddleFirstDerivative=static_cast<long double>(d[(j+index)/2]);
 
-  peaksCriteria.peakLeftBorderSecondDerivative=d2[i+1];
-  peaksCriteria.peakSecondDerivative=d2[index];
-  peaksCriteria.peakRightBorderSecondDerivative=d2[j-1];
-  peaksCriteria.peakLeftMiddleSecondDerivative=d2[(i+index)/2];
-  peaksCriteria.peakRightMiddleSecondDerivative=d2[(j+index)/2];
+  peaksCriteria.peakLeftBorderSecondDerivative=static_cast<long double>(d2[i+1]);
+  peaksCriteria.peakSecondDerivative=static_cast<long double>(d2[index]);
+  peaksCriteria.peakRightBorderSecondDerivative=static_cast<long double>(d2[j-1]);
+  peaksCriteria.peakLeftMiddleSecondDerivative=static_cast<long double>(d2[(i+index)/2]);
+  peaksCriteria.peakRightMiddleSecondDerivative=static_cast<long double>(d2[(j+index)/2]);
 
-  tsl->push_back(to_string(d[i+1])+"\t"+to_string(d[index])+"\t"+to_string(d[j-1]));
-  tsl->push_back(to_string(d[(i+index)/2])+"\t"+to_string(d[(j+index)/2]));
+  tsl->push_back(to_string(static_cast<long double>(d[i+1]))+"\t"+to_string(static_cast<long double>(d[index]))+"\t"+to_string(static_cast<long double>(d[j-1])));
+  tsl->push_back(to_string(static_cast<long double>(d[(i+index)/2]))+"\t"+to_string(static_cast<long double>(d[(j+index)/2])));
 
-  tsl->push_back(to_string(d2[i+1])+"\t"+to_string(d2[index])+"\t"+to_string(d2[j-1]));
-  tsl->push_back(to_string(d2[(i+index)/2])+"\t"+to_string(d2[(j+index)/2]));
+  tsl->push_back(to_string(static_cast<long double>(d2[i+1]))+"\t"+to_string(static_cast<long double>(d2[index]))+"\t"+
+          to_string(static_cast<long double>(d2[j-1])));
+  tsl->push_back(to_string(static_cast<long double>(d2[(i+index)/2]))+"\t"+to_string(static_cast<long double>(d2[(j+index)/2])));
 }
 
-myFloat mobilitySpectrum::calculatePeaksWeigth()
+long double mobilitySpectrum::calculatePeaksWeigth()
 {
   PeaksCriteria peaksCriteria;
   vPC.clear();
@@ -1456,7 +1495,7 @@ myFloat mobilitySpectrum::calculatePeaksWeigth()
   // Ширину пика, относительно 0,606 высоты
   TStringList *tsl = new TStringList;
 
-  myFloat hMobility = resultMobility[1]-resultMobility[0]; // шаг по подвижности
+  long double hMobility = static_cast<long double>(resultMobility[1]-resultMobility[0]); // шаг по подвижности
 
   std::vector<myFloat> de=calculateFirstDerivative(resultElectronConductivity, hMobility); // электроны
   std::vector<myFloat> dh=calculateFirstDerivative(resultHoleConductivity, hMobility); // тяжелые дырки
@@ -1550,7 +1589,7 @@ for (size_t k = 0; k < extremumElectronIndex.size(); ++k)
   return 1;
 }
 
-myFloat mobilitySpectrum::calculatePeaksWeigth(std::string filename)
+long double mobilitySpectrum::calculatePeaksWeigth(std::string filename)
 {
 
   PeaksCriteria peaksCriteria;
@@ -1563,7 +1602,7 @@ myFloat mobilitySpectrum::calculatePeaksWeigth(std::string filename)
   // Ширину пика, относительно 0,606 высоты
   TStringList *tsl = new TStringList;
 
-  myFloat hMobility = resultMobility[1]-resultMobility[0]; // шаг по подвижности
+  long double hMobility = static_cast<long double>(resultMobility[1]-resultMobility[0]); // шаг по подвижности
 
   std::vector<myFloat> de=calculateFirstDerivative(resultElectronConductivity, hMobility); // электроны
   std::vector<myFloat> dh=calculateFirstDerivative(resultHoleConductivity, hMobility); // тяжелые дырки
@@ -1741,7 +1780,7 @@ void mobilitySpectrum::saveEigenValues(std::string filename)
     string t;
     for (size_t j = 0; j < eigenVectors[i].size(); ++j)
     {
-      t=t+to_string(eigenVectors[i][j])+"\t";
+      t=t+to_string(static_cast<long double>(eigenVectors[i][j]))+"\t";
     }
     tsl->push_back(t);
   }
@@ -1750,7 +1789,7 @@ void mobilitySpectrum::saveEigenValues(std::string filename)
 
   for (size_t i = 0; i < eigenValues.size(); ++i)
   {
-    tsl->push_back(to_string(eigenValues[i]));
+    tsl->push_back(to_string(static_cast<long double>(eigenValues[i])));
   }
 
   SaveToFile(tsl,filename);

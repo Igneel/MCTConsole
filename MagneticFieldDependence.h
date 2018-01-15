@@ -130,7 +130,7 @@ TSignal * getPointerSxy(DataKind dataKind);
     //----Что нужно для консоли?---------------------------------------
 
     void calculateDependencesFromFilm(size_t NumberOfPoints, MyDataType h, MyDataType eMolarCompositionCadmium, int eTemperature, MyDataType eHeavyHoleConcentration, MyDataType eAFactor, MyDataType eKFactor, MyDataType eSampleThickness, MyDataType eCBRatio, MyDataType eCurrentIntensity, size_t NumberOfCarrierTypes);
-    void addNoiseToSignals(int coef);
+    void addNoiseToSignals(long double coef);
     
     long double getTheorMobility(int n);
     long double getTheorConcentration(int n);
@@ -142,7 +142,7 @@ private:
 	//----Генераторы шума----------------------------------------------
 
     void QuativativeNoiseGenerator();
-    void GaussianNoiseGenerator(int coef);
+    void GaussianNoiseGenerator(long double coef);
 
     int noiseCoef;
 

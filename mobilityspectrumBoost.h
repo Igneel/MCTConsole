@@ -16,7 +16,7 @@ typedef mpz_int myInt;
 class mobilitySpectrum
 {
 private:
-    int PointPerInt;
+    myInt PointPerInt;
 
     typedef vector <myFloat> Data_spektr ;
 
@@ -73,13 +73,13 @@ private:
 
     void SetLength (vector<vector<myFloat> > &v,const size_t size1,const size_t size2);
 
-    void  gram(const myInt N,const myInt m,const myInt l, Data_spektr & x, Data_spektr & f, mat & a);
-    void  gauss(const myInt N, mat & a, Data_spektr & x);
+    void  gram(const int N,const int m,const int l, Data_spektr & x, Data_spektr & f, mat & a);
+    void  gauss(const int N, mat & a, Data_spektr & x);
 
-    void  fi(const myInt n,const myInt m,const myInt l, Data_spektr & c, Data_spektr & x,
+    void  fi(const int n,const int m,const int l, Data_spektr & c, Data_spektr & x,
         const myFloat x1, myFloat &s);
 
-    void  BAS(const myInt n,const myInt m,const myInt L,const myFloat x1, Data_spektr & x, Data_spektr & t);
+    void  BAS(const int n, const int m, const int L, const myFloat x1, Data_spektr & x, Data_spektr & t);
 
     void  AddExpPoints(TLineSeries &ExpXX, TLineSeries &ExpXY);
 
@@ -90,14 +90,14 @@ private:
 
     void  MakeMNK(const bool a, TLineSeries &Gxx, TLineSeries &Gxy, TLineSeries &ExpXX, TLineSeries &ExpXY);
     void  MakeLagranj();
-    void  Tred2(const myInt n, Dat1 & d, Dat1 & e,
+    void  Tred2(const int n, Dat1 & d, Dat1 & e,
                      Dat2 & a, Dat2 & z, bool & fail);
-    void  Imtql2(const myInt n,const myFloat macheps, Dat1 & d, Dat1 & e,
+    void  Imtql2(const int n, const myFloat macheps, Dat1 & d, Dat1 & e,
                      Dat2 & z, bool & fail);
     myFloat GetElem(const int j1, const int k1, const int i1);
     void  MakeMatrC();
     void  MakeMatrA();
-    void  InverseMatrC(Dat2 & Ci,Dat2 & C,myFloat & Su,const myInt NP);
+    void  InverseMatrC(Dat2 & Ci,Dat2 & C,myFloat & Su,const int NP);
     myFloat S_s(const myFloat Mi);
 
     std::vector<myFloat> eigenValues;
@@ -153,7 +153,7 @@ public:
     void getResults(TSignal & mobility, TSignal & HoleConductivity, TSignal & ElectronConductivity);
 
     long double calcConcentrationFromGp(long double G_p, long double Mu);
-    size_t searchSignalSlowdown(TSignal & y, size_t startPosition, long double h);
+    size_t searchSignalSlowdown(TSignal & y, size_t startPosition, long double inh);
     size_t searchSignificantPeak(TSignal & y, size_t startPosition, long double h);
 
 };

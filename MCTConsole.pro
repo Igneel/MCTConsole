@@ -3,10 +3,14 @@ CONFIG += console c++14
 CONFIG -= app_bundle
 CONFIG -= qt
 
+LIBS += \
+       -lboost_system\
+
 SOURCES += main.cpp \
     smartCalculation.cpp \
     multizoneFit.cpp \
     mobilityspectrum.cpp \
+  #  mobilityspectrumBoost.cpp \
     MagneticFieldDependence.cpp \
     FilterParams.cpp \
     FilteringUnit.cpp \
@@ -26,6 +30,7 @@ HEADERS += \
     smartCalculation.h \
     multizoneFit.h \
     mobilityspectrum.h \
+  #  mobilityspectrumBoost.h \
     main.h \
     MagneticFieldDependence.h \
     FilterParams.h \
