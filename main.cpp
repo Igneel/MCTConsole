@@ -1,10 +1,13 @@
 #include <iostream>
 #include "main.h"
 using namespace std;
+
+
 void getAndDisplayMultiCarrierFitResults(MagneticFieldDependence * p);
 
 int main(int argc, char *argv[])
 {
+    std::ios::sync_with_stdio(false);
 
     /*
      * если kNoise=0 - отдавать чистые данные и шум даже не считать.
@@ -148,6 +151,7 @@ int main(int argc, char *argv[])
     p->calculateTenzor(dataflag);
 
     // save Tenzor
+    /*
     DataSaver * tenzorSaver=new DataSaver(to_string(Temperature),
     to_string(current), inventoryNumber,to_string(sampleLength),to_string(sampleWidth),to_string(sampleThickness));
 
@@ -160,18 +164,18 @@ int main(int argc, char *argv[])
     //p->getSxy(), p->getSxx(), POINTS_11,fileName);
 
     delete tenzorSaver;
-
+    */
 
 
     // get Mobility Spectrum
 
     //cout << "calculateMobilitySpectrum\n";
-    p->calculateMobilitySpectrum();
+    //p->calculateMobilitySpectrum();
 
-    TSignal ex(p->getMobility()->begin(),p->getMobility()->end());
-    TSignal eY(p->getElectronConductivity()->begin(),p->getElectronConductivity()->end());
-    TSignal hx(p->getMobility()->begin(),p->getMobility()->end());
-    TSignal hY(p->getHoleConductivity()->begin(),p->getHoleConductivity()->end());
+    //TSignal ex(p->getMobility()->begin(),p->getMobility()->end());
+    //TSignal eY(p->getElectronConductivity()->begin(),p->getElectronConductivity()->end());
+    //TSignal hx(p->getMobility()->begin(),p->getMobility()->end());
+    //TSignal hY(p->getHoleConductivity()->begin(),p->getHoleConductivity()->end());
 
     // run MultiCarrierFit
 
@@ -186,7 +190,7 @@ int main(int argc, char *argv[])
     //cout << "runMultiCarrierFit is ended\n";
 
 
-    fout << current << "\t" << CBRatio << "\t" << sampleThickness << "\n";
+    //fout << current << "\t" << CBRatio << "\t" << sampleThickness << "\n";
 
     
 
@@ -231,7 +235,7 @@ int main(int argc, char *argv[])
 #   |T I CBRatio Thickness B1 .. Bn Us1 .. Usn Uy1 .. Uyn|  ---> |n1 mu1 n2 mu2 n3 mu3|
 #   _______________________________________________________       ______________________ 
 */
-    cout <<"\t" << Temperature <<"\t"  << current <<"\t"  << CBRatio <<"\t"  << sampleThickness <<"\t";
+    cout << Temperature <<"\t"  << current <<"\t"  << CBRatio <<"\t"  << sampleThickness <<"\t";
     TSignal const * B = p->getB();    
     TSignal const * Hall = p->getHallEffect();
     TSignal const * MagnetoRes = p->getMagnetoResistance();
