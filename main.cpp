@@ -169,13 +169,13 @@ int main(int argc, char *argv[])
 
     // get Mobility Spectrum
 
-    //cout << "calculateMobilitySpectrum\n";
-    //p->calculateMobilitySpectrum();
+    cout << "calculateMobilitySpectrum\n";
+    p->calculateMobilitySpectrum();
 
-    //TSignal ex(p->getMobility()->begin(),p->getMobility()->end());
-    //TSignal eY(p->getElectronConductivity()->begin(),p->getElectronConductivity()->end());
-    //TSignal hx(p->getMobility()->begin(),p->getMobility()->end());
-    //TSignal hY(p->getHoleConductivity()->begin(),p->getHoleConductivity()->end());
+    TSignal ex(p->getMobility()->begin(),p->getMobility()->end());
+    TSignal eY(p->getElectronConductivity()->begin(),p->getElectronConductivity()->end());
+    TSignal hx(p->getMobility()->begin(),p->getMobility()->end());
+    TSignal hY(p->getHoleConductivity()->begin(),p->getHoleConductivity()->end());
 
     // run MultiCarrierFit
 
@@ -263,14 +263,20 @@ int main(int argc, char *argv[])
 #  |Критерий1 Критерий2 ... КритерийN|  --->   |Относительная погрешность|
 #
 */
-
+    cout << "CriteriasBeginsHere\n";
+    // TODO
+    cout << "\n";
+    for (auto i = 0; i < 3; ++i)
+    {
+        cout << p->getTheorMobility(i) << "\t" << p->getTheorConcentration(i) << "\t";
+    }
 /*
 # v3
 #                               ______________________
 #  |Спектр подвижности|   --->  |n1 mu1 n2 mu2 n3 mu3|
 #                               ______________________
 */
-/*
+    cout << "MobSpecBeginsHere\n";
     for (auto i = 0; i < ex.size(); ++i)
     {
         cout << ex[i] << "\t";
@@ -287,13 +293,26 @@ int main(int argc, char *argv[])
     {
         cout << hY[i] << "\t";
     }
+    cout << "\n";
+
+    if(p->getElectronConcentration()->size()>=1)
+    {
+    cout << p->getElectronConcentration()->operator[](0) << "\t";
+    cout << p->getElectronMobility()->operator[](0) << "\t";
+    }
+
+    for (auto i=0;i<p->getHoleConcentration()->size();i++)
+    {
+        cout << p->getHoleConcentration()->operator[](i) << "\t";
+        cout << p->getHoleMobility()->operator[](i) << "\t";
+    }
 
     cout << "\n";
     for (auto i = 0; i < 3; ++i)
     {
         cout << p->getTheorMobility(0) << "\t" << p->getTheorConcentration(0) << "\t";
     }
-*/
+
     return 0;
 }
 
