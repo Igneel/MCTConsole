@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
 
     // get Mobility Spectrum
 
-    cout << "calculateMobilitySpectrum\n";
+    //cout << "calculateMobilitySpectrum\n";
     p->calculateMobilitySpectrum();
 
     TSignal ex(p->getMobility()->begin(),p->getMobility()->end());
@@ -235,6 +235,7 @@ int main(int argc, char *argv[])
 #   |T I CBRatio Thickness B1 .. Bn Us1 .. Usn Uy1 .. Uyn|  ---> |n1 mu1 n2 mu2 n3 mu3|
 #   _______________________________________________________       ______________________ 
 */
+    cout << "NewSectionBeginHere\n";
     cout << Temperature <<"\t"  << current <<"\t"  << CBRatio <<"\t"  << sampleThickness <<"\t";
     TSignal const * B = p->getB();    
     TSignal const * Hall = p->getHallEffect();
@@ -263,7 +264,7 @@ int main(int argc, char *argv[])
 #  |Критерий1 Критерий2 ... КритерийN|  --->   |Относительная погрешность|
 #
 */
-    cout << "CriteriasBeginsHere\n";
+    cout << "\nNewSectionBeginHere\n";
     // TODO
     cout << "\n";
     for (auto i = 0; i < 3; ++i)
@@ -276,7 +277,7 @@ int main(int argc, char *argv[])
 #  |Спектр подвижности|   --->  |n1 mu1 n2 mu2 n3 mu3|
 #                               ______________________
 */
-    cout << "MobSpecBeginsHere\n";
+    cout << "\nNewSectionBeginHere\n";
     for (auto i = 0; i < ex.size(); ++i)
     {
         cout << ex[i] << "\t";
@@ -293,26 +294,50 @@ int main(int argc, char *argv[])
     {
         cout << hY[i] << "\t";
     }
-    cout << "\n";
 
-    if(p->getElectronConcentration()->size()>=1)
+    for (auto i = 0; i < ex.size(); ++i)
     {
-    cout << p->getElectronConcentration()->operator[](0) << "\t";
-    cout << p->getElectronMobility()->operator[](0) << "\t";
+        fout << ex[i] << "\t";
     }
+    fout <<"\n";
+    for (auto i = 0; i < eY.size(); ++i)
+    {
+        fout << eY[i] << "\t";
+    }
+    fout <<"\n";
+    for (auto i = 0; i < hx.size(); ++i)
+    {
+        fout << hx[i] << "\t";
+    }
+    fout <<"\n";
+    for (auto i = 0; i < hY.size(); ++i)
+    {
+        fout << hY[i] << "\t";
+    }
+    fout <<"\n";
+
+    cout << "\n";
 
     for (auto i=0;i<p->getHoleConcentration()->size();i++)
     {
-        cout << p->getHoleConcentration()->operator[](i) << "\t";
         cout << p->getHoleMobility()->operator[](i) << "\t";
+        cout << p->getHoleConcentration()->operator[](i) << "\t";
+
+    }
+
+    if(p->getElectronConcentration()->size()>=1)
+    {
+        cout << p->getElectronMobility()->operator[](0) << "\t";
+        cout << p->getElectronConcentration()->operator[](0) << "\t";
     }
 
     cout << "\n";
     for (auto i = 0; i < 3; ++i)
     {
-        cout << p->getTheorMobility(0) << "\t" << p->getTheorConcentration(0) << "\t";
+        cout << p->getTheorMobility(i) << "\t" << p->getTheorConcentration(i) << "\t";
     }
 
+    fout.close();
     return 0;
 }
 
