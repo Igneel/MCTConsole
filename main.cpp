@@ -9,12 +9,14 @@ int main(int argc, char *argv[])
 {
     std::ios::sync_with_stdio(false);
 
+    //cout << __LDBL_EPSILON__ << "\n";
+
     /*
      * если kNoise=0 - отдавать чистые данные и шум даже не считать.
      * ./main T kNoise current sampleLength sampleWidth sampleThickness eHeavyHoleConcentration molarCadmiunValue AFactor KFactor
      * ./main 77 1 10e-3 30e-3 10e-3 1e-5 1e22 0.21 5 1.3
      *
-     *
+     * eSamplingFRes,eBandWidthFRes,eAttenuationFRes,eLengthFilterRes eSamplingFHall,eBandWidthFHall,eAttenuationFHall,eLengthFilterHall;
 
 
 
@@ -23,7 +25,7 @@ int main(int argc, char *argv[])
     */
 
     int Temperature; // начальная температура
-    int coef;// коэффициент шума
+    long double coef;// коэффициент шума
 
     const MyDataType shagB=0.001;
 
@@ -41,6 +43,10 @@ int main(int argc, char *argv[])
 
     MyDataType eAFactor = 5; //(5-8)
     MyDataType eKFactor = 1.3; //(1.3-1.5)
+
+
+    std::string eSamplingFRes,eBandWidthFRes,eAttenuationFRes,eLengthFilterRes;
+    std::string eSamplingFHall,eBandWidthFHall,eAttenuationFHall,eLengthFilterHall;
 
     std::ofstream fout("out.txt");
 
@@ -64,11 +70,20 @@ int main(int argc, char *argv[])
         fin >> eAFactor;
         fin >> eKFactor;
 
+        fin >>eSamplingFRes;
+        fin >>eBandWidthFRes;
+        fin >>eAttenuationFRes;
+        fin >>eLengthFilterRes;
+        fin >>eSamplingFHall;
+        fin >>eBandWidthFHall;
+        fin >>eAttenuationFHall;
+        fin >>eLengthFilterHall;
+
         }
     else
     {
         Temperature = stoi(argv[1]); // Температура
-        coef = stoi(argv[2]); // Коэффициент шума
+        coef = stold(argv[2]); // Коэффициент шума
         current = stold(argv[3]); // Величина силы тока
         sampleLength = stold(argv[4]); // Длина образца
         sampleWidth = stold(argv[5]); // Ширина образца
@@ -77,6 +92,16 @@ int main(int argc, char *argv[])
         eMolarCompositionCadmium = stold(argv[8]); // Молярный состав кадмия
         eAFactor = stold(argv[9]); // Влияет на подвижность электронов
         eKFactor = stold(argv[10]); // Влияет на подвижность электронов
+
+        // Параметры фильтрации
+        eSamplingFRes = argv[11];
+        eBandWidthFRes = argv[12];
+        eAttenuationFRes = argv[13];
+        eLengthFilterRes = argv[14];
+        eSamplingFHall = argv[15];
+        eBandWidthFHall = argv[16];
+        eAttenuationFHall = argv[17];
+        eLengthFilterHall = argv[18];
     }
 
 
@@ -110,9 +135,8 @@ int main(int argc, char *argv[])
     //p->saver->setParamsType(ResCurveIndex->ItemIndex); // значения их совпадают.
     //p->setParamsType(ResCurveIndex->ItemIndex);
 
-    std::string eSamplingFRes,eBandWidthFRes,eAttenuationFRes,eLengthFilterRes;
-    std::string eSamplingFHall,eBandWidthFHall,eAttenuationFHall,eLengthFilterHall;
 
+    /*
     eSamplingFRes = "100";
     eBandWidthFRes= "10";
     eAttenuationFRes= "20";
@@ -122,6 +146,7 @@ int main(int argc, char *argv[])
     eBandWidthFHall= "10";
     eAttenuationFHall= "20";
     eLengthFilterHall= "50";
+    */
 
 
 
@@ -170,7 +195,70 @@ int main(int argc, char *argv[])
     // get Mobility Spectrum
 
     //cout << "calculateMobilitySpectrum\n";
-    p->calculateMobilitySpectrum();
+
+    /*
+    # v1
+    #   _______________________________________________________       ______________________
+    #   |T I CBRatio Thickness B1 .. Bn Us1 .. Usn Uy1 .. Uyn|  ---> |n1 mu1 n2 mu2 n3 mu3|
+    #   _______________________________________________________       ______________________
+    */
+        cout << "NewSectionBeginHere\n";
+        cout << Temperature <<"\t"  << current <<"\t"  << CBRatio <<"\t"  << sampleThickness <<"\t";
+        TSignal const * B = p->getB();
+        TSignal const * Hall = p->getHallEffect();
+        TSignal const * MagnetoRes = p->getMagnetoResistance();
+        for(auto i = 0;i< B->size();i++)
+        {
+            cout << (*B)[i] << "\t";
+        }
+        for(auto i = 0;i< Hall->size();i++)
+        {
+            cout << (*Hall)[i] << "\t";
+        }
+        for(auto i = 0;i< MagnetoRes->size();i++)
+        {
+            cout << (*MagnetoRes)[i] << "\t";
+        }
+        cout << "\n";
+        for (auto i = 0; i < 3; ++i)
+        {
+            cout << p->getTheorMobility(i) << "\t" << p->getTheorConcentration(i) << "\t";
+        }
+
+
+
+
+    /*
+    # v2
+    #  ___________________________________         ___________________________
+    #  |Критерий1 Критерий2 ... КритерийN|  --->   |Относительная погрешность|
+    #
+    */
+        cout << "\nNewSectionBeginHere\n";
+
+        p->calculateMobilitySpectrum();
+
+
+        cout << "\n";
+
+        for (auto i=0;i<p->getHoleConcentration()->size();i++)
+        {
+            cout << p->getHoleMobility()->operator[](i) << "\t";
+            cout << p->getHoleConcentration()->operator[](i) << "\t";
+
+        }
+
+        if(p->getElectronConcentration()->size()>=1)
+        {
+            cout << p->getElectronMobility()->operator[](0) << "\t";
+            cout << p->getElectronConcentration()->operator[](0) << "\t";
+        }
+
+        cout << "\n";
+        for (auto i = 0; i < 3; ++i)
+        {
+            cout << p->getTheorMobility(i) << "\t" << p->getTheorConcentration(i) << "\t";
+        }
 
     TSignal ex(p->getMobility()->begin(),p->getMobility()->end());
     TSignal eY(p->getElectronConductivity()->begin(),p->getElectronConductivity()->end());
@@ -229,48 +317,7 @@ int main(int argc, char *argv[])
         */
     //}
 
-/*   
-# v1
-#   _______________________________________________________       ______________________
-#   |T I CBRatio Thickness B1 .. Bn Us1 .. Usn Uy1 .. Uyn|  ---> |n1 mu1 n2 mu2 n3 mu3|
-#   _______________________________________________________       ______________________ 
-*/
-    cout << "NewSectionBeginHere\n";
-    cout << Temperature <<"\t"  << current <<"\t"  << CBRatio <<"\t"  << sampleThickness <<"\t";
-    TSignal const * B = p->getB();    
-    TSignal const * Hall = p->getHallEffect();
-    TSignal const * MagnetoRes = p->getMagnetoResistance();
-    for(auto i = 0;i< B->size();i++)
-    {
-        cout << (*B)[i] << "\t";
-    }
-    for(auto i = 0;i< Hall->size();i++)
-    {
-        cout << (*Hall)[i] << "\t";
-    }
-    for(auto i = 0;i< MagnetoRes->size();i++)
-    {
-        cout << (*MagnetoRes)[i] << "\t";
-    }
-    cout << "\n";
-    for (auto i = 0; i < 3; ++i)
-    {
-        cout << p->getTheorMobility(i) << "\t" << p->getTheorConcentration(i) << "\t";
-    }
 
-/*
-# v2
-#  ___________________________________         ___________________________
-#  |Критерий1 Критерий2 ... КритерийN|  --->   |Относительная погрешность|
-#
-*/
-    cout << "\nNewSectionBeginHere\n";
-    // TODO
-    cout << "\n";
-    for (auto i = 0; i < 3; ++i)
-    {
-        cout << p->getTheorMobility(i) << "\t" << p->getTheorConcentration(i) << "\t";
-    }
 /*
 # v3
 #                               ______________________
@@ -294,7 +341,7 @@ int main(int argc, char *argv[])
     {
         cout << hY[i] << "\t";
     }
-
+/*
     for (auto i = 0; i < ex.size(); ++i)
     {
         fout << ex[i] << "\t";
@@ -314,7 +361,7 @@ int main(int argc, char *argv[])
     {
         fout << hY[i] << "\t";
     }
-    fout <<"\n";
+    fout <<"\n";*/
 
     cout << "\n";
 

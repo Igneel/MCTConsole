@@ -152,8 +152,8 @@ while (x1>X[i])
  R = x1-B;
  P = C[i];
  D = C[i+1];
- B=(F[i]-A)/Q-(D+2*P)*Q/3;
- D=(D-P)/3/Q;
+ B=(F[i]-A)/Q-(D+2.0*P)*Q/3.0;
+ D=(D-P)/3.0/Q;
  return A+R*(B+R*(P+D*R));
 }
 
@@ -432,7 +432,7 @@ void  mobilitySpectrum::MakeLagranj()
 {
   long double X,Y,Y1,Y2;
   X = MagField_spektr[NumberOfPoints]-(MagField_spektr[NumberOfPoints]-
-        MagField_spektr[NumberOfPoints-1])/4;
+        MagField_spektr[NumberOfPoints-1])/4.0;
   GetCoef(GxxExp,MagField_spektr,X,Y,Y1,Y2);
   GxxExp[NumberOfPoints+1]=GxxExp[NumberOfPoints];
   GxxExp[NumberOfPoints]=Y;
@@ -1077,8 +1077,8 @@ mobilitySpectrum::mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx
     // Ну т.е. их степени, типа 10^-2 и 10^1
     // И кстати, надо сделать функцию для их изменения.
     // Либо передавать их при вызове функции по расчету спектра.
-    MSLeft=-3;
-    MSRight = 1;
+    MSLeft=-3;//-3;
+    MSRight =2;
 
     B_spektr.resize(MaxPoints+1);
     Gxx_sp.resize(MaxPoints+1);
@@ -1700,7 +1700,11 @@ for (size_t k = 0; k < extremumElectronIndex.size(); ++k)
     tsl->Add(to_string(resultMobility[i])+"\t"+to_string(de[i])+"\t"+to_string(dh[i])+"\t"+to_string(d2e[i])+"\t"+to_string(d2h[i]));
   }*/
 
-  SaveToFile(tsl,filename);
+  //SaveToFile(tsl,filename);
+  for (auto i = tsl->begin();i!=tsl->end();i++)
+  {
+      cout << *i << "\t";
+  }
 
 
   delete tsl;
