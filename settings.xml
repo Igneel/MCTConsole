@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Settings><title>
+		Настройки
+	</title><Resistance><uiDataKind>1</uiDataKind><CurveNumber>2</CurveNumber><FilterParams><Length>200</Length><eSamplingFRes>33</eSamplingFRes><eBandWidthFRes>1,01</eBandWidthFRes><eAttenuationFRes>1,1</eAttenuationFRes><PolinomPow>2</PolinomPow></FilterParams><uiShiftValue></uiShiftValue><uiLeftBound></uiLeftBound><uiRightBound></uiRightBound><Interval1></Interval1><Interval2></Interval2><uiDataKind></uiDataKind></Resistance><HallEffect><CurveNumber>2</CurveNumber><FilterParams><Length>200</Length><eSamplingFHall>33</eSamplingFHall><eBandWidthFHall>1,01</eBandWidthFHall><eAttenuationFHall>1,1</eAttenuationFHall><PolinomPow>1</PolinomPow></FilterParams><uiHallShiftValue></uiHallShiftValue><uiHallLeftBound></uiHallLeftBound><uiHallRightBound></uiHallRightBound><uiHallDataKind></uiHallDataKind></HallEffect></Settings>

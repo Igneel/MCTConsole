@@ -48,6 +48,9 @@ int main(int argc, char *argv[])
     std::string eSamplingFRes,eBandWidthFRes,eAttenuationFRes,eLengthFilterRes;
     std::string eSamplingFHall,eBandWidthFHall,eAttenuationFHall,eLengthFilterHall;
 
+
+    unsigned int NumberOfDecPlaces;
+
     std::ofstream fout("out.txt");
 
     if (argc<3)
@@ -79,6 +82,8 @@ int main(int argc, char *argv[])
         fin >>eAttenuationFHall;
         fin >>eLengthFilterHall;
 
+        fin >>NumberOfDecPlaces;
+
         }
     else
     {
@@ -102,6 +107,8 @@ int main(int argc, char *argv[])
         eBandWidthFHall = argv[16];
         eAttenuationFHall = argv[17];
         eLengthFilterHall = argv[18];
+
+        NumberOfDecPlaces = stoi(argv[19]);
     }
 
 
@@ -236,7 +243,9 @@ int main(int argc, char *argv[])
     */
         cout << "\nNewSectionBeginHere\n";
 
-        p->calculateMobilitySpectrum();
+        // Расчет спектр подвижности здесь:)
+        // Сюда же хочу передавать параметры округления, т.к. оно должно происходить на последнем этапе
+        p->calculateMobilitySpectrum(NumberOfDecPlaces);
 
 
         cout << "\n";

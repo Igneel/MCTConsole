@@ -1643,8 +1643,9 @@ void MagneticFieldDependence::setExtrapolateParams(int powPolinowHall,int powPol
 }
 
 // Спектр подвижности
-bool MagneticFieldDependence::calculateMobilitySpectrum()
+bool MagneticFieldDependence::calculateMobilitySpectrum(unsigned int NumberOfDecPlaces)
 {
+    unsigned int NumberOfDecimalPlaces = 5;
     TSignal nB;
     TSignal nSxx;
     TSignal nSxy;
@@ -1652,6 +1653,9 @@ bool MagneticFieldDependence::calculateMobilitySpectrum()
     thiningSignal(AveragedB, sxx, nB, nSxx,0, 2, 11);
     thiningSignal(AveragedB, sxy, nB, nSxy,0, 2, 11);
 
+    roundM(nB, NumberOfDecimalPlaces);
+    roundM(nSxx, NumberOfDecimalPlaces);
+    roundM(nSxy, NumberOfDecimalPlaces);
 
     if (MobilitySpectrumObj!=NULL)
     {
@@ -1661,6 +1665,7 @@ bool MagneticFieldDependence::calculateMobilitySpectrum()
     MobilitySpectrumObj= new mobilitySpectrum(nB,nSxx,nSxy,nB.size());
     MobilitySpectrumObj->getResults(mobility, holeConductivity, electronConductivity);
     MobilitySpectrumObj->getExtremums(holeConcentration, holeMobility, electronConcentration, electronMobility);
+    MobilitySpectrumObj->calculatePeaksWeigth("mobSpecCriteria.txt");
     return true;
 }
 bool MagneticFieldDependence::runSmartCalcutation()

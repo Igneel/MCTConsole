@@ -141,6 +141,7 @@ bool smartCalculation::processData()
 	/*
 	Итак, тут обработка данных ведется.
 	*/
+    unsigned int NumberOfDecPlaces=5;
 
 	// Для каждого значения частоты среза фильтра
 	FilterParams fpHall=*(MFDData->getFilterParamsHall());
@@ -183,7 +184,7 @@ bool smartCalculation::processData()
 			MFDData->filterData();
         	MFDData->extrapolateData(FILTERED_DATA,polinomPowMagnetoresistance,polinomPowHall);
     		MFDData->calculateTenzor(FILTERED_DATA);
-			MFDData->calculateMobilitySpectrum();
+            MFDData->calculateMobilitySpectrum(NumberOfDecPlaces);
 			MFDData->MobilitySpectrumObj->calculatePeaksWeigth();
 			if (0/* Нужна подгонка */)
 			{

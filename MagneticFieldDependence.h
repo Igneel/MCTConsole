@@ -114,7 +114,7 @@ TSignal * getPointerSxy(DataKind dataKind);
     void multiplySignal(SignalType s, MyDataType x);
     
     // Спектр подвижности
-    bool calculateMobilitySpectrum();
+    bool calculateMobilitySpectrum(unsigned int NumberOfDecPlaces);
     bool runSmartCalcutation();
     // Многозонная подгонка
     bool runMultiCarrierFit(long double VesGxx, long double VesGxy);
