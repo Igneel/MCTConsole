@@ -1,6 +1,7 @@
 #include "mobilityspectrum.h"
 #include <float.h>
 #include "commonFunctions.h"
+#include <map>
 
 using namespace std;
 
@@ -1119,63 +1120,86 @@ mobilitySpectrum::mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx
     if(resultMobility.size()!=0)
     {
     //cout << "If inside it \n";
-      
 
-    size_t index = searchSignificantPeak(resultElectronConductivity, 0, resultMobility[1]-resultMobility[0]); // электроны
-    //cout << "anyone can here me?\n";
-      if(index!=resultMobility.size()) // если это не правый край графика
-      {
-        size_t index2 = searchSignificantPeak(resultElectronConductivity, index+40, resultMobility[1]-resultMobility[0]); // электроны
-        if (index2!=resultMobility.size())
-        {
-          extremumElectronIndex.push_back(index2);
-        }
-        else
-        {
-          extremumElectronIndex.push_back(index);
-        }
-      }
-      else
-      {
-        index = searchSignalSlowdown(resultElectronConductivity, 0, resultMobility[1]-resultMobility[0]); // электроны
-        if(index!=resultMobility.size()) // если это не правый край графика
-        {
-          // Этот пик может быть зеркальным. Пока просто смотрим есть ли пик дальше - если есть, то ставим его.
-          size_t index2 = searchSignalSlowdown(resultElectronConductivity, index+40, resultMobility[1]-resultMobility[0]); // электроны
-          if(index2!=resultMobility.size())
-          {
-            extremumElectronIndex.push_back(index2);
-          }
-          else
-          {
-          extremumElectronIndex.push_back(index);
-          }
-        }
-      }
-      //cout << "middle\n";
 
-      index = searchSignificantPeak(resultHoleConductivity, 0, resultMobility[1]-resultMobility[0]); // тяжелые дырки
-      if(index!=resultMobility.size())
-      {
-          extremumHoleIndex.push_back(index);
-      }
+    map<long double, size_t> electronExtremumIndexes; // храним все экстремумы электронов спектра здесь
 
-      index = searchSignificantPeak(resultHoleConductivity, index+4, resultMobility[1]-resultMobility[0]); // легкие дырки
-      if(index!=resultMobility.size())
-      {
-          extremumHoleIndex.push_back(index);
-      }
-      else
-      {
-        if (extremumHoleIndex.size()!=0)
+    // сначала ищем все ярковыраженные пики и записываем их
+    for(size_t index=0;index<resultMobility.size();)
+    {
+        size_t new_index = searchSignificantPeak(resultElectronConductivity, index, resultMobility[1]-resultMobility[0]); // электроны
+        if(new_index<resultMobility.size()-5 && new_index>5)
         {
-        index = searchSignalSlowdown(resultHoleConductivity, extremumHoleIndex.back()+40, resultMobility[1]-resultMobility[0]); // легкие дырки
-        if(index!=resultMobility.size())
+            electronExtremumIndexes[fabs(fabs(resultElectronConductivity[new_index-4])-
+                    fabs(resultElectronConductivity[new_index+4]))]=new_index;
+        }
+        index=new_index+40;
+    }
+    // если ярковыраженных не нашлось - ищем замедления.
+    if(electronExtremumIndexes.size()==0)
+    {
+        for(size_t index=0;index<resultMobility.size();)
         {
-          extremumHoleIndex.push_back(index);
+            size_t new_index = searchSignalSlowdown(resultElectronConductivity, index, resultMobility[1]-resultMobility[0]); // электроны
+            if(new_index<resultMobility.size()-5 && new_index>5)
+            {
+                electronExtremumIndexes[fabs(fabs(resultElectronConductivity[new_index-4])-
+                        fabs(resultElectronConductivity[new_index+4]))]=new_index;
+            }
+            index=new_index+40;
         }
+    }
+
+    if(electronExtremumIndexes.size()>0)
+    {
+        auto t=electronExtremumIndexes.rbegin();
+        for(int i = 0; i<1 and i<electronExtremumIndexes.size();i++)
+        {
+            extremumElectronIndex.push_back((*t).second);
+            t++;
         }
-      }
+    }
+
+    sort(extremumElectronIndex.begin(),extremumElectronIndex.end());
+
+    map<long double, size_t> holeExtremumIndexes; // храним все экстремумы дырок спектра здесь
+
+    // сначала ищем все ярковыраженные пики и записываем их
+    for(size_t index=0;index<resultMobility.size();)
+    {
+        size_t new_index = searchSignificantPeak(resultHoleConductivity, index, resultMobility[1]-resultMobility[0]); // электроны
+        if(new_index<resultMobility.size()-5 && new_index>5)
+        {
+            holeExtremumIndexes[fabs(fabs(resultHoleConductivity[new_index-4])-
+                    fabs(resultHoleConductivity[new_index+4]))]=new_index;
+        }
+        index=new_index+40;
+    }
+    // если ярковыраженных не нашлось - ищем замедления.
+    if(holeExtremumIndexes.size()==0)
+    {
+        for(size_t index=0;index<resultMobility.size();)
+        {
+            size_t new_index = searchSignalSlowdown(resultHoleConductivity, index, resultMobility[1]-resultMobility[0]); // электроны
+            if(new_index<resultMobility.size()-5 && new_index>5)
+            {
+                holeExtremumIndexes[fabs(fabs(resultHoleConductivity[new_index-4])-
+                        fabs(resultHoleConductivity[new_index+4]))]=new_index;
+            }
+            index=new_index+40;
+        }
+    }
+
+    if(holeExtremumIndexes.size()>0)
+    {
+        auto t=holeExtremumIndexes.rbegin();
+        for(int i = 0; i<2 and i<holeExtremumIndexes.size();i++)
+        {
+            extremumHoleIndex.push_back((*t).second);
+            t++;
+        }
+    }
+    sort(extremumHoleIndex.begin(),extremumHoleIndex.end());
 
       //cout << "okay\n";
 

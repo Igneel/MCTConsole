@@ -143,20 +143,6 @@ int main(int argc, char *argv[])
     //p->setParamsType(ResCurveIndex->ItemIndex);
 
 
-    /*
-    eSamplingFRes = "100";
-    eBandWidthFRes= "10";
-    eAttenuationFRes= "20";
-    eLengthFilterRes= "50";
-
-    eSamplingFHall= "100";
-    eBandWidthFHall= "10";
-    eAttenuationFHall= "20";
-    eLengthFilterHall= "50";
-    */
-
-
-
     int PowPolinomHall=1, PowPolinomRes=2;
 
     p->setFilterParamsResistance(eSamplingFRes, eBandWidthFRes,
@@ -168,9 +154,9 @@ int main(int argc, char *argv[])
 
 
     // filter & extrapolation
-    p->filterData();
+    //p->filterData();
     //cout << "after filter\n";
-    p->extrapolateData(FILTERED_DATA,PowPolinomRes,PowPolinomHall);
+    //p->extrapolateData(FILTERED_DATA,PowPolinomRes,PowPolinomHall);
 
 
     // calculateTenzor
