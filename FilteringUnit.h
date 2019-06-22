@@ -14,7 +14,7 @@ public:
     TSignal & inY,TSignal & outB,
     TSignal & outY);
 
-    double FilterData (const std::vector<long double> &in,
+    long double FilterData(const std::vector<long double> &in,
     std::vector<long double> & out);
 
     void setFilterParams(unsigned int length,long double Fdisk, long double Fpropysk, long double Fzatyh);

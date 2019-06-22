@@ -20,9 +20,6 @@ TSignal * getPointerSxy(/*DataKind dataKind*/);
 
 	enum FeatType {ODD_FEAT, EVEN_FEAT};
 
-	MagneticFieldDependence(std::string current, std::string temperature, std::string SampleInventoryNumber,
-		std::string length, std::string width, std::string Thickness);
-
     MagneticFieldDependence(MyDataType current, MyDataType temperature, std::string SampleInventoryNumber,
         MyDataType length, MyDataType width, MyDataType Thickness);
 

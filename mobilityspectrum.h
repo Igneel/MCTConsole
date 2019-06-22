@@ -8,7 +8,7 @@ using namespace std;
 class mobilitySpectrum
 {
 private:
-    int PointPerInt;
+    unsigned long PointPerInt;
 
     typedef vector <long double> Data_spektr;
 
@@ -22,7 +22,7 @@ private:
     typedef vector< pair<long double, long double> > TLineSeries;
 
     unsigned long NumberOfPoints;
-    int Power_spektr,GridPoints;
+    unsigned long Power_spektr,GridPoints;
 
     Data_spektr MagField_spektr,GxxExp,GxyExp;
 
@@ -53,24 +53,24 @@ private:
     std::vector<PeakType> holePeakType;
     std::vector<PeakType> electronPeakType;
 
-    unsigned int  MaxPoints;
+    unsigned long MaxPoints;
 
     void  InitArray();
     void  InitArray2();
 
     void  GetCoef(const Data_spektr &A,const Data_spektr &X, const long double b,
         long double &p0, long double &p1, long double &p2);
-    void  GetLnLimits(int &Xmin, int &Xmax );
+    void  GetLnLimits(int &Xmin, int&Xmax );
 
     void SetLength (vector<vector<long double> > &v,const size_t size1,const size_t size2);
 
-    void  gram(const int N,const int m,const int l, Data_spektr & x, Data_spektr & f, mat & a);
-    void  gauss(const int N, mat & a, Data_spektr & x);
+    void  gram(const unsigned long N, const unsigned long m, const int l, Data_spektr & x, Data_spektr & f, mat & a);
+    void  gauss(const unsigned long N, mat & a, Data_spektr & x);
 
-    void  fi(const int n,const int m,const int l, Data_spektr & c, Data_spektr & x,
+    void  fi(const unsigned long n, const unsigned long m, const int l, Data_spektr & c, Data_spektr & x,
         const long double x1, long double &s);
 
-    void  BAS(const int n,const int m,const int L,const long double x1, Data_spektr & x, Data_spektr & t);
+    void  BAS(const unsigned long n, const unsigned long m, const long L, const long double x1, Data_spektr & x, Data_spektr & t);
 
     void  AddExpPoints(TLineSeries &ExpXX, TLineSeries &ExpXY);
 
@@ -81,14 +81,14 @@ private:
 
     void  MakeMNK(const bool a, TLineSeries &Gxx, TLineSeries &Gxy, TLineSeries &ExpXX, TLineSeries &ExpXY);
     void  MakeLagranj();
-    void  Tred2(const int n, Dat1 & d, Dat1 & e,
+    void  Tred2(const unsigned long n, Dat1 & d, Dat1 & e,
                      Dat2 & a, Dat2 & z, bool & fail);
-    void  Imtql2(const int n,const long double macheps, Dat1 & d, Dat1 & e,
+    void  Imtql2(const unsigned long n,const long double macheps, Dat1 & d, Dat1 & e,
                      Dat2 & z, bool & fail);
-    long double GetElem(const unsigned int j1, const int k1, const int i1);
+    long double GetElem(const unsigned int j1, const unsigned long k1, const unsigned long i1);
     void  MakeMatrC();
     void  MakeMatrA();
-    void  InverseMatrC(Dat2 & Ci,Dat2 & C,long double & Su,const int NP);
+    void  InverseMatrC(Dat2 & Ci, Dat2 & C, long double & Su, const unsigned long NP);
     long double S_s(const long double Mi);
 
     std::vector<long double> eigenValues;
@@ -97,7 +97,10 @@ private:
 
     size_t searchPeakRigthBorder(std::vector<long double> dh,std::vector<long double> d2h, size_t index);
     size_t searchPeakLeftBorder(std::vector<long double> dh,std::vector<long double> d2h, size_t index);
-    void constructPeakCriteria(PeaksCriteria & peaksCriteria, TStringList * tsl, const std::vector<long double> & resMob, const std::vector<long double> & resCond, int index, int i, int j);
+    void constructPeakCriteria(PeaksCriteria & peaksCriteria, TStringList * tsl,
+                               const std::vector<long double> & resMob,
+                               const std::vector<long double> & resCond,
+                               unsigned long index, unsigned long i, unsigned long j);
 
    void calculatePeakWeigth(PeaksCriteria & peaksCriteria,TStringList * tsl, 
   TSignal & resultMobility, TSignal & resultConductivity,
@@ -125,19 +128,19 @@ public:
     long double calculatePeaksWeigth(std::string filename);
     void  MobilitySpectrumFunc(TLineSeries &LineSeries1, TLineSeries &Series5);
 
-    long double getResultEY(const int i);
+    long double getResultEY(const unsigned long i);
 
-    long double getResultEX(const int i);
+    long double getResultEX(const unsigned long i);
 
-    long double getResultHY(const int i);
+    long double getResultHY(const unsigned long i);
 
-    long double getResultHX(const int i);
+    long double getResultHX(const unsigned long i);
 
     std::vector<long double> getEigenValues();
     std::vector< std::vector<long double> > getEigenVectors();
 
     mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx,
-                     Data_spektr &Exy,const int size);
+                     Data_spektr &Exy, unsigned long size);
 
     void getExtremums(TSignal & holeConcentration, TSignal & holeMobility, TSignal & electronConcentration, TSignal & electronMobility);
     void getExtremumHoleIndex(std::vector<size_t> &v);

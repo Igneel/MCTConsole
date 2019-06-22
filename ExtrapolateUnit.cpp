@@ -395,33 +395,33 @@ int curveFittingUniversal(long double * inX, long double *inY, const unsigned in
 				}
 	}}}
 
-	for (int i = 0; i < a; i++) {
+    for (auto i = 0u; i < a; i++) {
 		outKoef[i]=p[i]=determinant(delta[i],a)/d0;
 	}
 
 
 	delete[] p;
 	// прибираемся.
-	for (int i = 0; i < a; i++) {
+    for (auto i = 0u; i < a; i++) {
 		delete[] K5[i];
 	}
 
 	delete[] K5;
 
 
-	for (int i = 0; i < a+1; i++) {
+    for (auto i = 0u; i < a+1; i++) {
         delete[] K[i];
 	}
 	delete[] K;
 
 	delete[] Ks;
 
-	for (int i = 0; i < length; i++) {
+    for (auto i = 0u; i < length; i++) {
 		delete[] fullMatrix[i];
 	}
 	delete[] fullMatrix;
-	for (int i = 0; i < a; i++) {
-			for (int j = 0; j < a; j++) {
+    for (auto i = 0u; i < a; i++) {
+            for (auto j = 0u; j < a; j++) {
 				delete[] delta[i][j];
 		}
 				 delete[] delta[i];
@@ -476,10 +476,10 @@ int curveFittingUniversal(std::vector<long double> * inX, std::vector<long doubl
     }
 	std::vector<long double> p(a);
 
-	for(int i=0;i<a; ++i)
+    for(auto i=0u;i<a; ++i)
 	{
 
-		for (int j=0; j < a; ++j) {
+        for (auto j=0u; j < a; ++j) {
             delta[i][j].resize(a);
 		}
 	}
@@ -500,7 +500,7 @@ int curveFittingUniversal(std::vector<long double> * inX, std::vector<long doubl
 	x^a x^a-1 ...  x^0 y
 	*/
     for (auto i = 0u; i < lenght; ++i) {
-		for (int j = 0; j < a; ++j) {
+        for (auto j = 0u; j < a; ++j) {
 		// копируем значения в матрицу
 		// по столбцам, предпоследний - столбец единиц
 
@@ -522,27 +522,27 @@ int curveFittingUniversal(std::vector<long double> * inX, std::vector<long doubl
 	// Ks - столблец из 2*a строк, свободные члены.
 
 
-	for (int i = 0; i < a-1; ++i) {
-		for (int j = 0; j < a; ++j) {
+    for (auto i = 0u; i < a-1; ++i) {
+        for (auto j = 0u; j < a; ++j) {
 		K5[i][j]=K[i][j]; // копируем первые 2a-1 строк
 		}
 	}
 
 	// а 6ая строка - среднее арифметическое 6 и 7 строк
-	for (int i = 0; i < a; ++i) {
+    for (auto i = 0u; i < a; ++i) {
 		K5[a-1][i]=(K[a-1][i]+K[a][i])/2;
 	}
 
-	for (int i = 0; i < a-1; ++i) {
+    for (auto i = 0u; i < a-1; ++i) {
 		Ks[i]=K[i][a];
 	}
 	Ks[a-1]=(K[a-1][a]+K[a][a])/2;
 
 	long double d0=determinant(K5,a); // детерминант правилен +
 
-	for (int i = 0; i < a; ++i) {
-		for (int j = 0; j < a; ++j) {
-			for (int k = 0; k < a; ++k) {
+    for (auto i = 0u; i < a; ++i) {
+        for (auto j = 0u; j < a; ++j) {
+            for (auto k = 0u; k < a; ++k) {
 				if (k!=i)
 				{
 					// составляем матрицы по которым будем находить детерминанты для переменных.

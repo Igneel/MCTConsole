@@ -140,7 +140,7 @@ void  mobilitySpectrum::CS(Data_spektr& X, Data_spektr& F, Data_spektr& C, const
 long double mobilitySpectrum::Sp(Data_spektr & X, Data_spektr &F, Data_spektr & C, const long double x1)
 
 {
-    int i,j;
+    unsigned int i,j;
     long double A,B,D,Q,R,P;
 
 i = 1;
@@ -154,8 +154,8 @@ while (x1>X[i])
  R = x1-B;
  P = C[i];
  D = C[i+1];
- B=(F[i]-A)/Q-(D+2.0*P)*Q/3.0;
- D=(D-P)/3.0/Q;
+ B=(F[i]-A)/Q-(D+2.0L*P)*Q/3.0L;
+ D=(D-P)/3.0L/Q;
  return A+R*(B+R*(P+D*R));
 }
 
@@ -167,19 +167,18 @@ void  mobilitySpectrum::MakeInterpolate(TLineSeries &Gxx,TLineSeries& Gxy,
 {
     Data_spektr temp_l,temp_t,AGxx,AGxy,AField;
     long double sf,lm,p,p1;
-    int i,j;
-    int Lmin,Lmax,k;
-temp_l.resize(MaxPoints);
-temp_t.resize(MaxPoints);
-AGxx.resize(MaxPoints);
-AGxy.resize(MaxPoints);
-AField.resize(MaxPoints);
+    int Lmin,Lmax;
+    temp_l.resize(MaxPoints);
+    temp_t.resize(MaxPoints);
+    AGxx.resize(MaxPoints);
+    AGxy.resize(MaxPoints);
+    AField.resize(MaxPoints);
 
   //Формируем новые матрицы для расчета производных в точке В=0
   AField[0]=-MagField_spektr[1];
   AGxx[0]=GxxExp[1];
   AGxy[0]=-GxyExp[1];
-  for (i= 1; i<= NumberOfPoints;++i)
+  for (auto i= 1u; i<= NumberOfPoints;++i)
    {
     AField[i]=MagField_spektr[i-1];
     AGxx[i]=GxxExp[i-1];
@@ -206,16 +205,16 @@ AField.resize(MaxPoints);
    Gxy.clear();
 
    GetLnLimits(Lmin,Lmax);
-   SizeData=(Lmax-Lmin+1)*PointPerInt+1;
+   SizeData=static_cast<unsigned long>(Lmax-Lmin+1)*PointPerInt+1;
    // SizeData:=(Lmax-Lmin+1)*sizeof(ImageDat);
    // Надо будет проверить и посмотреть кто прав.
    InitArray();
-   k = 0;
-   for (i = 0;i<= (Lmax-Lmin); ++i )
+   auto k = 0u;
+   for (auto i = 0u;i<= static_cast<unsigned long>(Lmax-Lmin); ++i )
     {
-     lm = exp((Lmin+i)*logl(10));
+     lm = exp((static_cast<unsigned long>(Lmin)+i)*logl(10));
      sf = lm;
-     for (j = 1 ; j<= PointPerInt-1 ; ++j )
+     for (auto j = 1u; j<= PointPerInt-1 ; ++j )
       {
        IntMagField[k]=sf;
        IntGxx[k]=Sp(MagField_spektr,GxxExp,temp_l,sf);
@@ -224,7 +223,7 @@ AField.resize(MaxPoints);
        Gxy.push_back(make_pair(IntMagField[k],IntGxy[k]));
        //Gxx.AddXY(IntMagField[k],IntGxx[k],"",clTeeColor);
        //Gxy.AddXY(IntMagField[k],IntGxy[k],"",clTeeColor);
-       sf = lm*exp(static_cast<long double>(j)/static_cast<long double>(PointPerInt)*log(10));
+       sf = lm*exp(static_cast<long double>(j)/static_cast<long double>(PointPerInt)*logl(10));
        if ( sf>MagField_spektr[NumberOfPoints] ) break;
        ++k;
       }
@@ -272,11 +271,11 @@ void  mobilitySpectrum::MakeMNK( bool a,TLineSeries& Gxx, TLineSeries& Gxy, TLin
       InitArray();  // выделяем его---------------------------------------------------------------
 
       k = 0;
-      for (int i= 0 ; i<= (Lmax-Lmin); ++i )
+      for (auto i= 0u; i<= (Lmax-Lmin); ++i )
        {
        lm = exp((Lmin+i)*logl(10));
        sf = lm;
-       for (int j = 1 ; j<= PointPerInt-1; ++j )
+       for (auto j = 1u; j<= PointPerInt-1; ++j )
         {
         IntMagField[k]=sf;
 
@@ -303,7 +302,7 @@ void  mobilitySpectrum::MakeMNK( bool a,TLineSeries& Gxx, TLineSeries& Gxy, TLin
     } else // тут это, такая картина - ежели идет эта ветка то sf никак не определен...
     { // но по факту эта ветка никогда не вызывается.
        sf=0;
-     for (int i= 0 ;i <= NumberOfPoints; ++i )
+     for (auto i= 0u;i <= NumberOfPoints; ++i )
       {
         fi(NumberOfPoints,Power_spektr,Kind,coef_l,MagField_spektr,sf,GxxExp[i]);
         fi(NumberOfPoints,Power_spektr,Kind,coef_t,MagField_spektr,sf,GxyExp[i]);
@@ -314,9 +313,10 @@ void  mobilitySpectrum::MakeMNK( bool a,TLineSeries& Gxx, TLineSeries& Gxy, TLin
 
 
 
-void  mobilitySpectrum::BAS(const int n, const int m, const int L, const long double x1, Data_spektr & x, Data_spektr & t)
+void  mobilitySpectrum::BAS(const unsigned long n, const unsigned long m, const long L, const long double x1,
+                            Data_spektr & x, Data_spektr & t)
 {
-    int k;
+    unsigned int k;
     long double z,r,denominator;
 
  denominator=(x[n]-x[0]);
@@ -348,31 +348,30 @@ void  mobilitySpectrum::BAS(const int n, const int m, const int L, const long do
   }
  }
 
-void  mobilitySpectrum::gram(const int N,const int m,const int l,
+void  mobilitySpectrum::gram(const unsigned long N,const unsigned long m,const int l,
                              Data_spektr & x, Data_spektr & f, mat & a)
 {
     // Работает не правильно ибо возвращает нам тонну нулей.
-    int i,j,k;
     long double q,r,s;
     Data_spektr t;
     vector< vector <long double> > p;
 
   SetLength(p,MaxPoints,5*MaxPoints);
   t.resize(MaxPoints);
- for (i= 0 ; i<= N; ++i )
+ for (auto i= 0u; i<= N; ++i )
  {
    BAS(N,m,l,x[i],x,t);
-   for (j = 0 ; j<= m; ++j )
+   for (auto j = 0u; j<= m; ++j )
      p[j][i]=t[j];
  }
- for (k = 0 ; k<= m; ++k )
+ for (auto k = 0u; k<= m; ++k )
  {
    r = 0;
-  for (j = k ; j<= m; ++j )
+  for (auto j = k; j<= m; ++j )
   {
   s = 0;
   r = 0;
-   for (i= 0 ; i<= N;++i )
+   for (auto i= 0u; i<= N;++i )
    {
     q = p[k][i];
     s +=q*p[j][i];
@@ -386,47 +385,45 @@ void  mobilitySpectrum::gram(const int N,const int m,const int l,
  }
 }
 
-void  mobilitySpectrum::gauss(const int N, mat & a, Data_spektr & x)
+void  mobilitySpectrum::gauss(const unsigned long N, mat & a, Data_spektr & x)
  {
-    int i,j,k,k1,n1;
     long double r,s;
-   n1 = N+1;
-   for (k = 0 ;k <= N;++k )
+   auto n1 = N+1;
+   for (auto k =0u;k <= N;++k )
    {
-        k1 = k+1;
+        auto k1 = k+1;
         s = a[k][k];
 
-        if ( s == 0 )
+        if ( s == 0.0L )
             s = 1;
 
-        for (j = k1 ; j<= n1; ++j )
+        for (auto j = k1 ; j<= n1; ++j )
           a[k][j]=a[k][j]/s;
-        for (i= k1 ; i<= N; ++i )
+        for (auto i= k1 ; i<= N; ++i )
         {
           r = a[i][k];
-          for (j = k1 ; j<= n1; ++j )
+          for (auto j = k1 ; j<= n1; ++j )
           a[i][j]=a[i][j]-a[k][j]*r;
         }
     }
-     for (i= N ; i>= 0; --i )
+     for (auto i= static_cast<long>(N); i>= 0; --i )
      {
       s = a[i][n1];
-      for (j = i+1 ; j<= N; ++j )
+      for (auto j = i+1 ; j<= N; ++j )
       s = s-a[i][j]*x[j];
       x[i]=s;
     }
   }
 
-void  mobilitySpectrum::fi(const int n, const int m, const int l, Data_spektr & c, Data_spektr & x,
+void  mobilitySpectrum::fi(const unsigned long n, const unsigned long m, const int l, Data_spektr & c, Data_spektr & x,
     const long double x1, long double& s)
 {
-    int i;
     Data_spektr t;
- t.resize(MaxPoints);
- s = c[0];
- BAS(n,m,l,x1,x,t);
- for (i= 1 ; i<= m; ++i )
-     s = s+c[i]*t[i];
+    t.resize(MaxPoints);
+    s = c[0];
+    BAS(n,m,l,x1,x,t);
+    for (auto i= 1u; i<= m; ++i )
+        s = s+c[i]*t[i];
 }
 
 
@@ -434,7 +431,7 @@ void  mobilitySpectrum::MakeLagranj()
 {
   long double X,Y,Y1,Y2;
   X = MagField_spektr[NumberOfPoints]-(MagField_spektr[NumberOfPoints]-
-        MagField_spektr[NumberOfPoints-1])/4.0;
+        MagField_spektr[NumberOfPoints-1])/4.0L;
   GetCoef(GxxExp,MagField_spektr,X,Y,Y1,Y2);
   GxxExp[NumberOfPoints+1]=GxxExp[NumberOfPoints];
   GxxExp[NumberOfPoints]=Y;
@@ -448,29 +445,28 @@ void  mobilitySpectrum::MakeLagranj()
 
 
 
-void  mobilitySpectrum::Tred2(const int n, Dat1 & d,Dat1 & e,
+void  mobilitySpectrum::Tred2(const unsigned long n, Dat1 & d,Dat1 & e,
                  Dat2 & a,Dat2 & z, bool & fail)
 {
-    int i,j,k,l;
-  long double f,g,h,hh;
-fail = false;
-for (i = 1 ; i<= n; ++i )
-  for (j = 1 ; j<= i; ++j )
-    {
-        z[i][j] = a[i][j];
-    }
+    long double f,g,h,hh;
+    fail = false;
+    for (auto i = 1u; i<= n; ++i )
+      for (auto j = 1u; j<= i; ++j )
+        {
+            z[i][j] = a[i][j];
+        }
 
-for (i = n ; i>= 2; --i )
+for (auto i = n ; i>= 2; --i )
 {
-  l = i-2;
+  auto l = i-2;
   f = z[i][i-1];
   g = 0;
-  for (k = 1 ; k<= l; ++k ) g = g+z[i][k]*z[i][k];
+  for (auto k = 1u; k<= l; ++k ) g = g+z[i][k]*z[i][k];
 
   h = g+f*f;
 
   ++l;
-  if ( f>=0.0 )
+  if ( f>=0.0L )
     { e[i]=-sqrt(h);
         g=-sqrt(h);
     }
@@ -481,26 +477,26 @@ for (i = n ; i>= 2; --i )
         }
   h = h-f*g;
   z[i][i-1]=f-g;
-  f = 0.0;
+  f = 0.0L;
 
-  for (j = 1 ; j<= l; ++j )
+  for (auto j = 1u; j<= l; ++j )
   {
     z[j][i]=z[i][j]/h;
-    g = 0.0;
-    for (k = 1 ; k<= j; ++k ) g = g+z[j][k]*z[i][k];
-    for (k = j+1 ; k<= l; ++k ) g = g+z[k][j]*z[i][k];
+    g = 0.0L;
+    for (auto k = 1u; k<= j; ++k ) g = g+z[j][k]*z[i][k];
+    for (auto k = j+1; k<= l; ++k ) g = g+z[k][j]*z[i][k];
     e[j]=g/h;
     f = f+g*z[j][i];
   }
 
   hh = f/(h+h);
 //  matrix reduce
-  for (j = 1 ; j<= l; ++j )
+  for (auto j = 1u; j<= l; ++j )
   {
     f = z[i][j];
 g = e[j]-hh*f;
 e[j]=e[j]-hh*f;
-    for (k = 1 ; k<= j; ++k )
+    for (auto k = 1u; k<= j; ++k )
       z[j][k]=z[j][k]-f*e[k]-g*z[i][k];
   }
 
@@ -511,21 +507,21 @@ e[j]=e[j]-hh*f;
   d[1] = 0;
   e[1] = 0;
 // { store transformation matrix }
-  for (i = 1 ; i<= n; ++i )
+  for (auto i = 1u; i<= n; ++i )
   {
-    l = i-1;
-    if ( d[i]!=0. )
+    auto l = i-1;
+    if ( d[i]!=0.0L )
     {
-      for (j = 1 ; j<= l; ++j )
+      for (auto j = 1u; j<= l; ++j )
       {
-        g = 0.;
-        for (k = 1 ; k<= l; ++k ) g = g+z[i][k]*z[k][j];
-        for (k = 1 ; k<= l; ++k ) z[k][j]=z[k][j]-g*z[k][i];
+        g = 0.0L;
+        for (auto k = 1u; k<= l; ++k ) g = g+z[i][k]*z[k][j];
+        for (auto k = 1u; k<= l; ++k ) z[k][j]=z[k][j]-g*z[k][i];
       }
     }
       d[i]=z[i][i];
       z[i][i]=1;
-      for (j = 1 ; j<= l; ++j ) {
+      for (auto j = 1u; j<= l; ++j ) {
         z[i][j]=0;
         z[j][i]=0;
       }
@@ -581,20 +577,20 @@ e[j]=e[j]-hh*f;
    1.04633771265e9     -1.00974740462e-5
    1.01000000980e12     9.99949513813e-1                   }
 */
-void  mobilitySpectrum::Imtql2(const int n, const long double macheps, Dat1 & d, Dat1 & e,
+void  mobilitySpectrum::Imtql2(const unsigned long n, const long double macheps, Dat1 & d, Dat1 & e,
                  Dat2 & z, bool & fail)
 // label Test,Cont,Fail_exit;
 {
-int i,ia,j,k,m,its;
+unsigned long i,ia,j,k,m,its;
 long double h,c,p,q,s,t,u;
 
 
 fail = false;
-for (i= 2 ; i<= n; ++i )
+for (auto i= 2u; i<= n; ++i )
     e[i-1]=e[i];
-e[n]=0.0;
+e[n]=0.0L;
 k = n-1;
-for (j = 1 ; j<= n; ++j )
+for (auto j = 1u; j<= n; ++j )
 {
   its = 0;
 
@@ -616,14 +612,14 @@ Cont:
         }
     ++its;
 // { formation of shift }
-    q = (d[j+1]-u)/(2.0*e[j]);
-    t = sqrt(1.0+q*q);
-    if ( q<0.0 )
+    q = (d[j+1]-u)/(2.0L*e[j]);
+    t = sqrt(1.0L+q*q);
+    if ( q<0.0L)
         q = d[m]-u+e[j]/(q-t);
     else q = d[m]-u+e[j]/(q+t);
-    u = 0.;
-    s = 1.0;
-    c = 1.0;
+    u = 0.0L;
+    s = 1.0L;
+    c = 1.0L;
 
     for (i= m-1 ; i>= j; --i )
     {
@@ -632,22 +628,22 @@ Cont:
       if ( fabs(p)>=fabs(q))
       {
         c = q/p;
-        t = sqrt(c*c+1.0);
+        t = sqrt(c*c+1.0L);
         e[i+1]=p*t;
-        s = 1./t;
+        s = 1.0L/t;
         c = c*s;
       }
       else
       {
         s = p/q;
-        t = sqrt(s*s+1.0);
+        t = sqrt(s*s+1.0L);
         e[i+1]=q*t;
-        c = 1./t;
+        c = 1.0L/t;
         s = s*c;
       }
 
       q = d[i+1]-u;
-      t=(d[i]-q)*s+2.0*c*h;
+      t=(d[i]-q)*s+2.0L*c*h;
       u = s*t;
       d[i+1]=q+u;
       q = c*t-h;
@@ -662,7 +658,7 @@ Cont:
     } //{ i }
     d[j]=d[j]-u;
     e[j]=q;
-    e[m]=0.;
+    e[m]=0.0L;
     goto Test;
   } //{ m!=j }
 } //{ j }
@@ -690,7 +686,7 @@ for (i= 1 ; i<= n; ++i )
 } //{ i }
 } //{ Imtql2 }
 
-long double mobilitySpectrum::GetElem(const unsigned int j1,const int k1,const int i1)
+long double mobilitySpectrum::GetElem(const unsigned int j1,const unsigned long k1,const unsigned long i1)
  {
       long double s;
     s = 0;
@@ -722,8 +718,8 @@ void  mobilitySpectrum::MakeMatrC()
     Cl_t[j][k] = 0;
    }
 
- for (int j = 1 ; j<= NumberOfPoints; ++j )
- for (int k = 1 ; k<= NumberOfPoints; ++k )
+ for (auto j = 1u; j<= NumberOfPoints; ++j )
+ for (auto k = 1u; k<= NumberOfPoints; ++k )
   {
    if ( j==1 )
    {
@@ -740,45 +736,44 @@ void  mobilitySpectrum::MakeMatrC()
 
 void  mobilitySpectrum::MakeMatrA()
  {
-  for (int j = 1 ; j<= NumberOfPoints; ++j)
-  for (int k = 1 ; k<= NumberOfPoints; ++k)
+  for (auto j = 1u; j<= NumberOfPoints; ++j)
+  for (auto k = 1u; k<= NumberOfPoints; ++k)
   {
     Am[j][k]=0;
     }
 
-  for (int i= 1 ; i<= NumberOfPoints; ++i )
-   for (int j = 1 ; j<= NumberOfPoints; ++j )
+  for (auto i= 1u; i<= NumberOfPoints; ++i )
+   for (auto j = 1u; j<= NumberOfPoints; ++j )
     if ((i+j)%2==1)
-      for (int k = 1 ; k<= NumberOfPoints; ++k )
+      for (auto k = 1u; k<= NumberOfPoints; ++k )
            Am[i][j]=Am[i][j]+Gxy_sp[k]*Cl_t[k][(i+j-1) >> 1];
                else
-       for (int k = 1 ; k<= NumberOfPoints; ++k )
+       for (auto k = 1u; k<= NumberOfPoints; ++k )
            Am[i][j]=Am[i][j]+Gxx_sp[k]*Cr_t[k][(i+j) >> 1];
  }
 
 //if su=0 then det(C)=0
-void  mobilitySpectrum::InverseMatrC(Dat2 & Ci,Dat2 & C,long double & Su,const int NP)
+void  mobilitySpectrum::InverseMatrC(Dat2 & Ci,Dat2 & C,long double & Su,const unsigned long NP)
 {
     Dat2 at;
     long double sr;
 
     SetLength(at,2*MaxPoints+1,2*MaxPoints+1); // SetLength(at,MaxPoints+1,2*MaxPoints+1);
     for (auto i= 1u; i<= NP; ++i )
-        for (int j = 1 ; j<= NP; ++j )
+        for (auto j = 1u; j<= NP; ++j )
             at[i][j]=Ci[i][j];
 
     for (auto i = 1u; i<= NP; ++i )
     {
-        for (int j = NP+1 ; j<= 2*NP; ++j )
+        for (auto j = NP+1 ; j<= 2*NP; ++j )
             at[i][j]=0;
         at[i][i+NP]=1; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
-    int j;
-    for (int k = 1 ;k <= NP; ++k )
+    for (auto k = 1u;k <= NP; ++k )
     {
         Su = at[k][k];
-        j = k;
-        for (int i= k+1 ; i<= NP; ++i)
+        auto j = k;
+        for (auto i= k+1 ; i<= NP; ++i)
         {
             sr = at[i][k];
             if ( fabs(sr)>fabs(Su) )
@@ -787,36 +782,36 @@ void  mobilitySpectrum::InverseMatrC(Dat2 & Ci,Dat2 & C,long double & Su,const i
                 j = i;
             }
         }
-        if ( Su==0 )
+        if ( Su==0.0L )
             return;//--------------------
         if ( j!=k )
-            for (int i= k ; i<= 2*NP; ++i )
+            for (auto i= k ; i<= 2*NP; ++i )
             {
                 sr = at[k][i];
                 at[k][i]=at[j][i];
                 at[j][i]=sr;
             }
-        for (int j = k+1 ; j<= 2*NP; ++j )
+        for (auto j = k+1 ; j<= 2*NP; ++j )
             at[k][j]=at[k][j]/Su;
-        for (int i = k+1 ; i<= NP; ++i )
+        for (auto i = k+1 ; i<= NP; ++i )
         {
             sr = at[i][k];
-            for (int j = k+1 ; j<= 2*NP; ++j )
+            for (auto j = k+1 ; j<= 2*NP; ++j )
                 at[i][j]=at[i][j]-at[k][j]*sr;
         }
     }
-    if ( Su!=0 )
-    for (int j = NP+1 ; j<= 2*NP; ++j )
-        for (int i = NP-1 ; i>= 1; --i )
+    if ( Su!=0.0L )
+    for (auto j = NP+1 ; j<= 2*NP; ++j )
+        for (auto i = NP-1 ; i>= 1; --i )
         {
             sr = at[i][j];
-            for (int k = i+1 ; k<= NP; ++k )
+            for (auto k = i+1 ; k<= NP; ++k )
                 sr = sr-at[k][j]*at[i][k];
             at[i][j]=sr;
         }
-    if ( Su!=0 )
-        for (int i= 1 ; i<= NP; ++i )
-            for(int j = 1 ; j<= NP; ++j )
+    if ( Su!=0.0L )
+        for (auto i= 1u; i<= NP; ++i )
+            for(auto j = 1u; j<= NP; ++j )
                 C[i][j]=at[i][j+NP];
 }
 
@@ -886,10 +881,10 @@ long double mobilitySpectrum::S_s(const long double Mi)
 void  mobilitySpectrum::MobilitySpectrumFunc(TLineSeries& LineSeries1, TLineSeries& Series5)
 {
    long double Sf,lm;
-   int j,k,i;
+
    int Lmin,Lmax;
 
-   for (i = 0 ; i<= NumberOfPoints; ++i )
+   for (auto i = 0u; i<= NumberOfPoints; ++i )
     {
      B_spektr[i+1]=MagField_spektr[i];
      Gxx_sp[i+1]=GxxExp[i];
@@ -898,21 +893,21 @@ void  mobilitySpectrum::MobilitySpectrumFunc(TLineSeries& LineSeries1, TLineSeri
    ++NumberOfPoints;
    MakeMatrC();
    InverseMatrC(Cr,Cr_t,Sf,NumberOfPoints);
-   if ( Sf==0 )
+   if ( Sf==0.0L )
    {
      ;//ShowMessage("Определитель равен нулю!");
      --NumberOfPoints;
      return;
    }
-   if ( MagField_spektr[0]==0 )
+   if ( MagField_spektr[0]==0.0L )
    {
-        for (j = 1 ;j <= NumberOfPoints-1; ++j )
-        for (k = 1 ; k<= NumberOfPoints-1; ++k )
+        for (auto j = 1u;j <= NumberOfPoints-1; ++j )
+        for (auto k = 1u; k<= NumberOfPoints-1; ++k )
             Cm[j][k]=Cl[j][k+1];
 
         InverseMatrC(Cm,Cm_t,Sf,NumberOfPoints-1);
-        for (j = 1 ; j<= NumberOfPoints; ++j )
-            for (k = 1 ; k<= NumberOfPoints;++k )
+        for (auto j = 1u; j<= NumberOfPoints; ++j )
+            for (auto k = 1u; k<= NumberOfPoints;++k )
                 if ( j==1 )
                     Cl_t[1][k]=0;
                 else if ( k==NumberOfPoints )
@@ -943,12 +938,12 @@ void  mobilitySpectrum::MobilitySpectrumFunc(TLineSeries& LineSeries1, TLineSeri
    SizeData=(Lmax-Lmin+1)*PointPerInt+1; // возможно тут придется домножать на размер элемента
    // впрочем нет - там же сейчас другая функция.
    InitArray2();
-   k = 0;
-   for (i = 0 ;i <= (Lmax-Lmin); ++i )
+   auto k = 0u;
+   for (auto i = 0u;i <= (Lmax-Lmin); ++i )
     {
      lm = exp((Lmin+i)*logl(10));
      Sf = lm;
-     for (j = 1 ; j<= PointPerInt-1; ++j )
+     for (auto j = 1u; j<= PointPerInt-1; ++j )
       {
        Mobility[k]=Sf;
        Spectr_e[k]=S_s(-Sf);
@@ -1029,22 +1024,22 @@ with chtSpectr )
 /////////////////////// КОНЕЦ "ХОЛЛ. ПОДВИЖНОСТЬ"///////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
-long double mobilitySpectrum::getResultEY(const int i)
+long double mobilitySpectrum::getResultEY(const unsigned long i)
 {
   return electronMobilitySpectrum.operator [](i).second; // YValue[i];
 }
 
-long double  mobilitySpectrum::getResultEX(const int i)
+long double  mobilitySpectrum::getResultEX(const unsigned long i)
 {
   return electronMobilitySpectrum.operator [](i).first;
 }
 
-long double mobilitySpectrum::getResultHY(const int i)
+long double mobilitySpectrum::getResultHY(const unsigned long i)
 {
   return holeMobilitySpectrum.operator [](i).second;
 }
 
-long double mobilitySpectrum::getResultHX(const int i)
+long double mobilitySpectrum::getResultHX(const unsigned long i)
 {
   return holeMobilitySpectrum.operator [](i).first;
 }
@@ -1058,7 +1053,7 @@ size_t mobilitySpectrum::getResultSize()
     return electronMobilitySpectrum.size();
 }
 
-mobilitySpectrum::mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx, Data_spektr &Exy, int size)
+mobilitySpectrum::mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx, Data_spektr &Exy, unsigned long size)
 {
     PointPerInt=50*50; // 50*50
     MaxPoints = size;
@@ -1116,7 +1111,7 @@ mobilitySpectrum::mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx
     SetLength(Cm,MaxPoints+1,MaxPoints+1);
     SetLength(Cm_t,MaxPoints+1,MaxPoints+1);
 
-    for (int i = 0 ; i< MaxPoints; ++i )
+    for (auto i = 0u; i< MaxPoints; ++i )
     {
         MagField_spektr[i]=MagneticFieldP[i];
         GxxExp[i]=Exx[i];
@@ -1126,7 +1121,7 @@ mobilitySpectrum::mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx
     //MakeInterpolate(Gxx,Gxy,ExpXX,ExpXY);
     MakeMNK(true,Gxx,Gxy,ExpXX,ExpXY);
     MobilitySpectrumFunc(electronMobilitySpectrum,holeMobilitySpectrum);
-    for (size_t i = 0; i < electronMobilitySpectrum.size(); ++i)
+    for (auto i = 0u; i < electronMobilitySpectrum.size(); ++i)
     {
       resultElectronConductivity.push_back(electronMobilitySpectrum.operator [](i).second);
       resultHoleConductivity.push_back(holeMobilitySpectrum.operator [](i).second);
@@ -1184,7 +1179,7 @@ mobilitySpectrum::mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx
     if(electronExtremumIndexes.size()>0)
     {
         auto t=electronExtremumIndexes.rbegin();
-        for(int i = 0; i<1 and i<electronExtremumIndexes.size();i++)
+        for(auto i = 0u; i<1 and i<electronExtremumIndexes.size();i++)
         {
             extremumElectronIndex.push_back((*t).second);
             t++;
@@ -1240,7 +1235,7 @@ mobilitySpectrum::mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx
     if(holeExtremumIndexes.size()>0)
     {
         auto t=holeExtremumIndexes.rbegin();
-        for(int i = 0; i<2 and i<holeExtremumIndexes.size();i++)
+        for(auto i = 0u; i<2 and i<holeExtremumIndexes.size();i++)
         {
             extremumHoleIndex.push_back((*t).second);
             t++;
@@ -1271,7 +1266,7 @@ mobilitySpectrum::mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx
 
 long double mobilitySpectrum::calcConcentrationFromGp(long double G_p, long double Mu)
 {
-    long double electronCharge=1.60217656535E-19;// Кл
+    long double electronCharge=1.60217656535E-19L;// Кл
     return G_p/(Mu*electronCharge);
 }
 
@@ -1296,7 +1291,7 @@ void mobilitySpectrum::getExtremums(TSignal & holeConcentration, TSignal & holeM
 
 size_t mobilitySpectrum::searchSignalSlowdown(TSignal &y, size_t startPosition, long double h)
 {
-  size_t size=y.size();
+    auto size=y.size();
     /*
     Функция должна реагировать на замедление изменения сигнала.
     Т.е. на малозаметный пик.
@@ -1304,17 +1299,17 @@ size_t mobilitySpectrum::searchSignalSlowdown(TSignal &y, size_t startPosition, 
     if(startPosition>=size)
         return size;
 
-      int dsize=size-2;
-      size_t d2size=dsize-2;
+      auto dsize=size-2;
+      auto d2size=dsize-2;
       // Посчитаем производную методом конечных разностей
       // формула df/dx=1/h*(2*f(x+h)-f(x+2h)/2-3/2*f(x))
 
       // формула df/dx=(f(x+h)-f(x-h))/2/h;
       std::vector<long double> dY(size);
 
-      for(int i =0;i<dsize;i++)
+      for(auto i =0u;i<dsize;i++)
       {
-        dY[i]=(y[i+2]-y[i])/2.0/h;
+        dY[i]=(y[i+2]-y[i])/2.0L/h;
       }
 
       std::vector<long double> d2Y(size);
@@ -1325,7 +1320,7 @@ size_t mobilitySpectrum::searchSignalSlowdown(TSignal &y, size_t startPosition, 
         d2Y[i]=(y[i]-2*y[i+1]+y[i+2])/h/h;
       }
 
-      for (int i = startPosition; i < dsize-1; ++i)
+      for (auto i = startPosition; i < dsize-1; ++i)
         {
             /*
             Поиск такой:
@@ -1340,11 +1335,11 @@ size_t mobilitySpectrum::searchSignalSlowdown(TSignal &y, size_t startPosition, 
             --i;
             // Теперь проверим остальные условия - вторая производная должна изменить знак.
             // Вероятно стоит расширить диапазон поиска до +-10 значений
-            if (i+10<dsize-1 && i-10>=0 && (d2Y[i-10]>0 && d2Y[i+10]<0) )
+            if (i+10<dsize-1 && i>=10 && (d2Y[i-10]>0 && d2Y[i+10]<0) )
             {
                 return i;
             }
-            if( i<(int)startPosition)
+            if( i<startPosition)
             {
             return size;
             }
@@ -1451,16 +1446,19 @@ size_t mobilitySpectrum::searchPeakRigthBorder(std::vector<long double> dh,std::
   return j;
 }
 
-void mobilitySpectrum::constructPeakCriteria(PeaksCriteria & peaksCriteria, TStringList * tsl, const std::vector<long double> & resMob, const std::vector<long double> & resCond, int index, int i, int j)
+void mobilitySpectrum::constructPeakCriteria(PeaksCriteria & peaksCriteria, TStringList * tsl,
+                                             const std::vector<long double> & resMob,
+                                             const std::vector<long double> & resCond,
+                                             unsigned long index, unsigned long i, unsigned long j)
 {
-  long double peakHeigh = resCond[index]-(resCond[i]+resCond[j])/2.0;
+  long double peakHeigh = resCond[index]-(resCond[i]+resCond[j])/2.0L;
   long double peakWidth = resultMobility[j]-resultMobility[i];
   long double symmetri=0;
   long double peakVelocityR=0;
   long double peakVelocity2R=0;
   long double peakVelocityL=0;
   long double peakVelocity2L=0;
-  if(index+(i+j)/4+1 < (int)resultMobility.size() && index-(i+j)/4 >=0)
+  if(index+(i+j)/4+1 < resultMobility.size() && index>=(i+j)/4)
   {
     symmetri = resCond[i]-resCond[j];
     peakVelocityR = fabs(resCond[index+(i+j)/4]-resCond[index+(i+j)/4+1]);
@@ -1470,7 +1468,7 @@ void mobilitySpectrum::constructPeakCriteria(PeaksCriteria & peaksCriteria, TStr
     peakVelocity2L = peakVelocityL/(resultMobility[index-(i+j)/4]-resultMobility[index-(i+j)/4+1]);
 
   }
-  if(index+(i+j)/4+1 >= (int)resultMobility.size() && index > 10)
+  if(index+(i+j)/4+1 >= resultMobility.size() && index > 10)
   {
     size_t t=resultMobility.size()-index-2;
     peakVelocityR = fabs(resCond[index+t]-resCond[index+t+1]);
@@ -1499,9 +1497,9 @@ void mobilitySpectrum::calculatePeakWeigth(PeaksCriteria & peaksCriteria,TString
   TSignal & resultMobility, TSignal & resultConductivity,
   std::vector<long double> & d, std::vector<long double> & d2, size_t extremumIndex)
 {
-  size_t index=extremumIndex;
-  int i=searchPeakLeftBorder(d,d2,index);
-  size_t j=searchPeakRigthBorder(d,d2,index);
+  auto index=extremumIndex;
+  auto i=searchPeakLeftBorder(d,d2,index);
+  auto j=searchPeakRigthBorder(d,d2,index);
   constructPeakCriteria(peaksCriteria,tsl, resultMobility, resultConductivity,index,i,j);
 
   peaksCriteria.peakLeftBorderFirstDerivative=d[i+1];

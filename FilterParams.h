@@ -9,8 +9,7 @@ public:
 	FilterParams();
     FilterParams(MyDataType samplingFrequecy, MyDataType bandwidthFrequency,
                  MyDataType attenuationFrequency, long length);
-    FilterParams(std::string samplingFrequecy,std::string bandwidthFrequency,
-                 std::string attenuationFrequency, std::string length);
+
     void setFilterParams(MyDataType samplingFrequecy, MyDataType bandwidthFrequency,
                          MyDataType attenuationFrequency, long length);
 

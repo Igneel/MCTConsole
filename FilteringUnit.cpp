@@ -1,5 +1,6 @@
 //---------------------------------------------------------------------------
 #include "FilteringUnit.h"
+#include <algorithm>
 
 FilterLowBand::FilterLowBand(unsigned int length,long double Fdisk, long double Fpropysk, long double Fzatyh)
 {
@@ -51,18 +52,18 @@ void FilterLowBand::setFilterParams(unsigned int length,long double Fdisk, long 
     calculateImpulseResponse(length, Fdisk, Fpropysk, Fzatyh);
 }
 
-double FilterLowBand::FilterData (const std::vector<long double> &in, std::vector<long double> & out)
+long double FilterLowBand::FilterData (const std::vector<long double> &in, std::vector<long double> & out)
 {
     //Фильтрация входных данных
-    unsigned int dataSize=in.size();
+    auto dataSize=in.size();
     out.resize(dataSize);
-    for (unsigned int i=0; i<dataSize; ++i)
+    for (auto i=0u; i<dataSize; ++i)
     {
         out[i]=0.0L;
         for (unsigned int j=0; j<=(i>N-1?N-1:i); ++j)// та самая формула фильтра
             out[i]+= H[j]*in[i-j];
     }
-    return (N-1.0)/2.0;
+    return (N-1.0L)/2.0L;
 }
 
 void FilterLowBand::FilterDataWithAutoShift(TSignal & inB,
@@ -76,8 +77,10 @@ void FilterLowBand::FilterDataWithAutoShift(TSignal & inB,
     }
     outY.resize(lengthMassive);
 
-    double k=FilterData(inY,outY); // вызываем фильтр
-    k*=(max_elem(inB)-min_elem(inB))/(double)lengthMassive;// вычисляем сдвиг фаз
+    long double k=FilterData(inY,outY); // вызываем фильтр
+    k*=(max_element(inB.begin(),inB.end())
+        - min_element(inB.begin(),inB.end()))
+        /static_cast<long double>(lengthMassive); // вычисляем сдвиг фаз
     // разность максимума и минимума на длину массива
     outB.resize(lengthMassive);
     for(auto i=0u;i<lengthMassive;i++) // выводим
@@ -195,7 +198,9 @@ long double Fpropysk,long double Fzatyh)
     }
     outY.resize(lengthMassive);
     long double k=Filter(inY,outY,lengthFilter,Fdisk,Fpropysk,Fzatyh); // вызываем фильтр
-    k*=(max_elem(inB)-min_elem(inB))/(long double)lengthMassive;// вычисляем сдвиг фаз
+    k*=(max_element(inB.begin(),inB.end())
+        - min_element(inB.begin(),inB.end()))
+        /static_cast<long double>(lengthMassive); // вычисляем сдвиг фаз
     // разность максимума и минимума на длину массива
 
 //----------------------------------------------

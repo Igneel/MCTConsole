@@ -38,11 +38,11 @@ public:
       VesGxy=nVesGxy;
 
     }
-    int RunMultizoneFeat (const std::vector<long double> LowBound,const  std::vector<long double> UpBound,
-  const InDataSpectr MagSpectr,const  InDataSpectr GxxIn,const  InDataSpectr GxyIn,
+    int RunMultizoneFeat (const std::vector<long double> LowBound, const  std::vector<long double> UpBound,
+  const InDataSpectr MagSpectr, const  InDataSpectr GxxIn, const  InDataSpectr GxyIn,
   MyData_spektr & outGxx, MyData_spektr & outGxy,
   TStatistic & outValues,
-  int numberOfCarrierTypes);
+  unsigned int numberOfCarrierTypes);
 
 private:
 
@@ -57,7 +57,7 @@ private:
 
      void Optimiz_hall8();
      void btnFeatMultiClick();
-     void Statistic(const DataValue & mass, std::vector<long double> & ResulitsForStatistic, int m,int n);
+     void Statistic(const DataValue & mass, std::vector<long double> & ResulitsForStatistic, unsigned int m, unsigned int n);
 
 
     long double func_hall8(const Image & Data, const Data_spektr & Magfield_spektr, Data_spektr &  Gxx,
@@ -84,12 +84,13 @@ private:
     Data_spektr Gxy;
     Data_spektr GxxExp;
     Data_spektr GxyExp;
-    int NPoint;
+    unsigned long NPoint;
 
     Image Data,Data0,Min_Value,Max_Value,D_Step,
     D_StepOld,DataOld,DataBef;
     unsigned int N_Data;
-    int PP,NP;
+    int PP;
+    unsigned long NP;
 
     bool FlagEnd,FlagDipl;
 

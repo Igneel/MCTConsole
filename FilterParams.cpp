@@ -16,13 +16,6 @@ FilterParams::FilterParams(MyDataType samplingFrequecy,MyDataType bandwidthFrequ
     setFilterParams(samplingFrequecy, bandwidthFrequency, attenuationFrequency, length);
 }
 
-FilterParams::FilterParams(std::string samplingFrequecy,std::string bandwidthFrequency,
-                           std::string attenuationFrequency, std::string length)
-{
-    setFilterParams(std::stold(samplingFrequecy),std::stold(bandwidthFrequency),
-                    std::stold(attenuationFrequency),std::stoll(length));
-}
-
 void FilterParams::setFilterParams(MyDataType samplingFrequecy,MyDataType bandwidthFrequency,
                                    MyDataType attenuationFrequency, long length)
 {

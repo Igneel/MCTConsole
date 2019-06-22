@@ -104,7 +104,7 @@ enum DataKind {CURRENT_DATA=0, FILTERED_DATA=1, EXTRAPOLATED_DATA=2, AVERAGED_DA
 enum SignalType {MAGNETIC_FIELD=0, HALL_EFFECT=1, MAGNETORESISTANCE=2, PHOTOCONDUCTIVITY_FARADEY=3, PHOTOCONDICTIVITY_FOYGHT=4,MAGNETIC_FIELD_F=5, SXX=6,SXY=7};
 enum ParamsType {DIRECT=0,REVERSE=1,COMBINE=2};
 
-const long double THEALMOSTZERO = 0.000001;
+const long double THEALMOSTZERO = 0.000001L;
 
 
 inline MyDataType dist(MyDataType x1, MyDataType x2);
@@ -138,7 +138,7 @@ size_t indexOfElemClosestToValueFromLeft(const std::vector<T> & in,MyDataType va
 {
     MyDataType dist=fabs(in[0]-value);
     size_t index=0;
-    for (int i = 1; i < in.size(); ++i)
+    for (auto i = 1u; i < in.size(); ++i)
     {
         if (dist>fabs(in[i]-value))
         {
@@ -155,7 +155,7 @@ size_t indexOfElemClosestToValueFromRight(const std::vector<T> & in,MyDataType v
 {
     MyDataType dist=fabs(in[0]-value);
     size_t index=0;
-    for (int i = in.size()-1; i >= 0; --i)
+    for (auto i = in.size()-1; i >= 0; --i)
     {
         if (dist>fabs(in[i]-value))
         {
@@ -168,76 +168,6 @@ size_t indexOfElemClosestToValueFromRight(const std::vector<T> & in,MyDataType v
 
 //-------------------------------------------------------------------------------
 template <class T>
-inline T max_elem(const std::vector<T> & in)
-{
-    if(in.size()==0)
-    {
-        //"Сложно найти максимальный элемент, когда нет ни одного");
-        return 0;
-    }
-    T max=*in.begin();
-    for(auto pos=in.begin();pos!=in.end();++pos)
-    {
-        if(*pos>max)
-        max=*pos;
-    }
-    return max;
-}
-//-------------------------------------------------------------------------------
-template <class T>
-inline T max_abs_elem(const std::vector<T> & in)
-{
-    if(in.size()==0)
-    {
-        //"Сложно найти максимальный элемент, когда нет ни одного");
-        return 0;
-    }
-    T max=fabs(*in.begin());
-    for(auto pos=in.begin();pos!=in.end();++pos)
-    {
-        if(fabs(*pos)>max)
-        max=fabs(*pos);
-    }
-    return max;
-}
-//-------------------------------------------------------------------------------
-
-template <class T>
-inline T min_elem(const std::vector<T> & in)
-{
-    if(in.size()==0)
-    {
-        //"Сложно найти максимальный элемент, когда нет ни одного");
-        return 0;
-    }
-    T min=*in.begin();
-    for(auto pos=in.begin();pos!=in.end();++pos)
-    {
-        if(*pos<min)
-        min=*pos;
-    }
-    return min;
-}
-//-------------------------------------------------------------------------------
-
-template <class T>
-inline T min_abs_elem(const std::vector<T> & in)
-{
-    if(in.size()==0)
-    {
-        //"Сложно найти максимальный элемент, когда нет ни одного");
-        return 0;
-    }
-    T min=fabs(*in.begin());
-    for(auto pos=in.begin();pos!=in.end();++pos)
-    {
-        if(fabs(*pos)<min)
-        min=fabs(*pos);
-    }
-    return min;
-}
-//-------------------------------------------------------------------------------
-template <class T>
 int sign(T in)
 {
     if (in>=0)
@@ -247,7 +177,7 @@ int sign(T in)
     else 
         return -1;
 }
-//------------------------------------------------------------------------------
+
 //------------------------------------------------------------------------------
 /*
 Медианный фильтр.

@@ -111,8 +111,8 @@ for (myi=0; myi<NPoint; ++myi)
    DataOld=Data;
    DataBef=Data;
    Fbefore=Fnew;
-   for ( int fi=1 ; fi<= magicSix ;++fi)          // выбор шага приращения
-    if ( Data0[fi]!=0 ) D_Step[fi]=D_StepOld[fi]*Data[fi]/Data0[fi];
+   for (auto fi=1u; fi<= magicSix ;++fi)          // выбор шага приращения
+    if ( Data0[fi]!=0.0L ) D_Step[fi]=D_StepOld[fi]*Data[fi]/Data0[fi];
     else D_Step[fi]=0;
  }
 
@@ -120,7 +120,7 @@ void MultiZoneFit::CheckLimits()   // проверяет, не принял ли
 // лежащее за заданными пределами
   {
 
-   for ( int fi=1 ; fi<= N_Data ;++fi)
+   for (auto fi=1u; fi<= N_Data ;++fi)
    {       // если true -  параметрам присваиваются граничные значения
      if ( Data[fi]<Min_Value[fi] ) Data[fi]=Min_Value[fi];
      if ( Data[fi]>Max_Value[fi] ) Data[fi]=Max_Value[fi];
@@ -176,25 +176,25 @@ void MultiZoneFit::Hook()
    {
      if (!FlagDipl) InitVar();
      Research(); // исследование
-      if ( fabs(Fnew)<eps1)
+      if ( fabsl(Fnew)<eps1)
         {
           FlagEnd=true;
         }
       // улучшено ли значение функции && достаточно ли мало изменение функции
-      while ( (Fnew<Fbefore) &&(fabs(Fbefore-Fnew)>epsilon))
+      while ( (Fnew<Fbefore) &&(fabsl(Fbefore-Fnew)>epsilon))
        {
           // запоминаем параметры старой базовой точки
           DataOld=Data;
          Fbefore=Fnew;             //  {function in the new base point }
-         for ( int i=1 ; i<= N_Data ;++i)
+         for (auto i=1u; i<= N_Data ;++i)
          {    // новая базовая точка
             Data[i]=Data[i]+a[i]*(Data[i]-DataBef[i]); // экстраполяция
             if ( Data[i]<Min_Value[i] ) Data[i]=Min_Value[i];
             if ( Data[i]>Max_Value[i] ) Data[i]=Max_Value[i];
          }
          DataBef=Data;
-         for ( int i=1 ; i<= N_Data ;++i)  // увеличиваем шаг приращения
-          if ( Data0[i]!=0 )
+         for (auto i=1u; i<= N_Data ;++i)  // увеличиваем шаг приращения
+          if ( Data0[i]!=0.0L )
           {
               D_Step[i]=D_StepOld[i]*Data[i]/Data0[i];
           }
@@ -225,7 +225,7 @@ void MultiZoneFit::Hook()
             
        }
       // если изменения функции незначительные
-      if ( FlagDipl && (fabs((Fnew-Fbefore))<=epsilon) )
+      if ( FlagDipl && (fabsl((Fnew-Fbefore))<=epsilon) )
          //  FlagEnd=True
            FlagDipl=false;  // не заверншаем, а увеличиваем шаг приращения
       else  // если новое значение функции стало больше предыдущего
@@ -271,26 +271,26 @@ long long justRound(long double x)
 {
   if ((static_cast<int>(x*10))%10<5)
   {
-    return floor(x);
+    return floorl(x);
   }
   else
   {
-    return ceil(x);
+    return ceill(x);
   }
 }
 
 void MultiZoneFit::btnFeatMultiClick()
 {
-  long double funcMin=10e8;
+  long double funcMin=10e8L;
   //Form1->ProgressBar1->Max=repeatQuantity;
 
-  for (int  l=1 ; l<= repeatQuantity ; ++l)
+  for (auto l=1u; l<= repeatQuantity ; ++l)
   {
     //Form1->ProgressBar1->Position=l;
 
 
     Optimiz_hall8();
-    for (int i=1 ; i<= 6 ; ++i)
+    for (auto i=1u; i<= 6 ; ++i)
     d1[i][l]=Data[i];
     d1[7][l]=func_hall8(Data,MagField_spektr,Gxx,Gxy,GxxExp,GxyExp,NPoint);
 
@@ -354,35 +354,36 @@ long double max,min;
 
 // расчет среднего и СКО
 // вот сюда указатель на массив надо давать.
-void MultiZoneFit::Statistic(const DataValue & mass, std::vector<long double> & ResulitsForStatistic, int m,int n)
+void MultiZoneFit::Statistic(const DataValue & mass, std::vector<long double> & ResulitsForStatistic,
+                             unsigned int m, unsigned int n)
 {
 	long double Xsr, S;
-    for (int ll=1 ; ll<= m ; ++ll)
+    for (auto ll=1u; ll<= m ; ++ll)
     {
         Xsr=0;
         S=0;
-        for (int  l=1 ; l<= n ; ++l)
+        for (auto  l=1u; l<= n ; ++l)
         Xsr=Xsr+mass[ll][l];
         Xsr=Xsr/static_cast<long double>(n);
-        for (int  l=1 ; l<= n ; ++l)
+        for (auto  l=1u; l<= n ; ++l)
         S+=powl(mass[ll][l]-Xsr,2);
-        S=sqrt(S/(n-1));// 
+        S=sqrtl(S/(n-1));//
 
 
 
         ResulitsForStatistic[ll]= Xsr;
         ResulitsForStatistic[ll+m]= S;
-        ResulitsForStatistic[ll+2*m]= (S/fabs(Xsr))*100.0;
+        ResulitsForStatistic[ll+2*m]= (S/fabsl(Xsr))*100.0L;
     }
 
   
-  for (int ll=1 ; ll<= m ; ++ll)
+  for (auto ll=1u; ll<= m ; ++ll)
     {
       long double Xmiddle=0, s=0;
       long double count=0;
-      for (int  l=1 ; l<= n ; ++l)
-        if(fabs(mass[ll][l])<=fabs(ResulitsForStatistic[ll]+ResulitsForStatistic[ll+m])
-           && fabs(mass[ll][l])>=fabs(ResulitsForStatistic[ll]-ResulitsForStatistic[ll+m]))
+      for (auto  l=1u; l<= n ; ++l)
+        if(fabsl(mass[ll][l])<=fabsl(ResulitsForStatistic[ll]+ResulitsForStatistic[ll+m])
+           && fabsl(mass[ll][l])>=fabsl(ResulitsForStatistic[ll]-ResulitsForStatistic[ll+m]))
         {
           Xmiddle+=mass[ll][l];
           count++;
@@ -390,18 +391,18 @@ void MultiZoneFit::Statistic(const DataValue & mass, std::vector<long double> & 
       
       Xmiddle=Xmiddle/static_cast<long double>(count);
         
-      for (int  l=1 ; l<= n ; ++l)
-        if(fabs(mass[ll][l])<=fabs(ResulitsForStatistic[ll]+ResulitsForStatistic[ll+m])
-           && fabs(mass[ll][l])>=fabs(ResulitsForStatistic[ll]-ResulitsForStatistic[ll+m]))
+      for (auto  l=1u; l<= n ; ++l)
+        if(fabsl(mass[ll][l])<=fabsl(ResulitsForStatistic[ll]+ResulitsForStatistic[ll+m])
+           && fabsl(mass[ll][l])>=fabsl(ResulitsForStatistic[ll]-ResulitsForStatistic[ll+m]))
         {
           s+=powl(mass[ll][l]-Xmiddle,2);
         }
       
-      s=sqrt(s/(count-1));
+      s=sqrtl(s/(count-1));
 
       ResulitsForStatistic[ll]= Xmiddle;
       ResulitsForStatistic[ll+m]= s;
-      ResulitsForStatistic[ll+2*m]= (s/fabs(Xmiddle))*100.0;
+      ResulitsForStatistic[ll+2*m]= (s/fabsl(Xmiddle))*100.0L;
     }
 }
 
@@ -463,11 +464,11 @@ int MultiZoneFit::RunMultizoneFeat (const std::vector<long double> LowBound,cons
   const InDataSpectr MagSpectr,const  InDataSpectr GxxIn,const  InDataSpectr GxyIn,
   MyData_spektr & outGxx, MyData_spektr & outGxy,
   TStatistic & outValues,
-  int numberOfCarrierTypes)
+  unsigned int numberOfCarrierTypes)
 {
 memoryAlloc();
     std::vector<long double> ResulitsForStatistic;
-    int SizeForStatistic;
+    unsigned long SizeForStatistic;
   ResulitsForStatistic.resize(3*(2*numberOfCarrierTypes+1)+1);
   // Это надо получить из управляющей программы:
   NPoint=MagSpectr.size();
@@ -475,7 +476,7 @@ memoryAlloc();
   // Эти переменные объявлены в optim1 и их тоже надо получить.
     Max_Value.resize(numberOfCarrierTypes*2+1);
     Min_Value.resize(numberOfCarrierTypes*2+1);
-  for (int i=1 ; i<= numberOfCarrierTypes*2 ; ++i)
+  for (auto i=1u; i<= numberOfCarrierTypes*2 ; ++i)
   {
     Max_Value[i]=UpBound[i-1];
     Min_Value[i]=LowBound[i-1];
@@ -484,7 +485,7 @@ memoryAlloc();
     GxxExp.resize(NPoint);
     GxyExp.resize(NPoint);
   // ну и разумеется получить сами точки.
-  for (int i=0 ; i<= NPoint-1 ; ++i)
+  for (auto i=0u; i<= NPoint-1 ; ++i)
   {
     MagField_spektr[i]=MagSpectr[i];
     GxxExp[i]=GxxIn[i];
@@ -497,7 +498,7 @@ memoryAlloc();
   // программа отработала
   // Так, где лежат результаты?
 
-  for (int i=0 ; i<= NPoint-1 ; ++i)
+  for (auto i=0u; i<= NPoint-1 ; ++i)
   {
     outGxx.push_back(Gxx[i]);
     outGxy.push_back(Gxy[i]);
@@ -506,7 +507,7 @@ memoryAlloc();
   Statistic(d1, ResulitsForStatistic, MaxParameters-1,MaxRepeat);
   SizeForStatistic=MaxParameters-1;
   outValues.resize(MaxParameters);
-  for (int i=0 ; i<= MaxParameters-1 ; ++i)
+  for (auto i=0u; i<= MaxParameters-1 ; ++i)
   {
 
     outValues[i].push_back(Data[i+1]);

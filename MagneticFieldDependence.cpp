@@ -2,6 +2,7 @@
 #include "multizoneFit.h"
 #include "mobilityspectrum.h"
 #include "smartCalculation.h"
+#include <algorithm>
 
 void MagneticFieldDependence::addNoiseToSignals(long double coef)
 {
@@ -171,17 +172,10 @@ MagneticFieldDependence::MagneticFieldDependence(MyDataType current, MyDataType 
                                                  std::string SampleInventoryNumber,
                                                  MyDataType length, MyDataType width, MyDataType Thickness)
 {
-    MagneticFieldDependence(to_string(current),to_string(temperature), SampleInventoryNumber,
-                            to_string(length),to_string(width), to_string(Thickness));
-}
-
-MagneticFieldDependence::MagneticFieldDependence(std::string current, std::string temperature,
-                                                 std::string SampleInventoryNumber,
-                                                 std::string length, std::string width, std::string Thickness)
-{
     filterParamsHall=new FilterParams(); // по идее нужно бы и инциализировать их тут, дабы не было проблем в случае чего:).
     filterParamsResistance=new FilterParams();
-    saver =new DataSaver(temperature,current,SampleInventoryNumber, length, width, Thickness);
+    saver =new DataSaver(to_string(temperature),to_string(current),
+                         SampleInventoryNumber, to_string(length), to_string(width), to_string(Thickness));
     MobilitySpectrumObj=nullptr;
     paramsType=DIRECT;
     leftBound.resize(3);
@@ -802,7 +796,7 @@ void MagneticFieldDependence::filterDataHelper(FilterParams &fP,
 
     // формируем сигнал для фильтра.
     // достраивая его в отрицательные магнитные поля.
-    for (unsigned int i = 0; i < NumberOfPoints; ++i)
+    for (auto i = 0u; i < NumberOfPoints; ++i)
     {
     /*
     Давайте внимательно сюда посмотрим.
@@ -827,9 +821,8 @@ void MagneticFieldDependence::filterDataHelper(FilterParams &fP,
     break;
     case MAGNETORESISTANCE:
 
-    
 
-    for (unsigned int i = 0; i < NumberOfPoints; ++i)
+    for (auto i = 0u; i < NumberOfPoints; ++i)
     {
         tempInSignal[i]=(*inSignal)[NumberOfPoints-i-1];   // чет
         tempInB[i]=-(*inB)[NumberOfPoints-i-1];        
@@ -846,7 +839,7 @@ void MagneticFieldDependence::filterDataHelper(FilterParams &fP,
     В случае отрицательного магнитного поля надо инвертировать порядок элементов
     Потому что впереди выстраиваются значения для положительного магнитного поля.
     */
-    if(tempInB[0]>1.0)
+    if(tempInB[0]>1.0L)
     {
         std::reverse(tempInB.begin(),tempInB.end());
         std::reverse(tempInSignal.begin(),tempInSignal.end());
@@ -876,7 +869,11 @@ void MagneticFieldDependence::filterDataHelper(FilterParams &fP,
     }
     }
 }
-
+//-------------------------------------------------------------------------------
+static bool abs_compare(long double a, long double b)
+{
+    return (std::fabs(a) < std::fabs(b));
+}
 //-------------------------------------------------------------------------------
 
 bool MagneticFieldDependence::extrapolateData( DataKind dataKind, const int polinomPowForMagnetoResistance, const int polinomPowForHallEffect)
@@ -946,14 +943,16 @@ bool MagneticFieldDependence::extrapolateData( DataKind dataKind, const int poli
         inMagnetoResistance.push_back( (*ResistanceToExtrapolate)[i]);
     }
 
-    unsigned int NumberOfPoints=inBHall.size();
+    auto NumberOfPoints=inBHall.size();
     if(NumberOfPoints==0)
     {
     cout <<"Количество точек равно нулю! Я не хочу делить на ноль:) extrapolateData\n";
     return false;
     }
 
-    MyDataType h=(max_abs_elem(inBHall)- min_elem(inBHall)) /NumberOfPoints;
+    MyDataType h=(*max_element(inBHall.begin(),inBHall.end(),abs_compare)
+                  - *min_element(inBHall.begin(),inBHall.end()))
+            /NumberOfPoints;
 
     TSignal koefMagnetoResistance(polinomPowForMagnetoResistance+1);
     TSignal koefHallEffect(polinomPowForHallEffect+1);
@@ -1048,8 +1047,9 @@ bool MagneticFieldDependence::extrapolateData( DataKind dataKind, const int poli
     cout << "Количество точек равно нулю! Я не хочу делить на ноль:) extrapolateData\n";
     return false;
     }
-
-    h=(max_elem(inBHall)- min_elem(inBHall)) /NumberOfPoints;
+    h = (*max_element(inBHall.begin(),inBHall.end())
+         - *min_element(inBHall.begin(),inBHall.end()))
+            /NumberOfPoints;
 
     koefMagnetoResistance.clear();
     koefHallEffect.clear();
@@ -1069,9 +1069,6 @@ bool MagneticFieldDependence::extrapolateData( DataKind dataKind, const int poli
     newMagnetoResistance.clear();
 
 
-
-
-
     // Допустим нам всегда надо доводить поле до rightFieldBoundary Тл
     // Тогда нам надо расчитать кол-во точек, исходя из среднего шага.
     if (rightFieldBoundary>fabs(BToExtrapolate->front()+h))
@@ -1082,13 +1079,13 @@ bool MagneticFieldDependence::extrapolateData( DataKind dataKind, const int poli
     newB.push_back(BToExtrapolate->front()+h); // заполняем магнитное поле.
     newBHall.push_back(BHallToExtrapolate->front()+h);
     newBRes.push_back(BResToExtrapolate->front()+h);
-    for (unsigned int i = 1; i<NumberOfPoints; ++i) {
+    for (auto i = 1u; i<NumberOfPoints; ++i) {
         newB.push_back(newB[i-1]-h);
     }
-    for (unsigned int i = 1; i<NumberOfPoints; ++i) {
+    for (auto i = 1u; i<NumberOfPoints; ++i) {
         newBHall.push_back(newBHall[i-1]-h);
     }
-    for (unsigned int i = 1; i<NumberOfPoints; ++i) {
+    for (auto i = 1u; i<NumberOfPoints; ++i) {
         newBRes.push_back(newBRes[i-1]-h);
     }
 
@@ -1238,7 +1235,8 @@ void MagneticFieldDependence::setDependence(TSignal::iterator beginB,
         MagnetoResistance.push_back(*beginResistance);
         HallEffect.push_back(*beginHall); 
     }
-    if(fabs(max_abs_elem(B))<0.5L)
+
+    if(fabs(*max_element(B.begin(),B.end(),abs_compare))<0.5L)
     {
         multiplyB(CURRENT_DATA);
     }
@@ -1602,7 +1600,7 @@ void MagneticFieldDependence::shiftCurve(DataKind dataKind,SignalType dependence
         return;
     }
 
-    for (TSignal::iterator i = pointToY->begin(), j=pointToX->begin(); i != pointToY->end() && j!=pointToX->end(); ++i,++j)
+    for (auto i = pointToY->begin(), j=pointToX->begin(); i != pointToY->end() && j!=pointToX->end(); ++i,++j)
     {
         if (*j>=leftBound && *j<=rightBound)
         {
@@ -1610,8 +1608,6 @@ void MagneticFieldDependence::shiftCurve(DataKind dataKind,SignalType dependence
         }        
     }
 }
-
-
 
 void MagneticFieldDependence::setExtrapolateParams(int powPolinowHall,int powPolinomRes)
 {
@@ -1689,7 +1685,7 @@ bool MagneticFieldDependence::runSmartMultiCarrierFit(long double VesGxx, long d
 // Многозонная подгонка
 bool MagneticFieldDependence::runMultiCarrierFit(long double VesGxx, long double VesGxy)
 {
-    srand(time(NULL));
+    srand(time(nullptr));
     // важный вопрос - в каком порядке нужно помещать сюда данные.
     // Порядок такой: подвижность электронов, легких дырок и тяжелых дырок.
     // Далее - концентрации в том же порядке.
