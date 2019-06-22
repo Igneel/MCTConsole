@@ -119,9 +119,7 @@ const TSignal * saveResistance,SaveType mode, std::string FileName)
     TSignal savingY1Data(saveResistance->begin(),saveResistance->end());
     TSignal savingY2Data(saveHall->begin(),saveHall->end());
 
-    TSignal::iterator pos;
-
-    int length=savingXData.size();
+    auto length=savingXData.size();
     if(isRoundNeeded==true)
 	{
         roundM(savingXData,NumberOfDecimalPlaces);
@@ -171,7 +169,7 @@ const TSignal * saveResistance,SaveType mode, std::string FileName)
 	if(mode==ALL_POINTS)
 	{
         FileName+="AllP";
-		for(int i=0;i<length;i++)
+        for(auto i=0u;i<length;i++)
 		{
             tsl->push_back(std::to_string(savingXData[i])+"\t"+
             std::to_string(savingY1Data[i])+"\t"+

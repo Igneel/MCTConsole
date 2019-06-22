@@ -150,26 +150,26 @@ bool smartCalculation::processData()
 	int polinomPowMagnetoresistance;
 	MFDData->getExtrapolateParams(polinomPowHall,polinomPowMagnetoresistance);
 
-	long double step=0.1;
+    long double step=0.1L;
     //Form1->ProgressBar1->Max=20*20;
-	size_t iteration=0;
-	for (long double BandWidthFHall=0.01, AttenuationFHall=0.1; BandWidthFHall < 10; BandWidthFHall+=step, AttenuationFHall+=step)
+    // size_t iteration=0;
+    for (long double BandWidthFHall=0.01L, AttenuationFHall=0.1L; BandWidthFHall < 10; BandWidthFHall+=step, AttenuationFHall+=step)
 	{
 		
 
-		if(step==0.1 && BandWidthFHall>1.0)
+        if(step==0.1L && BandWidthFHall>1.0L)
 		{
-			step=1.0;
+            step=1.0L;
 		}
-		long double step=0.1;
-		for (long double BandWidthFRes=0.01, AttenuationFRes=0.1; BandWidthFRes < 10; BandWidthFRes+=step, AttenuationFRes+=step)
+        long double step=0.1L;
+        for (long double BandWidthFRes=0.01L, AttenuationFRes=0.1L; BandWidthFRes < 10; BandWidthFRes+=step, AttenuationFRes+=step)
 		{
             //Form1->ProgressBar1->Position=iteration++;
             //Application->ProcessMessages();
 
-			if(step==0.1 && BandWidthFRes>1.0)
+            if(step==0.1L && BandWidthFRes>1.0L)
 			{
-				step=1.0;
+                step=1.0L;
 			}
 
         	fpHall.BandwidthFrequency=BandWidthFHall;
@@ -277,7 +277,7 @@ bool smartCalculation::saveResults(std::string filename)
 
     for (size_t i = 0; i < allSpectras.size(); ++i)
 	{
-		if (allSpectras[i].electronMobility<90 && allSpectras[i].electronMobility > 0.1)
+        if (allSpectras[i].electronMobility<90 && allSpectras[i].electronMobility > 0.1L)
 		{
 			x.push_back(allSpectras[i].electronMobility);
 		}
@@ -293,7 +293,7 @@ bool smartCalculation::saveResults(std::string filename)
 
     for (size_t i = 0; i < allSpectras.size(); ++i)
 	{
-		if (allSpectras[i].electronMobility<90 && allSpectras[i].electronMobility > 0.1)
+        if (allSpectras[i].electronMobility<90 && allSpectras[i].electronMobility > 0.1L)
 		{
 			x.push_back(allSpectras[i].electronConcentration);
 		}
@@ -364,7 +364,7 @@ bool smartCalculation::saveResults(std::string filename)
 
 
 	// Нужно изменить порядок границ на те, которые используются при подгонке.
-	long double upTemp, lowTemp;
+    //long double upTemp, lowTemp;
 	
 	std::vector<long double> newUpBound;
 	std::vector<long double> newLowBound;
@@ -445,14 +445,15 @@ long double smartCalculation::targetFunction (Results & r, parameterType pt)
 	switch (pt)
 	{
 		case ELECTRON_MOBILITY:
-			if (fabs(r.additionalData.rightPointMobility-r.electronMobility)<1.0 || fabs(r.additionalData.leftPointMobility-r.electronMobility)<1.0)
+            if (fabsl(r.additionalData.rightPointMobility-r.electronMobility)<1.0L ||
+                    fabsl(r.additionalData.leftPointMobility-r.electronMobility)<1.0L)
 			{
 				return VERYBIGTARGETFUNC;
 			}
 			if (isGoodExtremum(r,pt))
 			{
 				//return r.vPC[ELECTRON].peakHeigh*r.additionalData.rightPointElectronConductivity/r.additionalData.rightPointHoleConductivity;
-				return r.vPC[HHOLE].peakHeigh*r.vPC[HHOLE].peakWidth+2.94999999812644*r.vPC[ELECTRON].peakWidth*r.vPC[ELECTRON].peakWidth;
+                return r.vPC[HHOLE].peakHeigh*r.vPC[HHOLE].peakWidth+2.94999999812644L*r.vPC[ELECTRON].peakWidth*r.vPC[ELECTRON].peakWidth;
 			}
 			else
 			{
@@ -466,7 +467,8 @@ long double smartCalculation::targetFunction (Results & r, parameterType pt)
 		ширина пика электронов - величина первой производной для середины боковой стороны экстремума, соответствующего электронам
 		*/
 		case ELECTRON_DENSITY:
-			if (fabs(r.additionalData.rightPointMobility-r.electronMobility)<1.0 || fabs(r.additionalData.leftPointMobility-r.electronMobility)<1.0)
+            if (fabs(r.additionalData.rightPointMobility-r.electronMobility)<1.0L ||
+                    fabs(r.additionalData.leftPointMobility-r.electronMobility)<1.0L)
 			{
 				return VERYBIGTARGETFUNC;
 			}

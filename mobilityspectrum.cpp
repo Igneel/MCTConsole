@@ -36,7 +36,7 @@ void  mobilitySpectrum::GetCoef(const Data_spektr &A, const Data_spektr &X, cons
     long double & p0, long double & p1, long double & p2)
 
 {
-    int i,j;
+    unsigned int i,j;
     long double r,r1,r2,q,s;
     p0 = 0;
     p1 = 0;
@@ -69,7 +69,7 @@ void  mobilitySpectrum::GetCoef(const Data_spektr &A, const Data_spektr &X, cons
 
 void  mobilitySpectrum::AddExpPoints(TLineSeries& ExpXX, TLineSeries& ExpXY)
 {
-    int i;
+    unsigned int i;
 
     ExpXX.clear();
     //ExpXX.Pointer.HorizSize = 2;
@@ -759,15 +759,15 @@ void  mobilitySpectrum::MakeMatrA()
 //if su=0 then det(C)=0
 void  mobilitySpectrum::InverseMatrC(Dat2 & Ci,Dat2 & C,long double & Su,const int NP)
 {
-    Dat3 at;
+    Dat2 at;
     long double sr;
 
     SetLength(at,2*MaxPoints+1,2*MaxPoints+1); // SetLength(at,MaxPoints+1,2*MaxPoints+1);
-    for (int i= 1 ; i<= NP; ++i )
+    for (auto i= 1u; i<= NP; ++i )
         for (int j = 1 ; j<= NP; ++j )
             at[i][j]=Ci[i][j];
 
-    for (int i = 1 ; i<= NP; ++i )
+    for (auto i = 1u; i<= NP; ++i )
     {
         for (int j = NP+1 ; j<= 2*NP; ++j )
             at[i][j]=0;
@@ -821,48 +821,63 @@ void  mobilitySpectrum::InverseMatrC(Dat2 & Ci,Dat2 & C,long double & Su,const i
 }
 
 long double mobilitySpectrum::S_s(const long double Mi)
-
-   {
-int im,js;
-long double a,bb;
+{
     // { make Vm }
-     Mv[1]=1;
-     if ( fabs(Mi)<1e-26 )
-      for (im = 2 ; im<= NumberOfPoints; ++im ) Mv[im]=0;
-     else
-     for (im = 2 ; im<= NumberOfPoints; ++im )
-      if ( (im)%2==1 )
-       Mv[im]=exp((im-1)*logl(fabs(Mi)));
-      else
-       if ( Mi<0 )
-           Mv[im]=exp((im-1)*logl(fabs(Mi)));
-       else
-           Mv[im]=-exp((im-1)*logl(fabs(Mi)));
-/*(*     { compute ¦Vm¦¤}
-     vm = 0;
-     for is = 1 ; <= NPoint )
-       vm = vm+Mv[is]*Mv[is];
-     { compute am/Go for Hp=0}
-     a = 0;
-     for is = 1 ; <= NPoint ) a = a+(Mv[is]*Mv[is]);*)*/
-     a = 1;
+    Mv[1]=1;
+    if ( fabsl(Mi)<1e-26L )
+    {
+        for (auto im = 2u ; im<= NumberOfPoints; ++im )
+        {
+            Mv[im]=0;
+        }
+    }
+    else {
+        for (auto im = 2u ; im<= NumberOfPoints; ++im )
+        {
+            if ( (im)%2==1 )
+            {
+                Mv[im]=exp((im-1)*logl(fabs(Mi)));
+            }
+            else
+            {
+                if ( Mi<0 )
+                {
+                    Mv[im]=exp((im-1)*logl(fabs(Mi)));
+                }
+                else
+                {
+                    Mv[im]=-exp((im-1)*logl(fabs(Mi)));
+                }
+            }
+        }
+    }
+     long double a = 1;
      //{ compute am/Go }
-     for (im = 1 ; im<= NumberOfPoints; ++im)
-         a = a*(1+B_spektr[im]*Mi*B_spektr[im]*Mi);
-     for (im = 1 ; im<= NumberOfPoints; ++im)
+     for (auto im = 1u ; im<= NumberOfPoints; ++im)
      {
-         Vpr[im]=0;
-     for (js = 1 ; js<= NumberOfPoints; ++js)
-          Vpr[im]+=Qm[js][im]*Mv[js];
-      Vpr[im]=Vpr[im]*Vpr[im];
+         a = a*(1+B_spektr[im]*Mi*B_spektr[im]*Mi);
      }
-     bb = 0;
-     for (im = 1 ; im<= NumberOfPoints; ++im ) {
-//{      if ( (abs(Lv[im])<1e-30)and(Vpr[im]<1e-15) ) continue}
-       if ( (fabs(Lv[im])==0) && (Vpr[im]>1e-15) ) { a = 0;break;}
-      bb = bb+Vpr[im]/fabs(Lv[im]); }
+     for (auto im = 1u ; im<= NumberOfPoints; ++im)
+     {
+        Vpr[im]=0;
+        for (auto js = 1u ; js<= NumberOfPoints; ++js)
+        {
+            Vpr[im]+=Qm[js][im]*Mv[js];
+        }
+        Vpr[im]=Vpr[im]*Vpr[im];
+     }
+     long double bb = 0.0L;
+     for (auto im = 1u ; im<= NumberOfPoints; ++im )
+     {
+        if ((fabsl(Lv[im])==0.0L) && (Vpr[im]>1e-15L))
+        {
+            a = 0;
+            break;
+        }
+        bb = bb+Vpr[im]/fabsl(Lv[im]);
+     }
      return (a/bb);
-   }
+}
 
 //////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
@@ -1079,7 +1094,7 @@ mobilitySpectrum::mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx
     // И кстати, надо сделать функцию для их изменения.
     // Либо передавать их при вызове функции по расчету спектра.
     MSLeft=-3;//-3;
-    MSRight =2;
+    MSRight =2; // 2
 
     B_spektr.resize(MaxPoints+1);
     Gxx_sp.resize(MaxPoints+1);
@@ -1127,7 +1142,15 @@ mobilitySpectrum::mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx
     // сначала ищем все ярковыраженные пики и записываем их
     for(size_t index=0;index<resultMobility.size();)
     {
+        if(isnan(resultElectronConductivity[0]))
+        {
+            break;
+        }
         size_t new_index = searchSignificantPeak(resultElectronConductivity, index, resultMobility[1]-resultMobility[0]); // электроны
+        if(new_index==0)
+        {
+            break;
+        }
         if(new_index<resultMobility.size()-5 && new_index>5)
         {
             electronExtremumIndexes[fabs(fabs(resultElectronConductivity[new_index-4])-
@@ -1140,7 +1163,15 @@ mobilitySpectrum::mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx
     {
         for(size_t index=0;index<resultMobility.size();)
         {
+            if(isnan(resultElectronConductivity[0]))
+            {
+                break;
+            }
             size_t new_index = searchSignalSlowdown(resultElectronConductivity, index, resultMobility[1]-resultMobility[0]); // электроны
+            if(new_index==0)
+            {
+                break;
+            }
             if(new_index<resultMobility.size()-5 && new_index>5)
             {
                 electronExtremumIndexes[fabs(fabs(resultElectronConductivity[new_index-4])-
@@ -1167,7 +1198,15 @@ mobilitySpectrum::mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx
     // сначала ищем все ярковыраженные пики и записываем их
     for(size_t index=0;index<resultMobility.size();)
     {
+        if(isnan(resultHoleConductivity[0]))
+        {
+            break;
+        }
         size_t new_index = searchSignificantPeak(resultHoleConductivity, index, resultMobility[1]-resultMobility[0]); // электроны
+        if(new_index==0)
+        {
+            break;
+        }
         if(new_index<resultMobility.size()-5 && new_index>5)
         {
             holeExtremumIndexes[fabs(fabs(resultHoleConductivity[new_index-4])-
@@ -1180,7 +1219,15 @@ mobilitySpectrum::mobilitySpectrum(Data_spektr &MagneticFieldP, Data_spektr &Exx
     {
         for(size_t index=0;index<resultMobility.size();)
         {
+            if(isnan(resultHoleConductivity[0]))
+            {
+                break;
+            }
             size_t new_index = searchSignalSlowdown(resultHoleConductivity, index, resultMobility[1]-resultMobility[0]); // электроны
+            if(new_index==0)
+            {
+                break;
+            }
             if(new_index<resultMobility.size()-5 && new_index>5)
             {
                 holeExtremumIndexes[fabs(fabs(resultHoleConductivity[new_index-4])-
@@ -1321,7 +1368,7 @@ size_t mobilitySpectrum::searchSignificantPeak(TSignal &y, size_t startPosition,
 
     std::vector<long double> dY=calculateFirstDerivative(y,h);
 
-    std::vector<long double> d2Y=calculateSecondDerivative(y,h);
+    //std::vector<long double> d2Y=calculateSecondDerivative(y,h);
 
     /*
       Поиск пиков. Считаем производные первого и второго порядков.

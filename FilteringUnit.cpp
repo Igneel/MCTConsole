@@ -14,7 +14,7 @@ FilterLowBand::~FilterLowBand()
 
 void FilterLowBand::calculateImpulseResponse(unsigned int length,long double Fdisk, long double Fpropysk, long double Fzatyh)
 {
-    if (N!=length || Fd!=Fdisk || Fs!=Fpropysk || Fx != Fzatyh)
+    if (N!=length ||  Fd!=Fdisk || Fs!=Fpropysk || Fx != Fzatyh)
     {
         N = length; //Длина фильтра
         Fd = Fdisk; //Частота дискретизации входных данных 
@@ -26,21 +26,21 @@ void FilterLowBand::calculateImpulseResponse(unsigned int length,long double Fdi
         H_id.resize(N);
         W.resize(N);
         //Расчет импульсной характеристики фильтра
-        long double Fc = (Fs + Fx) / (2.0 * Fd);
-        long double Wc = 2*M_PI*Fc;
+        long double Fc = (Fs + Fx) / (2.0L * Fd);
+        long double Wc = 2.0L*M_PIl*Fc;
         for (unsigned int i=0;i<N;++i)
         {
             if (i==N/2) H_id[i] = 2*Fc;
             else H_id[i] =2*Fc*sinl(Wc*(i-N/2))/(Wc*(i-N/2));
             // весовая функция Блекмена
             if (N>1)
-            W[i] = 0.42 - 0.5 * cosl((2.0*M_PI*i) /( N-1.0)) + 0.08 * cosl((4.0*M_PI*i) /( N-1.0));
+            W[i] = 0.42L - 0.5L * cosl((2.0L*M_PIl*i) /( N-1.0L)) + 0.08L * cosl((4.0L*M_PIl*i) /( N-1.0L));
             else
             W[i]=1;
             H[i] = H_id[i] * W[i];
         }
         //Нормировка импульсной характеристики
-        long double SUM=0.0;
+        long double SUM=0.0L;
         for (unsigned int i=0; i<N; ++i) SUM +=H[i];
         for (unsigned int i=0; i<N; ++i) H[i]/=SUM; //сумма коэффициентов равна 1
     }
@@ -58,7 +58,7 @@ double FilterLowBand::FilterData (const std::vector<long double> &in, std::vecto
     out.resize(dataSize);
     for (unsigned int i=0; i<dataSize; ++i)
     {
-        out[i]=0.0;
+        out[i]=0.0L;
         for (unsigned int j=0; j<=(i>N-1?N-1:i); ++j)// та самая формула фильтра
             out[i]+= H[j]*in[i-j];
     }
@@ -69,7 +69,7 @@ void FilterLowBand::FilterDataWithAutoShift(TSignal & inB,
     TSignal & inY,TSignal & outB,
     TSignal & outY)
 {
-    int lengthMassive=inY.size();
+    auto lengthMassive=inY.size();
     if(lengthMassive==0)
     {
     return ;
@@ -80,7 +80,7 @@ void FilterLowBand::FilterDataWithAutoShift(TSignal & inB,
     k*=(max_elem(inB)-min_elem(inB))/(double)lengthMassive;// вычисляем сдвиг фаз
     // разность максимума и минимума на длину массива
     outB.resize(lengthMassive);
-    for(int i=0;i<lengthMassive;i++) // выводим
+    for(auto i=0u;i<lengthMassive;i++) // выводим
     {
         outB[i]=inB[i]-k;
     }
@@ -91,7 +91,8 @@ void FilterLowBand::FilterDataWithAutoShift(TSignal & inB,
 //---------------------------------------------------------------------------
 
 // ВНИМАНИЕ!!! Напрямую не вызывать!!! Пользоваться трамплином!!!---------------
-double Filter (const std::vector<long double> &in, std::vector<long double> & out, int length, double Fdisk, double Fpropysk,double Fzatyh)
+long double Filter (const std::vector<long double> &in, std::vector<long double> & out,
+               unsigned int length, long double Fdisk, long double Fpropysk, long double Fzatyh)
 {
 unsigned int N = length; //Длина фильтра
 long double Fd = Fdisk; //Частота дискретизации входных данных 2000
@@ -103,8 +104,8 @@ std::vector<long double> H_id(N); //Идеальная импульсная ха
 std::vector<long double> W(N);   //Весовая функция
     
 //Расчет импульсной характеристики фильтра
-long double Fc = (Fpropysk + Fzatyh) / (2.0 * Fd);
-long double Wc = 2.0*M_PI*Fc;
+long double Fc = (Fpropysk + Fzatyh) / (2.0L * Fd);
+long double Wc = 2.0L * M_PIl * Fc;
 /*
 Строго говоря ширина перехода для функции Блэкмана фиксирована и составляет 5.5/N
 
@@ -117,44 +118,40 @@ long double Wc = 2.0*M_PI*Fc;
 
 for (unsigned int i=0;i<N;++i)
 { // Идеальная импульсная характеристика фильтра нижних частот
-if (i==N/2) H_id[i] = 2.0*Fc;
-else H_id[i] =2.0*Fc*sinl(Wc*(i-N/2.0))/(Wc*(i-N/2.0));
+if (i==N/2) H_id[i] = 2.0L * Fc;
+else H_id[i] =2.0L *Fc*sinl(Wc*(i-N/2.0L))/(Wc*(i-N/2.0L));
 }
 
 for (unsigned int i=0;i<N;++i)
 {
     // весовая функция Блекмена
     if(N>1)
-        W [i] = 0.42 - 0.5 * cosl((2.0*M_PI*i) /( long double)N) + 0.08 * cosl((4.0*M_PI*i) /( long double)N);
+        W [i] = 0.42L - 0.5L * cosl((2.0L*M_PIl*i) /(long double)N) + 0.08L * cosl((4.0L*M_PIl*i) /(long double)N);
     else
-        W[i]=1.0;
+        W[i]=1.0L;
     H [i] = H_id[i] * W[i];
 }
 
 //Нормировка импульсной характеристики
-long double SUM=0.0;
+long double SUM=0.0L;
 for (unsigned int i=0; i<N; ++i) SUM +=H[i];
 for (unsigned int i=0; i<N; ++i) H[i]/=SUM; //сумма коэффициентов равна 1
 
 
 //Фильтрация входных данных
-int dataSize=in.size();
-for (int i=0; i<dataSize; ++i)
+auto dataSize=in.size();
+for (auto i=0u; i<dataSize; ++i)
 {
-out[i]=0.0;
+out[i]=0.0L;
 /*
 for (unsigned int j=0; j<=(i>N-1?N-1:i); ++j)// та самая формула фильтра
 out[i]+= H[j]*in[i-j];
 }
 
 */
-for (int j=0; j<N; ++j)// та самая формула фильтра
-    if(i-j>=0)
+for (auto j=0u; j<N; ++j)// та самая формула фильтра
+    if(i >= j)
         out[i]+= H[j]*in[i-j];
-
-
-
-
 }
 /*
 TStringList * tsl= new TStringList;
@@ -174,7 +171,7 @@ long double TrForMassiveFilter(TSignal & in,TSignal &out,
 int lengthFilter,long double Fdisk,
 long double Fpropysk,long double Fzatyh)
 {
-    int lengthMassive=in.size();
+    auto lengthMassive=in.size();
     if(lengthMassive==0)
     {
     return 0;
@@ -191,13 +188,13 @@ std::vector<long double> & inY,std::vector<long double> & outB,
 std::vector<long double> & outY,int lengthFilter,long double Fdisk,
 long double Fpropysk,long double Fzatyh)
 {
-    int lengthMassive=inY.size();
+    auto lengthMassive=inY.size();
     if(lengthMassive==0)
     {
     return 0;
     }
     outY.resize(lengthMassive);
-    double k=Filter(inY,outY,lengthFilter,Fdisk,Fpropysk,Fzatyh); // вызываем фильтр
+    long double k=Filter(inY,outY,lengthFilter,Fdisk,Fpropysk,Fzatyh); // вызываем фильтр
     k*=(max_elem(inB)-min_elem(inB))/(long double)lengthMassive;// вычисляем сдвиг фаз
     // разность максимума и минимума на длину массива
 
@@ -217,7 +214,7 @@ k2*=(inS->XValues->MaxValue-inS->XValues->MinValue)/(double)inS->XValues->Count;
 
 //----------------------------------------------
     outB.resize(lengthMassive);
-    for(int i=0;i<lengthMassive;i++) // выводим
+    for(auto i=0u;i<lengthMassive;i++) // выводим
     {
 	    outB[i]=inB[i]-k;
     }

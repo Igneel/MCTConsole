@@ -10,7 +10,8 @@ FilterParams::FilterParams()
     filterLength=50;
 }
 
-FilterParams::FilterParams(MyDataType samplingFrequecy,MyDataType bandwidthFrequency,MyDataType attenuationFrequency, int length)
+FilterParams::FilterParams(MyDataType samplingFrequecy,MyDataType bandwidthFrequency,
+                           MyDataType attenuationFrequency, long length)
 {
     setFilterParams(samplingFrequecy, bandwidthFrequency, attenuationFrequency, length);
 }
@@ -20,7 +21,8 @@ FilterParams::FilterParams(std::string samplingFrequecy,std::string bandwidthFre
     setFilterParams(std::stold(samplingFrequecy),std::stold(bandwidthFrequency),std::stold(attenuationFrequency),std::stoll(length));
 }
 
-void FilterParams::setFilterParams(MyDataType samplingFrequecy,MyDataType bandwidthFrequency,MyDataType attenuationFrequency, int length)
+void FilterParams::setFilterParams(MyDataType samplingFrequecy,MyDataType bandwidthFrequency,
+                                   MyDataType attenuationFrequency, long length)
 {
     SamplingFrequecy=samplingFrequecy;
     BandwidthFrequency=bandwidthFrequency;

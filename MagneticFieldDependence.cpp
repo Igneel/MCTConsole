@@ -13,13 +13,13 @@ void MagneticFieldDependence::addNoiseToSignals(long double coef)
      * Квантование по уровню
      *
      */
-    if (coef ==0)
+    if (coef == 0.0L)
     {
         calculateTenzor(CURRENT_DATA);
     }
     else
     {
-        coef = coef*HallEffect[HallEffect.size()-1]/100.0;
+        coef = coef*HallEffect[HallEffect.size()-1]/100.0L;
         GaussianNoiseGenerator(coef);
         QuativativeNoiseGenerator();
         calculateTenzor(CURRENT_DATA); // После добавления шума надо пересчитать тензора
@@ -68,9 +68,6 @@ void MagneticFieldDependence::GaussianNoiseGenerator(long double coef)
 
     copy(NoisyMagnetoResistance.begin(),NoisyMagnetoResistance.end(),MagnetoResistance.begin());
     copy(NoisyHallEffect.begin(),NoisyHallEffect.end(),HallEffect.begin());
-
-
-
 }
 
 
@@ -83,7 +80,6 @@ long double MagneticFieldDependence::getTheorConcentration(int n)
 {
     return theoreticalDependences->getConcentration(n);
 }
-
 
 
 void MagneticFieldDependence::calculateDependencesFromFilm(size_t NumberOfPoints, MyDataType h,
@@ -171,40 +167,22 @@ void MagneticFieldDependence::CopyTheorToNoisySignals()
 
 }
 
-MagneticFieldDependence::MagneticFieldDependence(MyDataType current, MyDataType temperature, std::string SampleInventoryNumber,
-    MyDataType length, MyDataType width, MyDataType Thickness)
+MagneticFieldDependence::MagneticFieldDependence(MyDataType current, MyDataType temperature,
+                                                 std::string SampleInventoryNumber,
+                                                 MyDataType length, MyDataType width, MyDataType Thickness)
 {
-
-    filterParamsHall=new FilterParams(); // по идее нужно бы и инциализировать их тут, дабы не было проблем в случае чего:).
-    filterParamsResistance=new FilterParams();
-    saver =new DataSaver(to_string(temperature),to_string(current),SampleInventoryNumber, to_string(length), to_string(width), to_string(Thickness));
-    MobilitySpectrumObj=0;
-    paramsType=DIRECT;
-    leftBound.resize(3);
-    leftBound[DIRECT]=0;
-    leftBound[REVERSE]=-2;
-    leftBound[COMBINE]=-2;
-    rightBound.resize(3);
-    rightBound[DIRECT]=2;
-    rightBound[REVERSE]=0;
-    rightBound[COMBINE]=2;
-
-    PowPolinomRes=2;
-    PowPolinomHall=1;
-
-    mzr.push_back(1.472331E-03);
-    mzr.push_back(4.206659E-04); // обычно использую для холла и магнитосопротивления, диапазон значений 2.5В
-    mzr.push_back(1.942127E-04); // обычно использую для магнитного поля. диапазон значений 0,625В
-    mzr.push_back(1.601563E-04);
+    MagneticFieldDependence(to_string(current),to_string(temperature), SampleInventoryNumber,
+                            to_string(length),to_string(width), to_string(Thickness));
 }
 
-MagneticFieldDependence::MagneticFieldDependence(std::string current, std::string temperature, std::string SampleInventoryNumber,
-    std::string length, std::string width, std::string Thickness)
+MagneticFieldDependence::MagneticFieldDependence(std::string current, std::string temperature,
+                                                 std::string SampleInventoryNumber,
+                                                 std::string length, std::string width, std::string Thickness)
 {
     filterParamsHall=new FilterParams(); // по идее нужно бы и инциализировать их тут, дабы не было проблем в случае чего:).
     filterParamsResistance=new FilterParams();
     saver =new DataSaver(temperature,current,SampleInventoryNumber, length, width, Thickness);
-    MobilitySpectrumObj=0;
+    MobilitySpectrumObj=nullptr;
     paramsType=DIRECT;
     leftBound.resize(3);
     leftBound[DIRECT]=0;
@@ -218,11 +196,10 @@ MagneticFieldDependence::MagneticFieldDependence(std::string current, std::strin
     PowPolinomRes=2;
     PowPolinomHall=1;
 
-    mzr.push_back(1.472331E-03);
-    mzr.push_back(4.206659E-04); // обычно использую для холла и магнитосопротивления, диапазон значений 2.5В
-    mzr.push_back(1.942127E-04); // обычно использую для магнитного поля. диапазон значений 0,625В
-    mzr.push_back(1.601563E-04);
-
+    mzr.push_back(1.472331E-03L);
+    mzr.push_back(4.206659E-04L); // обычно использую для холла и магнитосопротивления, диапазон значений 2.5В
+    mzr.push_back(1.942127E-04L); // обычно использую для магнитного поля. диапазон значений 0,625В
+    mzr.push_back(1.601563E-04L);
 }
 
 MagneticFieldDependence::~MagneticFieldDependence()
@@ -230,31 +207,31 @@ MagneticFieldDependence::~MagneticFieldDependence()
     if (saver)
     {
         delete saver;
-        saver=0;
+        saver=nullptr;
     }
     
     if (filterParamsHall)
     {
         delete filterParamsHall;
-        filterParamsHall=0;
+        filterParamsHall=nullptr;
     }
     
     if (filterParamsResistance)
     {
         delete filterParamsResistance;
-        filterParamsResistance=0;
+        filterParamsResistance=nullptr;
     }    
 
     if(MobilitySpectrumObj)
     {
         delete MobilitySpectrumObj;
-        MobilitySpectrumObj=0;
+        MobilitySpectrumObj=nullptr;
     }
 
     if(theoreticalDependences)
     {
         delete theoreticalDependences;
-        theoreticalDependences = 0;
+        theoreticalDependences = nullptr;
     }
 
 }
@@ -281,8 +258,8 @@ void MagneticFieldDependence::loadSampleDescription(TStringList *Names,TStringLi
     // Откусывает от имени файла часть, чтобы получить имя файла с описанием образца
     std::string temp = FileName.c_str();
 
-    unsigned int rBound = temp.find_last_of("/\\");
-    unsigned int rBound2 = temp.find_first_of("DCRT",rBound);
+    unsigned long rBound = temp.find_last_of("/\\");
+    unsigned long rBound2 = temp.find_first_of("DCRT",rBound);
     std::string NewFileName = FileName.substr(0,rBound2)+"Description"+".txt";
 
     TStringList * tts = new TStringList();
@@ -302,7 +279,7 @@ void MagneticFieldDependence::loadSampleDescription(TStringList *Names,TStringLi
     Names->clear();
     Values->clear();
 
-    for (int i=0;i<tts->size();++i)
+    for (auto i=0u;i<tts->size();++i)
     {
         s=(*tts)[i];
         std::string::size_type start = 0;
@@ -336,7 +313,7 @@ void MagneticFieldDependence::loadData(TStringList * tts)
     TSignal Resistance;
     TSignal temp;
 
-    for(auto i=0;i<tts->size();++i) // по количеству строк
+    for(auto i=0u;i<tts->size();++i) // по количеству строк
     {
         if((*tts)[i].empty()) // пустые строки пропускаем
             continue;
@@ -362,68 +339,68 @@ void MagneticFieldDependence::loadData(TStringList * tts)
 
 void MagneticFieldDependence::SaveAllData(std::string FileName)
 {
-// ахтунг, это страшный костыль -
-// там где эта функция вызывается задаются имена файлов
-// Com Dir и Rev
-// по ним я и определяю тип сигнала.!!!!
-ParamsType pt;
-bool isCombinedParams=false;
+    // ахтунг, это страшный костыль -
+    // там где эта функция вызывается задаются имена файлов
+    // Com Dir и Rev
+    // по ним я и определяю тип сигнала.!!!!
+    ParamsType pt;
+    bool isCombinedParams=false;
 
-if(FileName[FileName.length()]=='m')
-    {
-        pt=COMBINE;
-        isCombinedParams=true;
-    }
-if(FileName[FileName.length()]=='v')  pt=REVERSE;
-if(FileName[FileName.length()]=='r')  pt=DIRECT;
+    if(FileName[FileName.length()]=='m')
+        {
+            pt=COMBINE;
+            isCombinedParams=true;
+        }
+    if(FileName[FileName.length()]=='v')  pt=REVERSE;
+    if(FileName[FileName.length()]=='r')  pt=DIRECT;
 
-    saver->setParamsType(pt);
-    saver->SaveData(CURRENT_DATA,&B,&HallEffect,&MagnetoResistance,(isCombinedParams?POINTS_21:POINTS_11),FileName);
-    saver->SaveData(CURRENT_DATA,&B,&HallEffect,&MagnetoResistance,ALL_POINTS,FileName);
+        saver->setParamsType(pt);
+        saver->SaveData(CURRENT_DATA,&B,&HallEffect,&MagnetoResistance,(isCombinedParams?POINTS_21:POINTS_11),FileName);
+        saver->SaveData(CURRENT_DATA,&B,&HallEffect,&MagnetoResistance,ALL_POINTS,FileName);
 
-    if(FilteredB.size()!=0)
-    {
-        saver->SaveData(FILTERED_DATA,&FilteredB,&FilteredHallEffect,&FilteredMagnetoResistance,(isCombinedParams?POINTS_21:POINTS_11),FileName);
-        saver->SaveData(FILTERED_DATA,&FilteredB,&FilteredHallEffect,&FilteredMagnetoResistance,ALL_POINTS,FileName);
-    }
-    //saver->SaveData(EXTRAPOLATED_DATA,&ExtrapolatedB,&ExtrapolatedHallEffect,&ExtrapolatedMagnetoResistance,(isCombinedParams?POINTS_21:POINTS_11),FileName);
-    if(ExtrapolatedB.size()!=0)
-    saver->SaveData(EXTRAPOLATED_DATA,&ExtrapolatedB,&ExtrapolatedHallEffect,&ExtrapolatedMagnetoResistance,ALL_POINTS,FileName);
+        if(FilteredB.size()!=0)
+        {
+            saver->SaveData(FILTERED_DATA,&FilteredB,&FilteredHallEffect,&FilteredMagnetoResistance,(isCombinedParams?POINTS_21:POINTS_11),FileName);
+            saver->SaveData(FILTERED_DATA,&FilteredB,&FilteredHallEffect,&FilteredMagnetoResistance,ALL_POINTS,FileName);
+        }
+        //saver->SaveData(EXTRAPOLATED_DATA,&ExtrapolatedB,&ExtrapolatedHallEffect,&ExtrapolatedMagnetoResistance,(isCombinedParams?POINTS_21:POINTS_11),FileName);
+        if(ExtrapolatedB.size()!=0)
+        saver->SaveData(EXTRAPOLATED_DATA,&ExtrapolatedB,&ExtrapolatedHallEffect,&ExtrapolatedMagnetoResistance,ALL_POINTS,FileName);
 
-    if(sxx.size()!=0)
-    {
-        saver->SaveData(TENZOR_DATA,&AveragedB,&sxx,&sxy,POINTS_11,
-            FileName+"R"+ filterParamsResistance->getFilterParams()+ "H"+ filterParamsHall->getFilterParams());
-        saver->SaveData(TENZOR_DATA,&AveragedB,&sxx,&sxy,ALL_POINTS,
-            FileName+"R"+ filterParamsResistance->getFilterParams()+ "H"+ filterParamsHall->getFilterParams());
+        if(sxx.size()!=0)
+        {
+            saver->SaveData(TENZOR_DATA,&AveragedB,&sxx,&sxy,POINTS_11,
+                FileName+"R"+ filterParamsResistance->getFilterParams()+ "H"+ filterParamsHall->getFilterParams());
+            saver->SaveData(TENZOR_DATA,&AveragedB,&sxx,&sxy,ALL_POINTS,
+                FileName+"R"+ filterParamsResistance->getFilterParams()+ "H"+ filterParamsHall->getFilterParams());
 
-        saver->SaveData(MOBILITY_DATA,&mobility,&holeConductivity,&electronConductivity,ALL_POINTS,FileName);
-    }
+            saver->SaveData(MOBILITY_DATA,&mobility,&holeConductivity,&electronConductivity,ALL_POINTS,FileName);
+        }
 
-    if (pt==COMBINE)
-    {
-        saver->SaveData(AVERAGED_DATA,&AveragedB,&AveragedHallEffect,&AveragedMagnetoResistance,ALL_POINTS,FileName);
-    }
+        if (pt==COMBINE)
+        {
+            saver->SaveData(AVERAGED_DATA,&AveragedB,&AveragedHallEffect,&AveragedMagnetoResistance,ALL_POINTS,FileName);
+        }
 
-    if(MobilitySpectrumObj)
-    {
-        std::string t1=FileName.c_str();
-        MobilitySpectrumObj->saveEigenValues(t1+"Eigen.txt");
-        MobilitySpectrumObj->saveResults(t1+"MobSpecRes.txt");
-        MobilitySpectrumObj->savePeakWeigth(t1+"PeakWeigth.txt");
-    }
-    saver->SaveSampleDescription(FileName);
+        if(MobilitySpectrumObj)
+        {
+            std::string t1=FileName.c_str();
+            MobilitySpectrumObj->saveEigenValues(t1+"Eigen.txt");
+            MobilitySpectrumObj->saveResults(t1+"MobSpecRes.txt");
+            MobilitySpectrumObj->savePeakWeigth(t1+"PeakWeigth.txt");
+        }
+        saver->SaveSampleDescription(FileName);
 }
 
 //------------Подгонка данных-------------------------------------------------
 
-void MagneticFieldDependence::averageData(TSignal & inY, TSignal &outY, FeatType featType, int centerOfSimmetry)
+void MagneticFieldDependence::averageData(TSignal & inY, TSignal &outY, FeatType featType, unsigned long centerOfSimmetry)
 {
     /*
     Усредненный сигнал на данный момент существует лишь для положительного магнитного поля.
    
     */
-    int size=inY.size();
+    auto size=inY.size();
 
     // Размер рассчитывается в зависимости от точки симметрии.
     outY.resize(std::min(centerOfSimmetry + 1,size - centerOfSimmetry));
@@ -472,7 +449,7 @@ void MagneticFieldDependence::averageData(TSignal & inY, TSignal &outY, FeatType
 
 
         */
-        for(int i=0;i<size/2+1;++i)
+        for(auto i=0u;i<size/2+1;++i)
             {
                 /*
                 Есть такая точка - центр симметрии.
@@ -480,9 +457,9 @@ void MagneticFieldDependence::averageData(TSignal & inY, TSignal &outY, FeatType
                 Таким образом получается
                 */
 
-                if (centerOfSimmetry+i<size && centerOfSimmetry-i>=0) // дабы не вывалиться за границы
+                if (centerOfSimmetry+i<size && centerOfSimmetry>=i) // дабы не вывалиться за границы
                 {
-                    outY[i]=(inY[centerOfSimmetry+i]-inY[centerOfSimmetry-i])/2.0;     
+                    outY[i]=(inY[centerOfSimmetry+i]-inY[centerOfSimmetry-i])/2.0L;
 
                 }
                 
@@ -552,12 +529,12 @@ void MagneticFieldDependence::averageData(TSignal & inY, TSignal &outY, FeatType
                 
         //ShowMessage(FloatToStr(inY[min])+" "+IntToStr((int)min));
             
-        for(int i=0;i<size/2+1;++i) // Элементов станет в два раза меньше.
+        for(auto i=0u;i<size/2+1;++i) // Элементов станет в два раза меньше.
         {
-            if (centerOfSimmetry+i<size && centerOfSimmetry-i>=0) // дабы не вывалиться за границы
+            if (centerOfSimmetry+i<size && centerOfSimmetry>=i) // дабы не вывалиться за границы
             {
-                outY[i]=(inY[centerOfSimmetry-i]+inY[centerOfSimmetry+i])/2.0;
-                if(fabs(outY[i])<0.000001)
+                outY[i]=(inY[centerOfSimmetry-i]+inY[centerOfSimmetry+i])/2.0L;
+                if(fabs(outY[i])<0.000001L)
                     cout << "O No!!!! MagneticFieldDependence.cpp\n";
             }
             /*
@@ -577,12 +554,9 @@ void MagneticFieldDependence::averageData(TSignal & inY, TSignal &outY, FeatType
             }*/
             //outY[i]=(inY[i]+inY[size-1-i])/2.0;
             //tempY[size-1-i]=tempY[i];
-
         }
         break;
     }
-
-    
 }
 
 void MagneticFieldDependence::featData(DataKind dataKind)
@@ -601,8 +575,6 @@ void MagneticFieldDependence::featData(DataKind dataKind)
     tempInHall=(*getPointerHall(dataKind));
     tempInResistance=(*getPointerMagnetoResistance(dataKind));
 
-
-    
     if(tempInB.size()==0 || tempInBHall.size()==0 || tempInBResistance.size()==0)
     {
         //"Получен пустой массив данных!!!");
@@ -699,7 +671,7 @@ void MagneticFieldDependence::filterData()
     //cout << MagnetoResistance.size() << endl;
     if(B.size()>0)
     {
-    if( B[0]<-1.0 && B.back() >1.0) // Если это комбинированный сигнал
+    if( B[0]<-1.0L && B.back() >1.0L) // Если это комбинированный сигнал
     {
         cout <<"inside\n";
      /*   Dependence h(BHall, HallEffect,true);
@@ -767,8 +739,8 @@ void MagneticFieldDependence::filterDataHelper(FilterParams &fP,
     */
 
     // Указатели на поле и сигнал.
-    TSignal * inB;
-    TSignal * inSignal;
+    TSignal * inB = nullptr;
+    TSignal * inSignal = nullptr;
 
     // Заботу о том комбинированный сигнал или нет, перекладываем на вышестоящую функцию.
     // Получаем нужные зависимости, с учетом типа и вида сигнала.
@@ -926,11 +898,11 @@ bool MagneticFieldDependence::extrapolateData( DataKind dataKind, const int poli
 	*/
     bool returnValue=true;
 
-    TSignal * BHallToExtrapolate=NULL;
-    TSignal * BResToExtrapolate=NULL;
-    TSignal * BToExtrapolate= NULL;
-    TSignal * HallToExtrapolate= NULL;
-    TSignal * ResistanceToExtrapolate= NULL;
+    TSignal * BHallToExtrapolate=nullptr;
+    TSignal * BResToExtrapolate=nullptr;
+    TSignal * BToExtrapolate= nullptr;
+    TSignal * HallToExtrapolate= nullptr;
+    TSignal * ResistanceToExtrapolate= nullptr;
 
     if (dataKind==FILTERED_DATA)
     {
@@ -949,7 +921,7 @@ bool MagneticFieldDependence::extrapolateData( DataKind dataKind, const int poli
         ResistanceToExtrapolate= & AveragedMagnetoResistance;
     }   
     // Если вдруг что-то пошло не так - мы убегаем.
-    if(BToExtrapolate==NULL)
+    if(BToExtrapolate==nullptr)
     {
     	return false;
     } 
@@ -999,7 +971,7 @@ bool MagneticFieldDependence::extrapolateData( DataKind dataKind, const int poli
     TSignal newMagnetoResistance;
 
     // Допустим нам всегда надо доводить поле до rightFieldBoundary
-    long double rightFieldBoundary = 2.5; // Тл
+    long double rightFieldBoundary = 2.5L; // Тл
     // Тогда нам надо расчитать кол-во точек, исходя из среднего шага.
     if (rightFieldBoundary>(BToExtrapolate->back()-h))
     {
@@ -1155,7 +1127,7 @@ bool MagneticFieldDependence::extrapolateData( DataKind dataKind, const int poli
     ResistanceToExtrapolate->clear();
     HallToExtrapolate->clear();
 
-    for (int i = 0; i < newB.size(); ++i)
+    for (auto i = 0u; i < newB.size(); ++i)
     {
         BToExtrapolate->push_back(newB[i]);
         BHallToExtrapolate->push_back(newBHall[i]);
@@ -1188,7 +1160,7 @@ void MagneticFieldDependence::multiplyB(DataKind dataKind)
 //-------------------------------------------------------------------------------
 void MagneticFieldDependence::multiplySignal(SignalType s, MyDataType x)
 {
-TSignal * p;
+TSignal * p = nullptr;
 if(s==HALL_EFFECT) p=&HallEffect;
 if(s==MAGNETORESISTANCE) p=&MagnetoResistance;
 if(p)
@@ -1217,9 +1189,11 @@ inline void MagneticFieldDependence::ReplaceDotsToComma(std::string &in, std::st
 }
 
 //-------------------------------------------------------------------------------
-bool MagneticFieldDependence::setFilterParamsHall(string samplingFrequecy, string bandwidthFrequency, string attenuationFrequency, string length)
+bool MagneticFieldDependence::setFilterParamsHall(string samplingFrequecy, string bandwidthFrequency,
+                                                  string attenuationFrequency, string length)
 {
-    filterParamsHall->setFilterParams(stold(samplingFrequecy), stold(bandwidthFrequency), stold(attenuationFrequency), stoll(length));
+    filterParamsHall->setFilterParams(stold(samplingFrequecy), stold(bandwidthFrequency),
+                                      stold(attenuationFrequency), stoll(length));
     return true;
 }
 //-------------------------------------------------------------------------------
@@ -1261,7 +1235,7 @@ void MagneticFieldDependence::setDependence(TSignal::iterator beginB,
         MagnetoResistance.push_back(*beginResistance);
         HallEffect.push_back(*beginHall); 
     }
-    if(fabs(max_abs_elem(B))<0.5)
+    if(fabs(max_abs_elem(B))<0.5L)
     {
         multiplyB(CURRENT_DATA);
     }
@@ -1417,16 +1391,16 @@ void MagneticFieldDependence::calculateEffectiveParamsFromSignals()
         std::string InventoryNumber;
 
         saver->getSampleDescription(T, Current, InventoryNumber, SampleLength, SampleWidth, SampleThickness);
-        MyDataType I=stold(Current)*1E-6;
-        MyDataType SLength=stold(SampleLength)*1E-3;
-        MyDataType SWidth=stold(SampleWidth)*1E-3;
-        MyDataType SThickness=stold(SampleThickness)*1E-6;
+        MyDataType I=stold(Current)*1E-6L;
+        MyDataType SLength=stold(SampleLength)*1E-3L;
+        MyDataType SWidth=stold(SampleWidth)*1E-3L;
+        MyDataType SThickness=stold(SampleThickness)*1E-6L;
 
-        unsigned int NumberOfPoints = AveragedB.size();
+        auto NumberOfPoints = AveragedB.size();
         s_eff.resize(NumberOfPoints);
         Rh_eff.resize(NumberOfPoints);
 
-        for (unsigned int i = 0; i < NumberOfPoints ; ++i)
+        for (auto i = 0u; i < NumberOfPoints ; ++i)
         {
             if(fabs(AveragedMagnetoResistance[i])<THEALMOSTZERO)
                 s_eff[i]=0;
@@ -1434,7 +1408,7 @@ void MagneticFieldDependence::calculateEffectiveParamsFromSignals()
             {
                 s_eff[i]=SLength/SWidth/SThickness*I/AveragedMagnetoResistance[i];
             }
-            if(AveragedB[i] == 0)
+            if(AveragedB[i] == 0.0L)
                 Rh_eff[i] = 0;
             else
                 Rh_eff[i]=SThickness*AveragedHallEffect[i]/I;
@@ -1448,16 +1422,16 @@ void MagneticFieldDependence::calculateTenzorFromEffectiveParams()
 {
     if (s_eff.size() && Rh_eff.size() && s_eff.size() == Rh_eff.size())
     {
-        unsigned int NumberOfPoints = s_eff.size();
+        auto NumberOfPoints = s_eff.size();
         sxx.resize(NumberOfPoints);
         sxy.resize(NumberOfPoints);
 
-        for (unsigned int i = 0; i < NumberOfPoints ; ++i)
+        for (auto i = 0u; i < NumberOfPoints ; ++i)
         {
             sxx[i]=s_eff[i]/
-                (Rh_eff[i]*Rh_eff[i]*s_eff[i]*s_eff[i]+1.0);
+                (Rh_eff[i]*Rh_eff[i]*s_eff[i]*s_eff[i]+1.0L);
             sxy[i]=s_eff[i]*s_eff[i]*Rh_eff[i]/
-               (Rh_eff[i]*Rh_eff[i]*s_eff[i]*s_eff[i]+1.0);
+               (Rh_eff[i]*Rh_eff[i]*s_eff[i]*s_eff[i]+1.0L);
         }
     }
 }
@@ -1477,7 +1451,7 @@ TSignal * MagneticFieldDependence::getPointerB(DataKind dataKind)
     default:
         break;
     }
-    return NULL;
+    return nullptr;
 }
 
 TSignal * MagneticFieldDependence::getPointerBHall(DataKind dataKind)
@@ -1495,7 +1469,7 @@ TSignal * MagneticFieldDependence::getPointerBHall(DataKind dataKind)
     default:
         break;
     }
-    return NULL;
+    return nullptr;
 }
 
 TSignal * MagneticFieldDependence::getPointerBResistance(DataKind dataKind)
@@ -1513,7 +1487,7 @@ TSignal * MagneticFieldDependence::getPointerBResistance(DataKind dataKind)
     default:
         break;
     }
-    return NULL;
+    return nullptr;
 }
 //-------------------------------------------------------------------------
 TSignal * MagneticFieldDependence::getPointerHall(DataKind dataKind)
@@ -1531,7 +1505,7 @@ TSignal * MagneticFieldDependence::getPointerHall(DataKind dataKind)
     default:
         break;
     }
-    return NULL;
+    return nullptr;
 }
 //-------------------------------------------------------------------------
 TSignal * MagneticFieldDependence::getPointerMagnetoResistance(DataKind dataKind)
@@ -1549,15 +1523,15 @@ TSignal * MagneticFieldDependence::getPointerMagnetoResistance(DataKind dataKind
     default:
         break;
     }
-    return NULL;
+    return nullptr;
 }
 //-------------------------------------------------------------------------
-TSignal * MagneticFieldDependence::getPointerSxx(DataKind dataKind)
+TSignal * MagneticFieldDependence::getPointerSxx(/*DataKind dataKind*/)
 {
     return &sxx;
 }
 //-------------------------------------------------------------------------
-TSignal * MagneticFieldDependence::getPointerSxy(DataKind dataKind)
+TSignal * MagneticFieldDependence::getPointerSxy(/*DataKind dataKind*/)
 {
     return &sxy;
 }
@@ -1571,7 +1545,7 @@ void MagneticFieldDependence::calculateTenzor(DataKind dataKind)
 }
 
 //-------------------------------------------------------------------------
-void  MagneticFieldDependence::cutData(DataKind dataKind)
+void  MagneticFieldDependence::cutData(/*DataKind dataKind*/)
 {
     // А если тут ничего не происходит... зачем я её делал?))))
     // оставляет только положительные значения магнитного поля
@@ -1605,8 +1579,8 @@ void MagneticFieldDependence::setParamsType(ParamsType pt)
 
 void MagneticFieldDependence::shiftCurve(DataKind dataKind,SignalType dependenceType,MyDataType shiftValue,MyDataType leftBound, MyDataType rightBound)
 {
-    TSignal * pointToY=0;
-    TSignal * pointToX=0;
+    TSignal * pointToY=nullptr;
+    TSignal * pointToX=nullptr;
     switch (dependenceType)
     {
         case HALL_EFFECT:
@@ -1620,7 +1594,7 @@ void MagneticFieldDependence::shiftCurve(DataKind dataKind,SignalType dependence
         default:
         break;
     }
-    if (pointToY==0)
+    if (pointToY==nullptr)
     {
         return;
     }
@@ -1657,7 +1631,7 @@ bool MagneticFieldDependence::calculateMobilitySpectrum(unsigned int NumberOfDec
     roundM(nSxx, NumberOfDecimalPlaces);
     roundM(nSxy, NumberOfDecimalPlaces);
 
-    if (MobilitySpectrumObj!=NULL)
+    if (MobilitySpectrumObj!=nullptr)
     {
         delete MobilitySpectrumObj;
     }
@@ -1694,7 +1668,7 @@ bool MagneticFieldDependence::runSmartMultiCarrierFit(long double VesGxx, long d
     thiningSignal(MagSpectr, GxxIn, nMagSpectr, nGxxIn,0, 2, 11);
     thiningSignal(MagSpectr, GxyIn, nMagSpectr, nGxyIn,0, 2, 11);
 
-    int GxxSize=nMagSpectr.size();
+    auto GxxSize=nMagSpectr.size();
     int numberOfCarrierTypes=3;
 
     MultiZoneFit * mzf=new MultiZoneFit(100,VesGxx, VesGxy);
@@ -1734,7 +1708,7 @@ bool MagneticFieldDependence::runMultiCarrierFit(long double VesGxx, long double
     /*
     В теории на данный момент спектры не имеющие пика не допускаются к расчету.
     */
-    long double leftBoundMobility=0.001;
+    long double leftBoundMobility=0.001L;
 
     if (ExactBound[0]==leftBoundMobility ||
         ExactBound[1]==leftBoundMobility ||
@@ -1746,20 +1720,19 @@ bool MagneticFieldDependence::runMultiCarrierFit(long double VesGxx, long double
     // Нужно выяснить отчего зависит разброс.
     // Разброс нужно сделать зависимым от статистики спектра подвижности.
     // Полагаю это какие-то коэффициенты
-    std::vector<long double> coef;
-
-    coef.push_back(0.7); // Подвижность электронов
-    coef.push_back(0.3); // Подвижность легких дырок
-    coef.push_back(0.2); // Подвижность тяжелых дырок
-    coef.push_back(0.9); // Концентрация электронов
-    coef.push_back(0.3); // Концентрация легких дырок
-    coef.push_back(0.2); // Концентрация тяжелых дырок
-
+    std::vector<long double> coef = {
+        0.7L, // Подвижность электронов
+        0.3L, // Подвижность легких дырок
+        0.2L, // Подвижность тяжелых дырок
+        0.9L, // Концентрация электронов
+        0.3L, // Концентрация легких дырок
+        0.2L, // Концентрация тяжелых дырок
+    };
 
     std::vector<long double> LowBound; // сюда - границы для поиска
     std::vector<long double> UpBound;
 
-    for (int i = 0; i < ExactBound.size(); ++i)
+    for (auto i = 0u; i < ExactBound.size(); ++i)
     {
         LowBound.push_back(ExactBound[i]-ExactBound[i]*coef[i]);
         UpBound.push_back(ExactBound[i]+ExactBound[i]*coef[i]);
@@ -1804,8 +1777,6 @@ void MagneticFieldDependence::getMultiCarrierFitResults(InDataSpectr & nMagSpect
     outGxy=this->outGxy;
     outValues=this->outValues;
 }
-
-
 
 void MagneticFieldDependence::getExtrapolateParams(int & powPolinomH,int & powPolinomR)
 {

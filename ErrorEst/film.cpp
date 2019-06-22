@@ -109,6 +109,6 @@ long double film::ownConcentrationOfElectrons()
 	long double x=MolarCompositionCadmium;
 	long double k=1.380648813E-23/1.60217646E-19; // постоянная больцмана в электрон-Вольтах
     long double Eg=-0.302+1.93*x-0.810*x*x+0.832*x*x*x+5.35E-4*(1-2.0*x)*T;
-    return  (5.585-3.820*x+1.753E-3*T-1.364E-3*x*T)*1E20*pow(Eg,3/4.)*pow(T,1.5)*exp(-Eg/2./k/T); // собственная концентрация
+    return  (5.585-3.820*x+1.753E-3*T-1.364E-3*x*T)*1E20*powl(Eg,3/4.)*powl(T,1.5)*exp(-Eg/2./k/T); // собственная концентрация
     // Вопрос, в формуле с журнала 1e14 вместо 1e20
 }

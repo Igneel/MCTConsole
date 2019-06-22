@@ -44,9 +44,8 @@ TSignal & inY,TSignal & outB,
 TSignal & outY,
 int lengthFilter,MyDataType Fdisk,MyDataType Fpropysk,MyDataType Fzatyh);
 
-double Filter (const std::vector<long double> &in,
-std::vector<long double> & out, int length,
-double Fdisk, double Fpropysk,double Fzatyh);
+long double Filter (const std::vector<long double> &in, std::vector<long double> & out,
+               unsigned int length, long double Fdisk, long double Fpropysk, long double Fzatyh);
 
 //---------------------------------------------------------------------------
 #endif

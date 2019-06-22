@@ -10,19 +10,19 @@ class mobilitySpectrum
 private:
     int PointPerInt;
 
-    typedef vector <long double> Data_spektr ;
+    typedef vector <long double> Data_spektr;
 
     typedef vector <long double> ImageDat;
-    typedef vector <vector <long double> > mat ;
-    typedef vector <long double> Dat1 ;
-    typedef vector <vector <long double> > Dat2 ;
-    typedef vector <vector <long double> > Dat3 ;
+    typedef vector <vector <long double> > mat;
+    typedef vector <long double> Dat1;
+    typedef vector <vector <long double> > Dat2;
 
     enum PeakType { MostSignificant, Significant, Slowdown};
 
     typedef vector< pair<long double, long double> > TLineSeries;
 
-    int NumberOfPoints,Power_spektr,GridPoints;
+    unsigned long NumberOfPoints;
+    int Power_spektr,GridPoints;
 
     Data_spektr MagField_spektr,GxxExp,GxyExp;
 
@@ -33,7 +33,7 @@ private:
     ImageDat Spectr_p;
     ImageDat Mobility;
 
-    long int SizeData;
+    unsigned long SizeData;
     Dat1 B_spektr,Gxx_sp,Gxx_MC, Gxy_MC, Gxy_sp,Xr,Lv,Xv,Mv,Vpr;
     Dat2 Am,Qm,Cl,Cr,Cl_t,Cr_t,Cm,Cm_t          ;
     bool bulua;
@@ -53,7 +53,7 @@ private:
     std::vector<PeakType> holePeakType;
     std::vector<PeakType> electronPeakType;
 
-    int  MaxPoints;
+    unsigned int  MaxPoints;
 
     void  InitArray();
     void  InitArray2();

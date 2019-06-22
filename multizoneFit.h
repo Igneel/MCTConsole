@@ -12,14 +12,13 @@ class MultiZoneFit
 {
 public:
     MultiZoneFit(long double RepeatQuantity, long double nVesGxx, long double nVesGxy) {
-    epsilon=2e-6;
-    eps1=0.15;
-
-     MaxPoints=100;
+    epsilon=2e-6L;
+    eps1=0.15L;
+    MaxPoints=100;
     PointPerInt=50;
     MaxParameters=8;    // Максимальное число параметров
-   MaxRepeat=RepeatQuantity;// Максимальное число повторов
-    ElectronCharge=1.60217656535E-19;// Кл
+    MaxRepeat=static_cast<unsigned int>(RepeatQuantity);// Максимальное число повторов
+    ElectronCharge=1.60217656535E-19L;// Кл
     PP=NP=0;
     SIZE=8; // Очень очень очень странный размер.
       // Параметров-то шесть.
@@ -27,13 +26,13 @@ public:
       // Благо есть проверка диапазонов.
       for(int i=0;i<9;++i)
       {
-        a[i]=1.1;
+        a[i]=1.1L;
       }
 
       Fold=Fnew=Fbefore=0;
 
       Nstep=SIZE;
-      repeatQuantity=RepeatQuantity;
+      repeatQuantity=static_cast<unsigned long>(RepeatQuantity);
 
       VesGxx=nVesGxx;
       VesGxy=nVesGxy;
@@ -69,13 +68,13 @@ private:
     long double epsilon;
     long double eps1;
 
-    int  MaxPoints;
-    int  PointPerInt;
-    int  MaxParameters;    // Максимальное число параметров
-    int  MaxRepeat;      // Максимальное число повторов
+    unsigned int  MaxPoints;
+    unsigned int  PointPerInt;
+    unsigned int  MaxParameters;    // Максимальное число параметров
+    unsigned int  MaxRepeat;      // Максимальное число повторов
     long double  ElectronCharge;// Кл
 
-    int  SIZE; // Очень очень очень странный размер.
+    unsigned int  SIZE; // Очень очень очень странный размер.
       // Параметров-то шесть.
       // Нужно проверить используются где-нибудь индексы больше.
       // Благо есть проверка диапазонов.
@@ -89,7 +88,7 @@ private:
 
     Image Data,Data0,Min_Value,Max_Value,D_Step,
     D_StepOld,DataOld,DataBef;
-    int N_Data;
+    unsigned int N_Data;
     int PP,NP;
 
     bool FlagEnd,FlagDipl;
@@ -98,7 +97,7 @@ private:
 
     long double a[9];
 
-    int Nstep;        // количество допустимых неудачных попыток
+    unsigned int Nstep;        // количество допустимых неудачных попыток
 
     DataValue d1;
 
@@ -108,8 +107,6 @@ private:
     long double VesGxy;
 
 };
-
-
 
 
     // То что вношу я.
@@ -124,8 +121,6 @@ private:
 
     MyData_spektr=array [0..10] of long double;
  */
-
-
 
 
 #endif // MULTIZONEFIT_H

@@ -2,20 +2,20 @@
 //------------------------------------------------------------------------------
 inline MyDataType dist(MyDataType x1, MyDataType x2)
 {
-    return fabs(x1-x2);
+    return fabsl(x1-x2);
 }
 
 void calculatePolinomByKoef(TSignal & inX, TSignal & koef, TSignal & outF )
 {
-    int NumberOfPoints=inX.size();
-    int NumberOfPolinomKoef=koef.size()-1;
+    auto NumberOfPoints=inX.size();
+    auto NumberOfPolinomKoef=koef.size()-1;
 
     outF.clear();
 
-    for(int i=0;i<NumberOfPoints;++i)
+    for( auto i=0u;i<NumberOfPoints;++i)
     {
         outF.push_back(0);
-        for (int koef_index = 0; koef_index <= NumberOfPolinomKoef; ++koef_index)
+        for (auto koef_index = 0u; koef_index <= NumberOfPolinomKoef; ++koef_index)
         {
             long double powedB=0;
             if(NumberOfPolinomKoef-koef_index==0)
@@ -55,24 +55,24 @@ bool LoadFromFile(std::vector<std::string> *tsl, std::string filename)
 
 bool testCommonFunctions()
 {
-    long double e=10e-6;
-    long double x=1.123456;
-    long double y=1.123454;
+    long double e=10e-6L;
+    long double x=1.123456L;
+    long double y=1.123454L;
     unsigned int NumberOfDecimalPlaces=5;
-    if(fabs(roundM(x,NumberOfDecimalPlaces)-1.12346)>e)
+    if(fabsl(roundM(x,NumberOfDecimalPlaces)-1.12346L)>e)
     {
         return false;
     }
-    if (fabs(roundM(y,NumberOfDecimalPlaces)-1.12345)>e)
+    if (fabsl(roundM(y,NumberOfDecimalPlaces)-1.12345L)>e)
     {
         return false;
     }
 
     TSignal s;
-    s.push_back(1.123456);
-    s.push_back(1.123454);
+    s.push_back(1.123456L);
+    s.push_back(1.123454L);
     roundM(s,NumberOfDecimalPlaces);
-    if (fabs(s[0]-1.12346)>e || fabs(s[1]-1.12345)>e)
+    if (fabsl(s[0]-1.12346L)>e || fabsl(s[1]-1.12345L)>e)
     {
         return false;
     }
@@ -105,7 +105,7 @@ TSignal calculateFirstDerivative(TSignal & y, MyDataType h)
   for(size_t i =0;i<y.size()-2;i++)
       {
         //dY[i]=1.0/(fabs(y[i+1]-y[i]))*(2.0*y[i+1]-y[i+2]/2.0-3.0/2.0*y[i]);
-        dY[i]=(y[i+2]-y[i])/2.0/h;
+        dY[i]=(y[i+2]-y[i])/2.0L/h;
       }
   return dY;
 }
@@ -128,7 +128,7 @@ long double calculateDispersion(const TSignal & x)
     long double mean=calculateMeanValue(x);
     for (size_t i = 0; i < x.size(); ++i)
     {
-        res+=pow(x[0]-mean,2);
+        res+=powl(x[0]-mean,2);
     }
     return res;
 }
@@ -136,7 +136,7 @@ long double calculateDispersion(const TSignal & x)
 
 long double standardDeviation(const TSignal & x)
 {
-    return sqrt(calculateDispersion(x)/x.size());
+    return sqrtl(calculateDispersion(x)/x.size());
 }
 
 //------------------------------------------------------------------------------
@@ -148,7 +148,7 @@ long double standardDeviation(const TSignal & x)
 // метод будет считать что мы с этой точностью измеряли - и мало что найдет
 void RoundM(long double * x,int length, size_t NumberOfNumbersAfterPoint)
 {
-    int S=pow(10,NumberOfNumbersAfterPoint);
+    int S=powl(10,NumberOfNumbersAfterPoint);
     for(int i=0;i<length;i++)
     {
         int n=static_cast<int>(x[i]*S)%10;
@@ -240,7 +240,7 @@ bool thiningSignal(TSignal & inB, TSignal & inDependence, TSignal & outB, TSigna
     TSignal idealB; // тут будем хранить опорные точки.
 
     // шаг есть величина диапазона на количество интервалов (на единицу меньше количества точек)
-    MyDataType shag=(right-left)/(static_cast<MyDataType>(NewLength)-1.0);
+    MyDataType shag=(right-left)/(static_cast<MyDataType>(NewLength)-1.0L);
 
     idealB.push_back(left); // начинаем с наименьшей границы
     for (unsigned int i=1; i < NewLength; ++i) 
@@ -305,11 +305,11 @@ bool thiningSignal(TSignal & inB, TSignal & inDependence, TSignal & outB, TSigna
         --b;
     if(b!=inB.begin())
     {
-        if (fabs(fabs(*b)-fabs(idealB[i]))>fabs (fabs(*(b-1))-fabs(idealB[i])))
+        if (fabsl(fabsl(*b)-fabsl(idealB[i]))>fabsl(fabsl(*(b-1))-fabsl(idealB[i])))
             --b;
     }
     outB.push_back(*b);
-    int d=std::distance(inB.begin(),b);
+    unsigned long d=static_cast<unsigned long>(std::distance(inB.begin(),b));
     outDependence.push_back(inDependence[d]);
 
     }

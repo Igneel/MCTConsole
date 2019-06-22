@@ -34,11 +34,10 @@ long double MultiZoneFit::func_hall8(const Image & Data, const Data_spektr & Mag
   Data_spektr &  Gxy, const Data_spektr &  GxxExp, const Data_spektr &  GxyExp,
  const long double NPoint)
 {
-  int myi;
+  unsigned int myi;
   long double g,g1,cond1,cond2,cond3;
 for (myi=0; myi<NPoint; ++myi)
   {
-
   cond1=Data[4]*Data[1]/(1+powl(Data[1]*Magfield_spektr[myi],2));
   cond2=Data[5]*Data[2]/(1+powl(Data[2]*MagField_spektr[myi],2));
   cond3=Data[6]*Data[3]/(1+powl(Data[3]*MagField_spektr[myi],2));
@@ -61,11 +60,11 @@ for (myi=0; myi<NPoint; ++myi)
    }
        else
     {
-     g1+=powl(Gxy[myi]-GxyExp[myi],2)/(fabs(GxyExp[myi])+fabs(Gxy[myi]));
+     g1+=powl(Gxy[myi]-GxyExp[myi],2)/(fabsl(GxyExp[myi])+fabsl(Gxy[myi]));
     }
   }
 
-  return 100.0*(sqrt(g*VesGxx)+sqrt(g1*VesGxy))/(NPoint);
+  return 100.0L *(sqrtl(g*VesGxx)+sqrtl(g1*VesGxy))/(NPoint);
 } /* of func */
 
 
@@ -75,13 +74,13 @@ for (myi=0; myi<NPoint; ++myi)
     Image Params_Best;
     Params_Best.resize(SIZE);
     Data.resize(SIZE);
-    Fbefore=1.e8;
+    Fbefore=1.e8L;
     for ( int ii=1 ; ii<= N_Make ;++ii)  // {до N_Make} { Number of steps }
     {
         for ( int j=1 ; j<= 100 ;++j)
         {   // присваеваем каждому параметру случайное значение
             // в заданных пределах
-            for ( int i=1 ; i<= N_Data ;++i)
+            for (auto i=1u; i<= N_Data ;++i)
               Data[i]=Min_Value[i]+(static_cast<long double >(rand())/RAND_MAX)*(Max_Value[i]-Min_Value[i]);
             // вычисляем значение целевой функции в данной точке
             Fnew=func_hall8(Data,MagField_spektr,Gxx,Gxy,GxxExp,GxyExp,NPoint);
@@ -130,9 +129,9 @@ void MultiZoneFit::CheckLimits()   // проверяет, не принял ли
 
 void MultiZoneFit::Research()
 {
-   int k=1;
-        Image   Params_Old;
-     int as0[7]={0}; // 1..6
+    unsigned int k=1;
+    Image   Params_Old;
+    int as0[7]={0}; // 1..6
 
  Fnew=func_hall8(Data,MagField_spektr,Gxx,Gxy,GxxExp,GxyExp,NPoint);
  Params_Old=Data;
@@ -165,13 +164,14 @@ void MultiZoneFit::Research()
 
 void MultiZoneFit::Hook()
 {
-
-   for ( int i=1 ; i<= N_Data ;++i)
-     D_StepOld[i]=Data[i]*0.1;
-     Data0=Data;
-     Fnew=func_hall8(Data,MagField_spektr,Gxx,Gxy,GxxExp,GxyExp,NPoint);
-     FlagEnd=false;
-     FlagDipl=false;
+    for(auto i=1u; i<= N_Data ;++i)
+    {
+        D_StepOld[i]=Data[i]*0.1L;
+    }
+    Data0=Data;
+    Fnew=func_hall8(Data,MagField_spektr,Gxx,Gxy,GxxExp,GxyExp,NPoint);
+    FlagEnd=false;
+    FlagDipl=false;
    do
    {
      if (!FlagDipl) InitVar();
@@ -208,11 +208,11 @@ void MultiZoneFit::Hook()
          {   // рисуем график
           // GraphikH;
          }
-         if ( (fabs((Fnew-Fbefore))>epsilon) )
+         if ( (fabsl((Fnew-Fbefore))>epsilon) )
             {
               NP=0;
             }
-         if ( (fabs((Fnew-Fbefore))<=epsilon) )
+         if ( (fabsl((Fnew-Fbefore))<=epsilon) )
          {
           ++NP;
          break;
@@ -238,12 +238,14 @@ void MultiZoneFit::Hook()
         else
           {  // данный вариант возможен лишь при  FlagDipl=false.
 
-          for ( int i=1 ; i<= N_Data ;++i)  // уменьшаем шаг
-           D_StepOld[i]=D_StepOld[i]/2.0;
+          for (auto i=1u; i<= N_Data ;++i)  // уменьшаем шаг
+          {
+            D_StepOld[i]=D_StepOld[i]/2.0L;
+          }
           Data=DataOld;// к предыдущей точке
-           Fnew=Fbefore;
-           PP=0;
-           ++NP;
+          Fnew=Fbefore;
+          PP=0;
+          ++NP;
           }
           if ( NP>=Nstep )
           {

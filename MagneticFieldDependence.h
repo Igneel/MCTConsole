@@ -14,9 +14,9 @@ class MagneticFieldDependence
 {
 public:
 
-TSignal * getPointerSxx(DataKind dataKind);
+TSignal * getPointerSxx();
 //-------------------------------------------------------------------------
-TSignal * getPointerSxy(DataKind dataKind);
+TSignal * getPointerSxy(/*DataKind dataKind*/);
 
 	enum FeatType {ODD_FEAT, EVEN_FEAT};
 
@@ -144,7 +144,7 @@ private:
     void QuativativeNoiseGenerator();
     void GaussianNoiseGenerator(long double coef);
 
-    int noiseCoef;
+    long double noiseCoef;
 
     std::vector<long double> mzr;
 
@@ -190,9 +190,9 @@ private:
 	void calculateEffectiveParamsFromSignals();
 	void calculateTenzorFromEffectiveParams();
 	void featData(DataKind dataKind); // усреднение зависимостей, вызывать эту.
-	void averageData(TSignal & inY, TSignal &outY, FeatType featType, int centerOfSimmetry);
+    void averageData(TSignal & inY, TSignal &outY, FeatType featType, unsigned long centerOfSimmetry);
 	
-	void cutData(DataKind dataKind); // оставляет только положительные значения магнитного поля
+    void cutData(); // оставляет только положительные значения магнитного поля
 
 	void clearCurrentParams();
 	void clearFilteredParams();

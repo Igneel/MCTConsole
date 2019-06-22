@@ -17,17 +17,12 @@ int main(int argc, char *argv[])
      * ./main 77 1 10e-3 30e-3 10e-3 1e-5 1e22 0.21 5 1.3
      *
      * eSamplingFRes,eBandWidthFRes,eAttenuationFRes,eLengthFilterRes eSamplingFHall,eBandWidthFHall,eAttenuationFHall,eLengthFilterHall;
-
-
-
-    А нужен ли нам автомейшн здесь? Мб просто выдавать значения для заданных параметров?
-    А остальное из питона прикрутить....
     */
 
     int Temperature; // начальная температура
     long double coef;// коэффициент шума
 
-    const MyDataType shagB=0.001;
+    const MyDataType shagB=0.001L;
 
     MyDataType eMolarCompositionCadmium;
     size_t NumberOfCarrierTypes = 3;
@@ -42,7 +37,7 @@ int main(int argc, char *argv[])
     MyDataType eHeavyHoleConcentration;
 
     MyDataType eAFactor = 5; //(5-8)
-    MyDataType eKFactor = 1.3; //(1.3-1.5)
+    MyDataType eKFactor = 1.3L; //(1.3-1.5)
 
 
     std::string eSamplingFRes,eBandWidthFRes,eAttenuationFRes,eLengthFilterRes;
@@ -115,8 +110,7 @@ int main(int argc, char *argv[])
     MagneticFieldDependence * p = new MagneticFieldDependence(current,Temperature,inventoryNumber,
                                                               sampleLength,sampleWidth,sampleThickness);
 
-    size_t NumberOfPoints = 2 / shagB + 1;
-
+    size_t NumberOfPoints =static_cast<size_t>(2 / shagB + 1);
 
 
 
@@ -154,9 +148,9 @@ int main(int argc, char *argv[])
 
 
     // filter & extrapolation
-    //p->filterData();
+    p->filterData();
     //cout << "after filter\n";
-    //p->extrapolateData(FILTERED_DATA,PowPolinomRes,PowPolinomHall);
+    p->extrapolateData(FILTERED_DATA,PowPolinomRes,PowPolinomHall);
 
 
     // calculateTenzor
@@ -164,7 +158,7 @@ int main(int argc, char *argv[])
     inventoryNumber,to_string(sampleLength),to_string(sampleWidth),to_string(sampleThickness));
     //p->setParamsType(ResCurveIndex->ItemIndex);
 
-    DataKind dataflag=(coef==0?CURRENT_DATA:FILTERED_DATA);
+    DataKind dataflag=FILTERED_DATA; //(coef==0?CURRENT_DATA:FILTERED_DATA);
     //cout << "CalculateTenzor\n";
     p->calculateTenzor(dataflag);
 
@@ -200,15 +194,15 @@ int main(int argc, char *argv[])
         TSignal const * B = p->getB();
         TSignal const * Hall = p->getHallEffect();
         TSignal const * MagnetoRes = p->getMagnetoResistance();
-        for(auto i = 0;i< B->size();i++)
+        for(auto i = 0u;i< B->size();i++)
         {
             cout << (*B)[i] << "\t";
         }
-        for(auto i = 0;i< Hall->size();i++)
+        for(auto i = 0u;i< Hall->size();i++)
         {
             cout << (*Hall)[i] << "\t";
         }
-        for(auto i = 0;i< MagnetoRes->size();i++)
+        for(auto i = 0u;i< MagnetoRes->size();i++)
         {
             cout << (*MagnetoRes)[i] << "\t";
         }
@@ -228,6 +222,7 @@ int main(int argc, char *argv[])
     #
     */
         cout << "\nNewSectionBeginHere\n";
+        cout << (*Hall)[Hall->size()-1] << "\t";
 
         // Расчет спектр подвижности здесь:)
         // Сюда же хочу передавать параметры округления, т.к. оно должно происходить на последнем этапе
@@ -236,7 +231,9 @@ int main(int argc, char *argv[])
 
         cout << "\n";
 
-        for (auto i=0;i<p->getHoleConcentration()->size();i++)
+
+
+        for (auto i=0u;i<p->getHoleConcentration()->size();i++)
         {
             cout << p->getHoleMobility()->operator[](i) << "\t";
             cout << p->getHoleConcentration()->operator[](i) << "\t";
@@ -320,21 +317,17 @@ int main(int argc, char *argv[])
 #                               ______________________
 */
     cout << "\nNewSectionBeginHere\n";
-    for (auto i = 0; i < ex.size(); ++i)
-    {
-        cout << ex[i] << "\t";
+    for (auto& i: ex) {
+        cout << i << "\t";
     }
-    for (auto i = 0; i < eY.size(); ++i)
-    {
-        cout << eY[i] << "\t";
+    for (auto& i: eY) {
+        cout << i << "\t";
     }
-    for (auto i = 0; i < hx.size(); ++i)
-    {
-        cout << hx[i] << "\t";
+    for (auto& i: hx) {
+        cout << i << "\t";
     }
-    for (auto i = 0; i < hY.size(); ++i)
-    {
-        cout << hY[i] << "\t";
+    for (auto& i: hY) {
+        cout << i << "\t";
     }
 /*
     for (auto i = 0; i < ex.size(); ++i)
@@ -360,11 +353,10 @@ int main(int argc, char *argv[])
 
     cout << "\n";
 
-    for (auto i=0;i<p->getHoleConcentration()->size();i++)
+    for (auto i=0u;i<p->getHoleConcentration()->size();i++)
     {
         cout << p->getHoleMobility()->operator[](i) << "\t";
         cout << p->getHoleConcentration()->operator[](i) << "\t";
-
     }
 
     if(p->getElectronConcentration()->size()>=1)
@@ -385,7 +377,7 @@ int main(int argc, char *argv[])
 
 void getAndDisplayMultiCarrierFitResults(MagneticFieldDependence * p)
 {
-    int numberOfCarrierTypes=3;
+    auto numberOfCarrierTypes=3u;
     InDataSpectr nMagSpectr;
     InDataSpectr nGxxIn;
     InDataSpectr nGxyIn;
@@ -442,10 +434,10 @@ void getAndDisplayMultiCarrierFitResults(MagneticFieldDependence * p)
 
     TStringList * tsl = new TStringList();
 
-    for (int j = 0; j < 4; ++j)
+    for (auto j = 0u; j < 4u; ++j)
     {
 
-        for(int i=0;i<2*numberOfCarrierTypes;++i)
+        for(auto i=0u;i<2*numberOfCarrierTypes;++i)
         {
             tsl->push_back(to_string(outValues[i][j]));
         }
