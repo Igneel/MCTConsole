@@ -25,7 +25,7 @@ void MultiZoneFit::memoryAlloc()
     DataBef.resize(SIZE);
 
     d1.resize(MaxParameters+1);
-    for (int i = 0; i < MaxParameters+1; ++i) {
+    for (auto i = 0u; i < MaxParameters+1; ++i) {
         d1[i].resize(MaxRepeat+1);
     }
 }

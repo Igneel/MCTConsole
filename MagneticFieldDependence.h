@@ -90,10 +90,14 @@ TSignal * getPointerSxy(/*DataKind dataKind*/);
 	void calculateTenzor(DataKind dataKind);
 
 	//------Фильтрация результатов-------------------------------------
-    bool setFilterParamsHall(std::string samplingFrequecy,std::string bandwidthFrequency,std::string attenuationFrequency, std::string length);
-	bool setFilterParamsHall(MyDataType samplingFrequecy,MyDataType bandwidthFrequency,MyDataType attenuationFrequency, int length);
-    bool setFilterParamsResistance(string samplingFrequecy, string bandwidthFrequency, string attenuationFrequency, string length);
-	bool setFilterParamsResistance(MyDataType samplingFrequecy,MyDataType bandwidthFrequency,MyDataType attenuationFrequency, int length);
+    bool setFilterParamsHall(std::string samplingFrequecy,std::string bandwidthFrequency,
+                             std::string attenuationFrequency, std::string length);
+    bool setFilterParamsHall(MyDataType samplingFrequecy, MyDataType bandwidthFrequency,
+                             MyDataType attenuationFrequency, long length);
+    bool setFilterParamsResistance(string samplingFrequecy, string bandwidthFrequency,
+                                   string attenuationFrequency, string length);
+    bool setFilterParamsResistance(MyDataType samplingFrequecy, MyDataType bandwidthFrequency,
+                                   MyDataType attenuationFrequency, long length);
 
 	FilterParams const * getFilterParamsHall();
 	FilterParams const * getFilterParamsResistance();

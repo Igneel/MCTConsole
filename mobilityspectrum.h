@@ -85,7 +85,7 @@ private:
                      Dat2 & a, Dat2 & z, bool & fail);
     void  Imtql2(const int n,const long double macheps, Dat1 & d, Dat1 & e,
                      Dat2 & z, bool & fail);
-    long double GetElem(const int j1, const int k1, const int i1);
+    long double GetElem(const unsigned int j1, const int k1, const int i1);
     void  MakeMatrC();
     void  MakeMatrA();
     void  InverseMatrC(Dat2 & Ci,Dat2 & C,long double & Su,const int NP);

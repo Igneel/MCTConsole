@@ -1197,7 +1197,8 @@ bool MagneticFieldDependence::setFilterParamsHall(string samplingFrequecy, strin
     return true;
 }
 //-------------------------------------------------------------------------------
-bool MagneticFieldDependence::setFilterParamsHall(MyDataType samplingFrequecy,MyDataType bandwidthFrequency,MyDataType attenuationFrequency, int length)
+bool MagneticFieldDependence::setFilterParamsHall(MyDataType samplingFrequecy,
+                                                  MyDataType bandwidthFrequency,MyDataType attenuationFrequency, long length)
 {
     filterParamsHall->setFilterParams(samplingFrequecy, bandwidthFrequency, attenuationFrequency, length);
     return true;
@@ -1209,7 +1210,9 @@ bool MagneticFieldDependence::setFilterParamsResistance(std::string samplingFreq
     return true;
 }
 //-------------------------------------------------------------------------------
-bool MagneticFieldDependence::setFilterParamsResistance(MyDataType samplingFrequecy,MyDataType bandwidthFrequency,MyDataType attenuationFrequency, int length)
+bool MagneticFieldDependence::setFilterParamsResistance(MyDataType samplingFrequecy,
+                                                        MyDataType bandwidthFrequency,
+                                                        MyDataType attenuationFrequency, long length)
 {
     filterParamsResistance->setFilterParams(samplingFrequecy, bandwidthFrequency, attenuationFrequency, length);
     return true;
@@ -1655,7 +1658,7 @@ bool MagneticFieldDependence::runSmartCalcutation()
 // Многозонная подгонка
 bool MagneticFieldDependence::runSmartMultiCarrierFit(long double VesGxx, long double VesGxy)
 {
-    srand(time(NULL));
+    srand(time(nullptr));
     // тут границы для поиска кривые... надо исправлять.
     std::vector<long double> LowBound=lowBound; // сюда - границы для поиска
     std::vector<long double> UpBound=upBound;
@@ -1668,7 +1671,7 @@ bool MagneticFieldDependence::runSmartMultiCarrierFit(long double VesGxx, long d
     thiningSignal(MagSpectr, GxxIn, nMagSpectr, nGxxIn,0, 2, 11);
     thiningSignal(MagSpectr, GxyIn, nMagSpectr, nGxyIn,0, 2, 11);
 
-    auto GxxSize=nMagSpectr.size();
+    // auto GxxSize=nMagSpectr.size();
     int numberOfCarrierTypes=3;
 
     MultiZoneFit * mzf=new MultiZoneFit(100,VesGxx, VesGxy);
@@ -1751,7 +1754,7 @@ bool MagneticFieldDependence::runMultiCarrierFit(long double VesGxx, long double
 
     
 
-    int GxxSize=nMagSpectr.size();
+    // int GxxSize=nMagSpectr.size();
     int numberOfCarrierTypes=3;
 
     MultiZoneFit * mzf=new MultiZoneFit(100,VesGxx, VesGxy);

@@ -75,7 +75,7 @@ void  mobilitySpectrum::AddExpPoints(TLineSeries& ExpXX, TLineSeries& ExpXY)
     //ExpXX.Pointer.HorizSize = 2;
     //ExpXX.Pointer.VertSize = 2;
     for (i = 0 ; i<= NumberOfPoints; ++i )
-        if ( MagField_spektr[i]==0 ) ExpXX.push_back(make_pair(0.001,GxxExp[i])); // ExpXX.AddXY(0.001,GxxExp[i],"",clTeeColor);
+        if ( MagField_spektr[i]==0.0L ) ExpXX.push_back(make_pair(0.001,GxxExp[i])); // ExpXX.AddXY(0.001,GxxExp[i],"",clTeeColor);
         else ExpXX.push_back(make_pair(MagField_spektr[i],GxxExp[i])); // ExpXX.AddXY(MagField_spektr[i],GxxExp[i],"",clTeeColor);
 
 
@@ -83,7 +83,7 @@ void  mobilitySpectrum::AddExpPoints(TLineSeries& ExpXX, TLineSeries& ExpXY)
     //ExpXY.Pointer.HorizSize = 2;
     //ExpXY.Pointer.VertSize = 2;
     for (i = 0 ; i<= NumberOfPoints; ++i )
-     if ( MagField_spektr[i]==0 ) ExpXY.push_back(make_pair(0.001,GxyExp[i])); // ExpXY.AddXY(0.001,GxyExp[i],"",clTeeColor);
+     if ( MagField_spektr[i]==0.0L ) ExpXY.push_back(make_pair(0.001,GxyExp[i])); // ExpXY.AddXY(0.001,GxyExp[i],"",clTeeColor);
        else ExpXY.push_back(make_pair(MagField_spektr[i],GxyExp[i])); // ExpXY.AddXY(MagField_spektr[i],GxyExp[i],"",clTeeColor);
 
 }
@@ -102,14 +102,14 @@ void  mobilitySpectrum::GetLnLimits(int& Xmin, int& Xmax )
     Xmax = static_cast<int>(f);
     long double temp2;
     long double temp=modfl(f,&temp2);
-    if ( temp>0.001 )
+    if ( temp>0.001L )
         Xmax = Xmax+1;
 
 }
 
 void  mobilitySpectrum::CS(Data_spektr& X, Data_spektr& F, Data_spektr& C, const long double p1, const long double pn)
 {
-    int i,j,m;
+
     Data_spektr K;
     long double A,B,R;
 
@@ -122,7 +122,8 @@ void  mobilitySpectrum::CS(Data_spektr& X, Data_spektr& F, Data_spektr& C, const
    K[2]=(3*((F[2]-F[1])/(X[2]-X[1])-(F[1]-F[0])/(X[1]-X[0]))-
        (X[1]-X[0])*C[1])/2/(A+B);
    C[2]=B/2/(A+B);
-   for (i= 3; i<= NumberOfPoints; ++i )
+   unsigned int j,m;
+   for (auto i= 3u; i<= NumberOfPoints; ++i )
     {
      j = i-1;m = j-1;
      A = X[i]-X[j];
@@ -133,7 +134,7 @@ void  mobilitySpectrum::CS(Data_spektr& X, Data_spektr& F, Data_spektr& C, const
     }
    C[NumberOfPoints]=K[NumberOfPoints]-C[NumberOfPoints]*pn;
 
-   for (i= NumberOfPoints-1 ; i>= 2; --i ) C[i]=K[i]-C[i]*C[i+1];
+   for (auto i= NumberOfPoints-1 ; i>= 2; --i ) C[i]=K[i]-C[i]*C[i+1];
 }
 
 long double mobilitySpectrum::Sp(Data_spektr & X, Data_spektr &F, Data_spektr & C, const long double x1)
@@ -689,12 +690,11 @@ for (i= 1 ; i<= n; ++i )
 } //{ i }
 } //{ Imtql2 }
 
-long double mobilitySpectrum::GetElem(const int j1,const int k1,const int i1)
+long double mobilitySpectrum::GetElem(const unsigned int j1,const int k1,const int i1)
  {
       long double s;
-  int ii;
     s = 0;
-    for  (ii = i1 ; ii<= (NumberOfPoints-(j1-2)); ++ii )
+    for  (auto ii = i1 ; ii<= (NumberOfPoints-(j1-2)); ++ii )
     {
      if ( j1==2 )
      {
@@ -713,8 +713,8 @@ long double mobilitySpectrum::GetElem(const int j1,const int k1,const int i1)
 void  mobilitySpectrum::MakeMatrC()
 {
 
- for (int j = 1 ; j<= NumberOfPoints; ++j )
-  for (int k = 1 ; k<= NumberOfPoints; ++k )
+ for (auto j = 1u; j<= NumberOfPoints; ++j )
+  for (auto k = 1u; k<= NumberOfPoints; ++k )
   {
     Cr[j][k] = 0;
     Cl[j][k] = 0;
